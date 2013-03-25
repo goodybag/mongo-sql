@@ -1,14 +1,12 @@
 var
   db = require('./lib/connection')
-, mongopg = require('./lib/mongo-pg')
+, MongoPg = require('./lib/mongo-pg')
 ;
 
-module.exports = {};
+module.exports.init = function(config){
+  db.init(config);
 
-for (var key in db){
-  module.exports[key] = db[key];
-}
-
-for (var key in mongopg){
-  module.exports[key] = mongopg[key];
-}
+  for (var i = 0, l = config.collections.length; i < l; ++i){
+    module.exports[key] = new MongoPg(config.collections[i]);
+  }
+};
