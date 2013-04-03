@@ -1,23 +1,22 @@
 var
   assert        = require('assert')
-, utils         = require('../lib/utils')
-, QueryBuilder  = require('../lib/query-builder')
+, QueryBuilder  = require('../../lib/query-builder')
 , collection    = new QueryBuilder('collection')
 ;
 
 describe('Query Builder', function(){
   describe('collection.find', function(){
 
-    it('{ id: 5 }', function(){
+    it('5', function(){
       assert.equal(
-        collection.find({ id: 5 })
+        collection.find(5)
       , 'select "collection".* from "collection" where ("id" = 5)'
       );
     });
 
-    it('5', function(){
+    it('{ id: 5 }', function(){
       assert.equal(
-        collection.find(5)
+        collection.find({ id: 5 })
       , 'select "collection".* from "collection" where ("id" = 5)'
       );
     });
@@ -49,5 +48,6 @@ describe('Query Builder', function(){
       , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > 5)))))'
       );
     });
+    
   });
 });
