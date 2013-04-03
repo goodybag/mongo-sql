@@ -1,0 +1,28 @@
+{
+  "name": "mongo-pg",
+  "version": "0.0.1",
+  "description": "A mongo-like interface for postgres",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/goodybag/mongo-pg.git"
+  },
+  "dependencies": {
+    "pg": "0.15.x",
+    "generic-pool": "2.0.x"
+  },
+  "keywords": [
+    "postgres",
+    "postgresql",
+    "node-pg",
+    "mongo"
+  ],
+  "author": "John Fawcett",
+  "license": "BSD"
+}
