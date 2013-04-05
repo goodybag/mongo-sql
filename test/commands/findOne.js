@@ -15,7 +15,7 @@ describe('Query Builder', function(){
       , 'select "collection".* from "collection" where ("id" = $1) limit 1'
       );
 
-      assert.equal(
+      assert.deepEqual(
         result.values
       , [5]
       );
@@ -29,7 +29,7 @@ describe('Query Builder', function(){
       , 'select "collection".* from "collection" where ("id" = $1) limit 1'
       );
 
-      assert.equal(
+      assert.deepEqual(
         result.values
       , [5]
       );
@@ -43,7 +43,7 @@ describe('Query Builder', function(){
       , 'select "collection".* from "collection" where (("id" > $1 and "other" > $2)) limit 1'
       );
 
-      assert.equal(
+      assert.deepEqual(
         result.values
       , [5, 10]
       );
@@ -57,7 +57,7 @@ describe('Query Builder', function(){
       , 'select "collection".* from "collection" where ((("a" = $1 and "b" = $2) or ("c" = $3 and "d" = $4))) limit 1'
       );
 
-      assert.equal(
+      assert.deepEqual(
         result.values
       , [5, 6, 7, 8]
       );
@@ -71,7 +71,7 @@ describe('Query Builder', function(){
       , 'select "collection".* from "collection" where (((("a" > $1)) or ("c" = $2 and "d" = $3))) limit 1'
       );
 
-      assert.equal(
+      assert.deepEqual(
         result.values
       , [7, 7, 8]
       );
@@ -90,10 +90,10 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > $1)))) and "id" > $2) limit 1'
+      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > $1))) and "id" > $2)) limit 1'
       );
 
-      assert.equal(
+      assert.deepEqual(
         result.values
       , [5, 10]
       );
