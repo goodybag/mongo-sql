@@ -78,18 +78,25 @@ describe('Query Builder', function(){
     });
 
     it("{ id: { $in: collection.find({ id: { $gt: 5 } }, { fields: ['id'] }) } }", function(){
-      var result = collection.findOne({ id: { $in: collection.find({ id: { $gt: 5 } }, { fields: ['id'] }) } });
+      var result = collection.findOne({
+        id: {
+          $in: collection.find(
+            { id: { $gt: 5 } }
+          , { fields: ['id'], defer: true }
+          )
+        , $gt: 10
+        }
+      });
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > $1))))) limit 1'
+      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > $1)))) and "id" > $2) limit 1'
       );
 
       assert.equal(
         result.values
-      , [5]
+      , [5, 10]
       );
     });
-    
   });
 });

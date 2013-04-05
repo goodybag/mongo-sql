@@ -5,49 +5,98 @@ var
 ;
 
 describe('Query Builder', function(){
-  describe('collection.find', function(){
+  describe('collection.findOne', function(){
 
     it('5', function(){
+      var result = collection.findOne(5);
+
       assert.equal(
-        collection.find(5)
-      , 'select "collection".* from "collection" where ("id" = 5)'
+        result.query
+      , 'select "collection".* from "collection" where ("id" = $1)'
+      );
+
+      assert.equal(
+        result.values
+      , [5]
       );
     });
 
     it('{ id: 5 }', function(){
+      var result = collection.findOne({ id: 5 });
+
       assert.equal(
-        collection.find({ id: 5 })
-      , 'select "collection".* from "collection" where ("id" = 5)'
+        result.query
+      , 'select "collection".* from "collection" where ("id" = $1)'
+      );
+
+      assert.equal(
+        result.values
+      , [5]
       );
     });
 
     it('{ $gt: { id: 5, other: 10 } }', function(){
+      var result = collection.findOne({ $gt: { id: 5, other: 10 } });
+
       assert.equal(
-        collection.find({ $gt: { id: 5, other: 10 } })
-      , 'select "collection".* from "collection" where (("id" > 5 and "other" > 10))'
+        result.query
+      , 'select "collection".* from "collection" where (("id" > $1 and "other" > $2))'
+      );
+
+      assert.equal(
+        result.values
+      , [5, 10]
       );
     });
 
     it('{ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] }', function(){
+      var result = collection.findOne({ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] });
+
       assert.equal(
-        collection.find({ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] })
-      , 'select "collection".* from "collection" where ((("a" = 5 and "b" = 6) or ("c" = 7 and "d" = 8)))'
+        result.query
+      , 'select "collection".* from "collection" where ((("a" = $1 and "b" = $2) or ("c" = $3 and "d" = $4)))'
+      );
+
+      assert.equal(
+        result.values
+      , [5, 6, 7, 8]
       );
     });
 
-    it('{ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] }', function(){
+    it('{ $or: [{ a: { $gt: 7 } }, { c: 7, d: 8 }] }', function(){
+      var result = collection.findOne({ $or: [{ a: { $gt: 7 } }, { c: 7, d: 8 }] });
+
       assert.equal(
-        collection.find({ $or: [{ a: { $gt: 7 } }, { c: 7, d: 8 }] })
-      , 'select "collection".* from "collection" where (((("a" > 7)) or ("c" = 7 and "d" = 8)))'
+        result.query
+      , 'select "collection".* from "collection" where (((("a" > $1)) or ("c" = $2 and "d" = $3)))'
+      );
+
+      assert.equal(
+        result.values
+      , [7, 7, 8]
       );
     });
 
-    it('{ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] }', function(){
+    it("{ id: { $in: collection.find({ id: { $gt: 5 } }, { fields: ['id'] }) } }", function(){
+      var result = collection.findOne({
+        id: {
+          $in: collection.find(
+            { id: { $gt: 5 } }
+          , { fields: ['id'], defer: true }
+          )
+        , $gt: 10
+        }
+      });
+
       assert.equal(
-        collection.find({ id: { $in: collection.find({ id: { $gt: 5 } }, { fields: ['id'] }) } })
-      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > 5)))))'
+        result.query
+      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > $1)))) and "id" > $2)'
+      );
+
+      assert.equal(
+        result.values
+      , [5, 10]
       );
     });
-    
   });
 });
