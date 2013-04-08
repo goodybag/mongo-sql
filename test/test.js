@@ -1,6 +1,6 @@
 var
   assert        = require('assert')
-, QueryBuilder  = require('../lib/query-builder')
+, QueryBuilder  = require('../')
 , collection    = new QueryBuilder('collection')
 ;
 

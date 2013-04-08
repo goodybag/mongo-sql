@@ -15,7 +15,7 @@ describe('Query Builder', function(){
       var options = { returning: ['id'] };
 
       var result = users.update($query, $update, options);
-      console.log(result.query);
+
       assert.equal(
         result.query
       , 'update "users" set "email" = $1 where (("users"."email" is null)) returning "users"."id"'
