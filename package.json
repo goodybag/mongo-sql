@@ -1,6 +1,6 @@
 {
-  "name": "mongo-pg",
-  "version": "0.0.2",
+  "name": "mongo-sql",
+  "version": "0.0.3",
   "description": "A mongo-like interface for sql generation, postgres-style",
   "main": "index.js",
   "directories": {
@@ -17,7 +17,8 @@
     "postgres",
     "postgresql",
     "node-pg",
-    "mongo"
+    "mongo",
+    "sql"
   ],
   "author": "John Fawcett",
   "license": "BSD"
