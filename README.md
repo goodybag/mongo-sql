@@ -1,6 +1,6 @@
-# MongoPG
+# MongoSQL
 
-A mongo-like interface for node postgres.
+A mongo-like interface for generating SQL for Postgres.
 
 ```javascript
 // Lookup user by id
