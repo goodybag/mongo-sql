@@ -10,7 +10,7 @@ db.users.findOne(userId);
 __Result:__
 
 ```sql
-select "users".* from "users" where ("users"."id" = $1)
+select "users".* from "users" where ("users"."id" = $1) limit 1
 ```
 
 
