@@ -8,3 +8,4 @@ require('./commands/find');
 require('./commands/findOne');
 require('./commands/insert');
 require('./commands/update');
+require('./commands/remove');

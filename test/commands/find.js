@@ -2,6 +2,7 @@ var
   assert        = require('assert')
 , QueryBuilder  = require('../../lib/query-builder')
 , collection    = new QueryBuilder('collection')
+, other         = new QueryBuilder('other')
 ;
 
 describe('Query Builder', function(){
@@ -12,7 +13,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where ("id" = $1)'
+      , 'select "collection".* from "collection" where ("collection"."id" = $1)'
       );
 
       assert.deepEqual(
@@ -26,7 +27,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where ("id" = $1)'
+      , 'select "collection".* from "collection" where ("collection"."id" = $1)'
       );
 
       assert.deepEqual(
@@ -40,7 +41,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (("id" > $1 and "other" > $2))'
+      , 'select "collection".* from "collection" where (("collection"."id" > $1 and "collection"."other" > $2))'
       );
 
       assert.deepEqual(
@@ -54,7 +55,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where ((("a" = $1 and "b" = $2) or ("c" = $3 and "d" = $4)))'
+      , 'select "collection".* from "collection" where ((("collection"."a" = $1 and "collection"."b" = $2) or ("collection"."c" = $3 and "collection"."d" = $4)))'
       );
 
       assert.deepEqual(
@@ -68,7 +69,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (((("a" > $1)) or ("c" = $2 and "d" = $3)))'
+      , 'select "collection".* from "collection" where (((("collection"."a" > $1)) or ("collection"."c" = $2 and "collection"."d" = $3)))'
       );
 
       assert.deepEqual(
@@ -80,7 +81,7 @@ describe('Query Builder', function(){
     it("{ id: { $in: collection.find({ id: { $gt: 5 } }, { fields: ['id'] }) } }", function(){
       var result = collection.find({
         id: {
-          $in: collection.find(
+          $in: other.find(
             { id: { $gt: 5 } }
           , { fields: ['id'], defer: true }
           )
@@ -90,7 +91,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (("id" in (select id from "collection" where (("id" > $1))) and "id" > $2))'
+      , 'select "collection".* from "collection" where (("collection"."id" in (select id from "other" where (("other"."id" > $1))) and "collection"."id" > $2))'
       );
 
       assert.deepEqual(
