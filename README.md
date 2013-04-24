@@ -6,6 +6,14 @@ A mongo-like interface for generating SQL for Postgres aimed for use with node p
 npm install mongo-sql
 ```
 
+__Create a Query Builder:__
+
+```javascript
+var QueryBuilder = require('mongo-sql');
+
+var collection = new QueryBuilder('collection');
+```
+
 __Lookup User by ID:__
 
 ```javascript
