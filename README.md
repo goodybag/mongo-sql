@@ -2,6 +2,10 @@
 
 A mongo-like interface for generating SQL for Postgres aimed for use with node postgres.
 
+```
+npm install mongo-sql
+```
+
 __Lookup User by ID:__
 
 ```javascript
