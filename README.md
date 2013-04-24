@@ -8,6 +8,8 @@ __Lookup User by ID:__
 db.users.findOne( uid );
 ```
 
+Result:
+
 ```sql
 select "users".* from "users" where ("users"."id" = $1) limit 1
 ```
@@ -17,6 +19,8 @@ __Using $or:__
 ```javascript
 collection.find({ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] });
 ```
+
+Result:
 
 ```sql
 select "collection".* from "collection" where (
@@ -43,6 +47,8 @@ var result = collection.find({
   }
 });
 ```
+
+Result:
 
 ```sql
 select "collection".* from "collection" where (
@@ -72,6 +78,8 @@ var options = {
 
 db.users.find(query, options);
 ```
+
+Result:
 
 ```sql
 select users.*, array_agg(groups.name) as groups from "users"
