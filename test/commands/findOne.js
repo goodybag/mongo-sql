@@ -41,7 +41,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (("collection"."id" > $1 and "collection"."other" > $2)) limit 1'
+      , 'select "collection".* from "collection" where ("collection"."id" > $1 and "collection"."other" > $2) limit 1'
       );
 
       assert.deepEqual(
@@ -52,10 +52,9 @@ describe('Query Builder', function(){
 
     it('{ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] }', function(){
       var result = collection.findOne({ $or: [{ a: 5, b: 6 }, { c: 7, d: 8 }] });
-
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where ((("collection"."a" = $1 and "collection"."b" = $2) or ("collection"."c" = $3 and "collection"."d" = $4))) limit 1'
+      , 'select "collection".* from "collection" where ("collection"."a" = $1 and "collection"."b" = $2) or ("collection"."c" = $3 and "collection"."d" = $4) limit 1'
       );
 
       assert.deepEqual(
@@ -64,24 +63,24 @@ describe('Query Builder', function(){
       );
     });
 
-    it('{ $or: [{ a: { $gt: 7 } }, { c: 7, d: 8 }] }', function(){
-      var result = collection.findOne({ $or: [{ a: { $gt: 7 } }, { c: 7, d: 8 }] });
+    it('{ $or: [{ a: { $gt: 1 } }, { c: 2, d: 3 }] }', function(){
+      var result = collection.findOne({ $or: [{ a: { $gt: 1 } }, { c: 2, d: 3 }] });
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (((("collection"."a" > $1)) or ("collection"."c" = $2 and "collection"."d" = $3))) limit 1'
+      , 'select "collection".* from "collection" where ("collection"."c" = $1 and "collection"."d" = $2) or ("collection"."a" > $3) limit 1'
       );
 
       assert.deepEqual(
         result.values
-      , [7, 7, 8]
+      , [2,3,1]
       );
     });
 
     it("{ id: { $in: collection.findOne({ id: { $gt: 5 } }, { fields: ['id'] }) } }", function(){
       var result = collection.findOne({
         id: {
-          $nin: other.find(
+          $in: other.find(
             { id: { $gt: 5 } }
           , { fields: ['id'], defer: true }
           )
@@ -91,12 +90,84 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where (("collection"."id" not in (select id from "other" where (("other"."id" > $1))) and "collection"."id" > $2)) limit 1'
+      , 'select "collection".* from "collection" where ("collection"."id" in (select id from "other" where ("other"."id" > $1)) and "collection"."id" > $2) limit 1'
       );
 
       assert.deepEqual(
         result.values
       , [5, 10]
+      );
+    });
+
+    it('should join', function(){
+      var result  = collection.findOne({}, {
+        join: {
+          other: { collectionId: 'collection.id' }
+        }
+      });
+
+      assert.equal(
+        result.query
+      , 'select "collection".* from "collection" join "other" on ("other"."collectionId" = "collection"."id") limit 1'
+      );
+
+      assert.deepEqual(
+        result.values
+      , []
+      );
+    });
+
+    it('should left join', function(){
+      var result  = collection.findOne({}, {
+        leftJoin: {
+          other: { collectionId: 'collection.id' }
+        }
+      });
+
+      assert.equal(
+        result.query
+      , 'select "collection".* from "collection" left join "other" on ("other"."collectionId" = "collection"."id") limit 1'
+      );
+
+      assert.deepEqual(
+        result.values
+      , []
+      );
+    });
+
+    it('should inner join', function(){
+      var result  = collection.findOne({}, {
+        innerJoin: {
+          other: { collectionId: 'collection.id' }
+        }
+      });
+
+      assert.equal(
+        result.query
+      , 'select "collection".* from "collection" inner join "other" on ("other"."collectionId" = "collection"."id") limit 1'
+      );
+
+      assert.deepEqual(
+        result.values
+      , []
+      );
+    });
+
+    it('should full outer join', function(){
+      var result  = collection.findOne({}, {
+        fullOuterJoin: {
+          other: { collectionId: 'collection.id' }
+        }
+      });
+
+      assert.equal(
+        result.query
+      , 'select "collection".* from "collection" full outer join "other" on ("other"."collectionId" = "collection"."id") limit 1'
+      );
+
+      assert.deepEqual(
+        result.values
+      , []
       );
     });
   });

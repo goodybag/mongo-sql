@@ -18,7 +18,7 @@ describe('Query Builder', function(){
 
       assert.equal(
         result.query
-      , 'update "users" set "email" = $1 where (("users"."email" is null)) returning "users"."id"'
+      , 'update "users" set "email" = $1 where ("users"."email" is null) returning "users"."id"'
       );
 
       assert.deepEqual(
