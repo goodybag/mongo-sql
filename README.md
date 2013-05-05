@@ -109,12 +109,12 @@ select users.*, array_agg(groups.name) as groups from "users"
 
 ### Helpers
 
-All conditionals and value types are implemented as helpers. There are two types of helpers:
+There are two types of helpers:
 
 * Conditionals
 * Values
 
-Conditionals are just that. Things like ```$gt, $lt, $equals``` are all conditionals. They are helpers that construct the parts of queries that have conditions. Values are what's on the right-hand side of a condition. If you needed to do something like:
+All conditionals and value types are implemented as helpers. Things like ```$gt, $lt, $equals``` are all conditionals. They are helpers that construct the parts of queries that have conditions. Values are what's on the right-hand side of a condition. If you needed to do something like:
 
 ```sql
 select * from users where last_visited > ( now() - interval '5' hour );
