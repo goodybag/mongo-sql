@@ -36,17 +36,31 @@ describe('Query Builder', function(){
       );
     });
 
-    it('{ $gt: { id: 5, other: 10 } }', function(){
-      var result = collection.find({ $gt: { id: 5, other: 10 } });
+    it('{ $gt: { id: 5, other: 10, another: 6 } }', function(){
+      var result = collection.find({ $gt: { id: 5, other: 10, another: 6 } });
 
       assert.equal(
         result.query
-      , 'select "collection".* from "collection" where ("collection"."id" > $1 and "collection"."other" > $2)'
+      , 'select "collection".* from "collection" where ("collection"."id" > $1 and "collection"."other" > $2 and "collection"."another" > $3)'
       );
 
       assert.deepEqual(
         result.values
-      , [5, 10]
+      , [5, 10, 6]
+      );
+    });
+
+    it('{ some_value: 7, other_value: 8, createdAt: { $gt: 5 } }', function(){
+      var result = collection.find({ some_value: 1, other_value: 2, another_value: { $gt: 3 } });
+      
+      assert.equal(
+        result.query
+      , 'select "collection".* from "collection" where ("collection"."some_value" = $1 and "collection"."other_value" = $2) and ("collection"."another_value" > $3)'
+      );
+
+      assert.deepEqual(
+        result.values
+      , [1, 2, 3]
       );
     });
 
