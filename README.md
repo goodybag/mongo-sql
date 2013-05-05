@@ -192,3 +192,7 @@ db.users.find({ $gt: { id: 1, name: 'Tom', createdAt: { $months_ago: 1 } } });
 ```
 
 Most of the default conditional helpers cascade and most (if not all) of the value helpers do not. Getting the cascade right is hard. So, when writing helpers, it _may be_ beneficial to not turn cascading on.
+
+## Oh so much more
+
+There's a lot more to MongoSql that I just haven't really documented yet. Check out the tests and browse through the source code to get a feel for the feature-set.
