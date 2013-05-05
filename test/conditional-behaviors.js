@@ -11,13 +11,12 @@ describe('Conditional Behaviors', function(){
 
     it('should register $between', function(){
 
-      mongosql.conditionalHelper('$between', function(column, value, values, collection){
-        
-        // return column + " > $" + values.push(value[0]) + " and " + column + " < $" + values.push(value[1]);
+      mongosql.helpers.conditional.add('$between', { customValues: true }, function(column, value, values, collection){
+        return column + " > $" + values.push(value[0]) + " and " + column + " < $" + values.push(value[1]);
       });
 
       var result = collection.find({ id: { $between: [1, 2] } });
-console.log(result.query);
+
       assert.equal(
         result.query
       , 'select "collection".* from "collection" where ("collection"."id" > $1 and "collection"."id" < $2)'

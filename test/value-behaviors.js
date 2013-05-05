@@ -11,12 +11,13 @@ describe('Value Behavoirs', function(){
 
     it('should register $minus', function(){
 
-      mongosql.valueHelper('$minus', function(column, value, values, collection){
+      mongosql.helpers.value.add('$minus', { customValues: true }, function(column, value, values, collection){
+        console.log('MINUS?', column, value, values, collection);
         return value[0] + " - $" + values.push(value[1]);
       });
 
       var result = collection.find({ id: { $minus: ['another', 1] } });
-
+console.log(result);
       assert.equal(
         result.query
       , 'select "collection".* from "collection" where ("collection"."id" = another - $1)'
