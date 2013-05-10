@@ -1,1 +1,1 @@
-require('./commands/select');
+// require('./commands/select');
