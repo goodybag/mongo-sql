@@ -172,57 +172,39 @@ describe('Built-In Query Types', function(){
       );
     });
 
-    it ('should build a query selecting on users where id = $1', function(){
+    it ('limit', function(){
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: { id: 5 }
+        type:     'select'
+      , table:    'users'
+      , limit:    10
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where ("users"."id" = $1)'
+      , 'select "users".* from "users" limit $1'
       );
 
       assert.deepEqual(
         query.values
-      , [5]
+      , [10]
       );
     });
 
-    it ('should build a query selecting on users where id = $1 and name = $2', function(){
+    it ('offset', function(){
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: { id: 5, name: 'Bob' }
+        type:     'select'
+      , table:    'users'
+      , offset:    10
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where ("users"."id" = $1 and "users"."name" = $2)'
+      , 'select "users".* from "users" offset $1'
       );
 
       assert.deepEqual(
         query.values
-      , [5, 'Bob']
-      );
-    });
-
-    it ('should build a query selecting on users where id = $1 or name = $2', function(){
-      var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: { $or: { id: 5, name: 'Bob' } }
-      });
-
-      assert.equal(
-        query.toString()
-      , 'select "users".* from "users" where ("users"."id" = $1 or "users"."name" = $2)'
-      );
-
-      assert.deepEqual(
-        query.values
-      , [5, 'Bob']
+      , [10]
       );
     });
   });
