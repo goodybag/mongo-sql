@@ -1,5 +1,5 @@
-var helpers = require('./');
-var utils   = require('../utils');
+var helpers = require('../../lib/query-helpers');
+var utils   = require('../../lib/utils');
 
 helpers.register('columns', function(columns, values, query){
   if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');

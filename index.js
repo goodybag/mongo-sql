@@ -1,25 +1,30 @@
 var
-  queryTypes    = require('./lib/types')
+  build               = require('./lib/query-builder')
+, queryTypes          = require('./lib/query-types')
+, queryHelpers        = require('./lib/query-helpers')
+, conditionalHelpers  = require('./lib/conditional-helpers')
 ;
 
-// Dirrrrty require query-helpers... need to re-organize!
-require('./lib/query-helpers/columns');
-require('./lib/query-helpers/group-by');
-require('./lib/query-helpers/joins');
-require('./lib/query-helpers/order');
-require('./lib/query-helpers/updates');
-require('./lib/query-helpers/where');
-require('./lib/query-helpers/index');
-require('./lib/query-helpers/limit');
-require('./lib/query-helpers/offset');
-require('./lib/query-helpers/returning');
-require('./lib/query-helpers/values');
-require('./lib/query-helpers/table');
+// Register query types
+require('./helpers/query-types');
 
-module.exports.sql = require('./lib/query-builder');
+// Register query helpers
+require('./helpers/query/columns');
+require('./helpers/query/group-by');
+require('./helpers/query/joins');
+require('./helpers/query/order');
+require('./helpers/query/updates');
+require('./helpers/query/where');
+require('./helpers/query/limit');
+require('./helpers/query/offset');
+require('./helpers/query/returning');
+require('./helpers/query/values');
+require('./helpers/query/table');
 
-module.exports.registerQueryType = queryTypes.registerQueryType;
+// Register conditional helpers
+require('./helpers/conditional');
 
-module.exports.registerQueryHelper = function(name, fn){
-
-};
+module.exports.sql                        = build;
+module.exports.registerQueryType          = queryTypes.add;
+module.exports.registerQueryHelper        = queryHelpers.add;
+module.exports.registerConditionalHelper  = conditionalHelpers.add;

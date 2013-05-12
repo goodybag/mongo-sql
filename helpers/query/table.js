@@ -1,5 +1,5 @@
-var helpers = require('./');
-var utils = require('../utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
 helpers.register('table', function(table, values, collection){
   if (typeof table != 'string' && !Array.isArray(table)) throw new Error('Invalid table type: ' + typeof table);

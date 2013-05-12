@@ -17,7 +17,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" join "groups" on ("groups"."id" = "users"."id")'
+    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id"'
     );
   });
 
@@ -32,7 +32,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" left join "groups" on ("groups"."id" = "users"."id")'
+    , 'select "users".* from "users" left join "groups" on "groups"."id" = "users"."id"'
     );
   });
 
@@ -47,7 +47,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" inner join "groups" on ("groups"."id" = "users"."id")'
+    , 'select "users".* from "users" inner join "groups" on "groups"."id" = "users"."id"'
     );
   });
 
@@ -62,7 +62,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" left outer join "groups" on ("groups"."id" = "users"."id")'
+    , 'select "users".* from "users" left outer join "groups" on "groups"."id" = "users"."id"'
     );
   });
 
@@ -77,7 +77,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" full outer join "groups" on ("groups"."id" = "users"."id")'
+    , 'select "users".* from "users" full outer join "groups" on "groups"."id" = "users"."id"'
     );
   });
 
@@ -92,7 +92,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" cross outer join "groups" on ("groups"."id" = "users"."id")'
+    , 'select "users".* from "users" cross outer join "groups" on "groups"."id" = "users"."id"'
     );
   });
 
@@ -113,7 +113,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" join "groups" on ("groups"."id" = "users"."id") and ("groups"."groupId" > $1) and ("users"."name" != $2)'
+    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id" and ("groups"."groupId" > $1) and ("users"."name" != $2)'
     );
 
     assert.deepEqual(

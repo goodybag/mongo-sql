@@ -1,5 +1,5 @@
-var helpers = require('./');
-var conditionBuilder = require('../condition-builder');
+var helpers = require('../../lib/query-helpers');
+var conditionBuilder = require('../../lib/condition-builder');
 
 var buildJoin = function(type, joins, values){
   var output = "";

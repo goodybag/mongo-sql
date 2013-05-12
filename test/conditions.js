@@ -12,7 +12,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" = $1)'
+    , 'select "users".* from "users" where "users"."id" = $1'
     );
 
     assert.deepEqual(
@@ -30,7 +30,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" = $1 and "users"."name" = $2)'
+    , 'select "users".* from "users" where "users"."id" = $1 and "users"."name" = $2'
     );
 
     assert.deepEqual(
@@ -283,8 +283,8 @@ describe('Conditions', function(){
       query.toString()
     , 'select "users".* from "users" where ('
       + '"users"."id" in ('
-        + 'select "groups"."userId" from "groups" where ('
-          + '"groups"."groupId" = $1)))'
+        + 'select "groups"."userId" from "groups" where '
+          + '"groups"."groupId" = $1))'
     );
 
     assert.deepEqual(
@@ -313,8 +313,8 @@ describe('Conditions', function(){
       query.toString()
     , 'select "users".* from "users" where ('
       + '"users"."id" not in ('
-        + 'select "groups"."userId" from "groups" where ('
-          + '"groups"."groupId" = $1)))'
+        + 'select "groups"."userId" from "groups" where '
+          + '"groups"."groupId" = $1))'
     );
 
     assert.deepEqual(
@@ -330,18 +330,19 @@ describe('Conditions', function(){
     , where: {
         name: 'Bob'
       , id: { $lt: 500 }
-      , $or: { groupId: [7, 8] }
+      , groupId: { $equals: 7 }
+      , another: { $or: [1, 2, 3, 4] }
       }
     });
-console.log(query.toString())
+
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."name" = $1 and ("users"."id" < $2) and ("users"."groupId" = $3 or "users."groupId" = $4))'
+    , 'select "users".* from "users" where "users"."name" = $1 and ("users"."id" < $2) and ("users"."groupId" = $3) and (("users"."another" = $4 or "users"."another" = $5 or "users"."another" = $6 or "users"."another" = $7))'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bob', 500, 7, 8]
+    , ['Bob', 500, 7, 1, 2, 3, 4]
     );
   });
 

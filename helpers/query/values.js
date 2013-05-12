@@ -1,4 +1,4 @@
-var helpers = require('./');
+var helpers = require('../../lib/query-helpers');
 
 helpers.register('values', function(columns, valuesArray, query){
   if (typeof columns != 'object') throw new Error('Invalid values input in query properties')
