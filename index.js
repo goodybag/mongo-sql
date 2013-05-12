@@ -24,7 +24,13 @@ require('./helpers/query/table');
 // Register conditional helpers
 require('./helpers/conditional');
 
-module.exports.sql                        = build;
-module.exports.registerQueryType          = queryTypes.add;
-module.exports.registerQueryHelper        = queryHelpers.add;
-module.exports.registerConditionalHelper  = conditionalHelpers.add;
+module.exports.sql = build;
+module.exports.registerQueryType = queryTypes.add;
+
+module.exports.registerQueryHelper = function(name, options, fn){
+  return queryHelpers.add(name, options, fn);
+};
+
+module.exports.registerConditionalHelper = function(name, options, fn){
+  return conditionalHelpers.add(name, options, fn);
+};
