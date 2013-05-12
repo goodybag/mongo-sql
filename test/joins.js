@@ -109,7 +109,32 @@ describe('Joins', function(){
       }
     });
 
-    console.log(query.toString());
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id" and ("groups"."groupId" > $1) and ("users"."name" != $2)'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [3, 'Bob']
+    );
+  });
+
+  it ('should allow an arbitrary amount of joins on an arbitrary amount of conditions', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , join: {
+        groups: {
+          'groups.id': '$users.id$'
+        , 'groups.groupId': { $gt: 3 }
+        , 'users.name': { $ne: 'Bob' }
+        }
+      , tableB: {
+          'tableB.id': '$users.tableBId'
+        }
+      }
+    });
 
     assert.equal(
       query.toString()
