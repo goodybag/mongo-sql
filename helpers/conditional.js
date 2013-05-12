@@ -12,7 +12,9 @@ var queryBuilder = require('../lib/query-builder');
  * @param value  {Mixed}   - What the column should be equal to
  */
 conditionals.add('$equals', function(column, value, values, collection){
-  return column + ' = ' + value;
+  var equator = '=';
+
+  return column + ' ' + ((value == 'true' || value == 'false') ? 'is' : '=') + ' ' + value;
 });
 
 /**
@@ -64,7 +66,7 @@ conditionals.add('$lte', function(column, value, values, collection){
  * Querying where value is null
  * @param column {String}  - Column name either table.column or column
  */
-conditionals.add('$null', { customValues: true }, function(column, value, values, collection){
+conditionals.add('$null', function(column, value, values, collection){
   return column + ' is null';
 });
 
@@ -72,7 +74,7 @@ conditionals.add('$null', { customValues: true }, function(column, value, values
  * Querying where value is null
  * @param column {String}  - Column name either table.column or column
  */
-conditionals.add('$notNull', { customValues: true }, function(column, value, values, collection){
+conditionals.add('$notNull', function(column, value, values, collection){
   return column + ' is not null';
 });
 
@@ -154,25 +156,25 @@ conditionals.add('$custom_object', { cascade: false }, function(column, value, v
 });
 
 conditionals.add('$years_ago', function(column, value, values, collection){
-  return "now() - interval " + value + " years";
+  return column + " >= now() - interval " + value + " year";
 });
 
 conditionals.add('$months_ago', function(column, value, values, collection){
-  return "now() - interval " + value + " months";
+  return column + " >= now() - interval " + value + " month";
 });
 
 conditionals.add('$days_ago', function(column, value, values, collection){
-  return "now() - interval " + value + " days";
+  return column + " >= now() - interval " + value + " day";
 });
 
 conditionals.add('$hours_ago', function(column, value, values, collection){
-  return "now() - interval " + value + " hours";
+  return column + " >= now() - interval " + value + " hour";
 });
 
 conditionals.add('$minutes_ago', function(column, value, values, collection){
-  return "now() - interval " + value + " minutes";
+  return column + " >= now() - interval " + value + " minute";
 });
 
 conditionals.add('$seconds_ago', function(column, value, values, collection){
-  return "now() - interval " + value + " seconds";
+  return column + " >= now() - interval " + value + " second";
 });

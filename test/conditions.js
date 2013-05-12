@@ -39,6 +39,40 @@ describe('Conditions', function(){
     );
   });
 
+  it ('should use boolean syntax', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: { isAwesome: true }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."isAwesome" is true'
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+
+    query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: { isAwesome: false }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."isAwesome" is false'
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
   it ('should build a query selecting on users where id = $1 or name = $2', function(){
     var query = builder.sql({
       type: 'select'
@@ -48,7 +82,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" = $1 or "users"."name" = $2)'
+    , 'select "users".* from "users" where "users"."id" = $1 or "users"."name" = $2'
     );
 
     assert.deepEqual(
@@ -66,7 +100,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" > $1)'
+    , 'select "users".* from "users" where "users"."id" > $1'
     );
 
     assert.deepEqual(
@@ -84,7 +118,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" > $1 and "users"."name" > $2)'
+    , 'select "users".* from "users" where "users"."id" > $1 and "users"."name" > $2'
     );
 
     assert.deepEqual(
@@ -102,7 +136,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" >= $1)'
+    , 'select "users".* from "users" where "users"."id" >= $1'
     );
 
     assert.deepEqual(
@@ -120,7 +154,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" >= $1 and "users"."name" >= $2)'
+    , 'select "users".* from "users" where "users"."id" >= $1 and "users"."name" >= $2'
     );
 
     assert.deepEqual(
@@ -138,7 +172,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" < $1)'
+    , 'select "users".* from "users" where "users"."id" < $1'
     );
 
     assert.deepEqual(
@@ -156,7 +190,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" < $1 and "users"."name" < $2)'
+    , 'select "users".* from "users" where "users"."id" < $1 and "users"."name" < $2'
     );
 
     assert.deepEqual(
@@ -174,7 +208,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" <= $1)'
+    , 'select "users".* from "users" where "users"."id" <= $1'
     );
 
     assert.deepEqual(
@@ -192,7 +226,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" <= $1 and "users"."name" <= $2)'
+    , 'select "users".* from "users" where "users"."id" <= $1 and "users"."name" <= $2'
     );
 
     assert.deepEqual(
@@ -210,7 +244,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" is null)'
+    , 'select "users".* from "users" where "users"."id" is null'
     );
   });
 
@@ -223,7 +257,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."id" is not null)'
+    , 'select "users".* from "users" where "users"."id" is not null'
     );
   });
 
@@ -236,7 +270,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."name" like $1)'
+    , 'select "users".* from "users" where "users"."name" like $1'
     );
 
     assert.deepEqual(
@@ -254,7 +288,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ("users"."name" ilike $1)'
+    , 'select "users".* from "users" where "users"."name" ilike $1'
     );
 
     assert.deepEqual(
@@ -281,10 +315,10 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ('
+    , 'select "users".* from "users" where '
       + '"users"."id" in ('
         + 'select "groups"."userId" from "groups" where '
-          + '"groups"."groupId" = $1))'
+          + '"groups"."groupId" = $1)'
     );
 
     assert.deepEqual(
@@ -311,10 +345,10 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ('
+    , 'select "users".* from "users" where '
       + '"users"."id" not in ('
         + 'select "groups"."userId" from "groups" where '
-          + '"groups"."groupId" = $1))'
+          + '"groups"."groupId" = $1)'
     );
 
     assert.deepEqual(
@@ -337,7 +371,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" = $1 and ("users"."id" < $2) and ("users"."groupId" = $3) and (("users"."another" = $4 or "users"."another" = $5 or "users"."another" = $6 or "users"."another" = $7))'
+    , 'select "users".* from "users" where "users"."name" = $1 and "users"."id" < $2 and "users"."groupId" = $3 and ("users"."another" = $4 or "users"."another" = $5 or "users"."another" = $6 or "users"."another" = $7)'
     );
 
     assert.deepEqual(
@@ -346,4 +380,264 @@ describe('Conditions', function(){
     );
   });
 
+  it ('should inline custom conditions', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        name: { $like: 'Bob' }
+      , $custom: ['"users"."createdAt" > now() - interval $1 month', 5]
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."name" like $1 and "users"."createdAt" > now() - interval $2 month'
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['Bob', 5]
+    );
+  });
+
+  it ('$years_ago', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        createdAt: { $years_ago: 2 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 year'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2]
+    );
+  });
+
+  it ('$years_ago inverse', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        $years_ago: { createdAt: 2, somethingElse: 3 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 year and "users"."somethingElse" >= now() - interval $2 year'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2, 3]
+    );
+  });
+
+  it ('$months_ago', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        createdAt: { $months_ago: 2 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 month'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2]
+    );
+  });
+
+  it ('$months_ago inverse', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        $months_ago: { createdAt: 2, somethingElse: 3 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 month and "users"."somethingElse" >= now() - interval $2 month'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2, 3]
+    );
+  });
+
+  it ('$days_ago', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        createdAt: { $days_ago: 2 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 day'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2]
+    );
+  });
+
+  it ('$days_ago inverse', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        $days_ago: { createdAt: 2, somethingElse: 3 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 day and "users"."somethingElse" >= now() - interval $2 day'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2, 3]
+    );
+  });
+
+  it ('$hours_ago', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        createdAt: { $hours_ago: 2 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 hour'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2]
+    );
+  });
+
+  it ('$hours_ago inverse', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        $hours_ago: { createdAt: 2, somethingElse: 3 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 hour and "users"."somethingElse" >= now() - interval $2 hour'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2, 3]
+    );
+  });
+
+  it ('$minutes_ago', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        createdAt: { $minutes_ago: 2 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 minute'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2]
+    );
+  });
+
+  it ('$minutes_ago inverse', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        $minutes_ago: { createdAt: 2, somethingElse: 3 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 minute and "users"."somethingElse" >= now() - interval $2 minute'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2, 3]
+    );
+  });
+
+  it ('$seconds_ago', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        createdAt: { $seconds_ago: 2 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 second'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2]
+    );
+  });
+
+  it ('$seconds_ago inverse', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        $seconds_ago: { createdAt: 2, somethingElse: 3 }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 second and "users"."somethingElse" >= now() - interval $2 second'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [2, 3]
+    );
+  });
 });

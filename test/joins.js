@@ -1,4 +1,3 @@
-//// {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin}
 var assert  = require('assert');
 var builder = require('../');
 
@@ -111,7 +110,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id" and ("groups"."groupId" > $1) and ("users"."name" != $2)'
+    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id" and "groups"."groupId" > $1 and "users"."name" != $2'
     );
 
     assert.deepEqual(
@@ -138,7 +137,7 @@ describe('Joins', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id" and ("groups"."groupId" > $1) and ("users"."name" != $2) join "tableB" on "tableB"."id" = "users"."tableBId"'
+    , 'select "users".* from "users" join "groups" on "groups"."id" = "users"."id" and "groups"."groupId" > $1 and "users"."name" != $2 join "tableB" on "tableB"."id" = "users"."tableBId"'
     );
 
     assert.deepEqual(
