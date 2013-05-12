@@ -32,21 +32,19 @@ describe('Helpers', function(){
       , 'select {columns} from {table} {whereId}'
       );
 
-      builder.registerQueryHelper('whereId', function(where, values, query){
-        if (!where.id) throw new Error('Missing property id from query');
-        console.log('######################');
-        return 'where "' + query.__defaultTable + '".id = $' + values.push(where.id);
+      builder.registerQueryHelper('whereId', function(id, values, query){
+        return 'where "' + query.__defaultTable + '".id = $' + values.push(id);
       });
 
       var query = builder.sql({
         type: 'findOne'
       , table: 'users'
-      , where: { id: 8 }
+      , whereId: 8
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from users where "users".id = $1'
+      , 'select "users".* from "users" where "users".id = $1'
       );
 
       assert.deepEqual(
