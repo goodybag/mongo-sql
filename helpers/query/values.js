@@ -1,13 +1,14 @@
 var helpers = require('../../lib/query-helpers');
 
-helpers.register('values', function(columns, valuesArray, query){
-  if (typeof columns != 'object') throw new Error('Invalid values input in query properties')
+helpers.register('values', function(values, valuesArray, query){
+  if (typeof values != 'object') throw new Error('Invalid values input in query properties')
 
-  var output = "";
+  var output = '("' + Object.keys(values).join('", "') + '") values (';
 
-  for (var key in columns) output += "$" + valuesArray.push(columns[key]) + ", ";
+  for (var key in values)
+    output += '$' + valuesArray.push(values[key]) + ', ';
 
   if (output.length > 0) output = output.substring(0, output.length - 2);
 
-  return output;
+  return output + ')';
 });
