@@ -24,6 +24,9 @@ require('./helpers/query/table');
 // Register conditional helpers
 require('./helpers/conditional');
 
+// Register update helpers
+require('./helpers/update');
+
 module.exports.sql = build;
 module.exports.registerQueryType = queryTypes.add;
 

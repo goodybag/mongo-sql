@@ -7,7 +7,7 @@ queryTypes.add(
 
 queryTypes.add(
   'insert'
-, 'insert into {table} ({columns}) values ({values}) {returning}'
+, 'insert into {table} {values} {returning}'
 );
 
 queryTypes.add(
@@ -17,10 +17,10 @@ queryTypes.add(
 
 queryTypes.add(
   'delete'
-, 'delete from {table} {where}'
+, 'delete from {table} {where} {returning}'
 );
 
 queryTypes.add(
   'remove'
-, 'delete from {table} {where}'
+, 'delete from {table} {where} {returning}'
 );
