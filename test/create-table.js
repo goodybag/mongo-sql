@@ -59,7 +59,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create if not exists table "jobs" ('
+      , [ 'create table if not exists "jobs" ('
         , '"id" serial primary key, '
         , '"name" text, '
         , '"createdAt" timestamp'
@@ -97,7 +97,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create if not exists table "usersGroups" ('
+      , [ 'create table if not exists "usersGroups" ('
         , '"id" serial primary key, '
         , '"uid" int references users, '
         , '"gid" int references groups, '

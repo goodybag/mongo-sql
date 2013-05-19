@@ -27,5 +27,5 @@ queryTypes.add(
 
 queryTypes.add(
   'create-table'
-, 'create {ifNotExists} table {table} ({definition})'
+, 'create table {ifNotExists} {table} ({definition})'
 );
