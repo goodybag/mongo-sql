@@ -640,4 +640,17 @@ describe('Conditions', function(){
     , [2, 3]
     );
   });
+
+  it ('Should have no conditions if where is an empty object', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {}
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users"'
+    );
+  });
 });
