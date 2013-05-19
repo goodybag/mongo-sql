@@ -24,3 +24,8 @@ queryTypes.add(
   'remove'
 , 'delete from {table} {where} {returning}'
 );
+
+queryTypes.add(
+  'create-table'
+, 'create {ifNotExists} table {table} ({definition})'
+);
