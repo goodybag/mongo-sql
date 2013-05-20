@@ -29,3 +29,8 @@ queryTypes.add(
   'create-table'
 , 'create table {ifNotExists} {table} ({definition})'
 );
+
+queryTypes.add(
+  'drop-table'
+, 'drop table {ifExists} {table} {cascade}'
+);
