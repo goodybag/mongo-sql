@@ -21,7 +21,9 @@ require('./helpers/query/returning');
 require('./helpers/query/values');
 require('./helpers/query/table');
 require('./helpers/query/if-not-exists');
+require('./helpers/query/if-exists');
 require('./helpers/query/definition');
+require('./helpers/query/cascade');
 
 // Register conditional helpers
 require('./helpers/conditional');
