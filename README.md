@@ -28,7 +28,7 @@ Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a par
 
 ## Why JSON?
 
-This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax high-lighting is much more meaningful than imperative counteraparts.
+This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.
 
 ```javascript
 var builder = require('mongo-sql');
@@ -43,7 +43,7 @@ var someGroup = {
 var query = {
   type:   'select'
 , table:  'users'
-, where:  { id: $nin: someGroup }
+, where:  { id: { $nin: someGroup } }
 };
 
 builder.sql(query);
