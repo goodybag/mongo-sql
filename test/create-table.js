@@ -106,5 +106,98 @@ describe('Built-In Query Types', function(){
         ].join('')
       );
     });
+
+    it('Should not allow nulls', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'jobs'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+
+        , name: {
+            type: 'text'
+          , notNull: true
+          }
+
+        , createdAt: {
+            type: 'timestamp'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'create table "jobs" ('
+        , '"id" serial, '
+        , '"name" text not null, '
+        , '"createdAt" timestamp'
+        , ')'
+        ].join('')
+      );
+    });
+
+    it('Should not allow nulls', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'jobs'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+
+        , name: {
+            type: 'text'
+          , unique: true
+          }
+
+        , createdAt: {
+            type: 'timestamp'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'create table "jobs" ('
+        , '"id" serial, '
+        , '"name" text unique, '
+        , '"createdAt" timestamp'
+        , ')'
+        ].join('')
+      );
+    });
+
+    it('Should default to now()', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'jobs'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+
+        , name: {
+            type: 'text'
+          }
+
+        , createdAt: {
+            type: 'timestamp'
+          , default: 'now()'
+          }
+        }
+      });
+      
+      assert.equal(
+        query.toString()
+      , [ 'create table "jobs" ('
+        , '"id" serial, '
+        , '"name" text, '
+        , '"createdAt" timestamp default now()'
+        , ')'
+        ].join('')
+      );
+    });
   });
 });
