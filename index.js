@@ -31,6 +31,9 @@ require('./helpers/conditional');
 // Register update helpers
 require('./helpers/update');
 
+// Register column definition helpers
+require('./helpers/column-definitions')
+
 module.exports.sql = build;
 module.exports.registerQueryType = queryTypes.add;
 
