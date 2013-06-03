@@ -120,6 +120,20 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should put order before limit', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , order:    'id desc'
+      , limit:    5
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" order by id desc limit $1'
+      );
+    });
+
     it ('order by array', function(){
       var query = builder.sql({
         type:     'select'
