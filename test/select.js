@@ -221,5 +221,49 @@ describe('Built-In Query Types', function(){
       , [10]
       );
     });
+
+    it ('should support with', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , with: {
+          otherUsers: {
+            type: 'select'
+          , table: 'users'
+          , where: {
+              columnA: 'other'
+            }
+          }
+        }
+      , where: {
+          id: {
+            $nin: {
+              type: 'select'
+            , table: 'otherUsers'
+            , columns: ['id']
+            }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'with "otherUsers" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $1'
+          , ') '
+        , 'select "users".* from "users" '
+        , 'where "users"."id" not in ('
+          , 'select "otherUsers"."id" from "otherUsers"'
+        , ')'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['other']
+      );
+    });
   });
 });
