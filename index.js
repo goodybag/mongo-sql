@@ -24,6 +24,7 @@ require('./helpers/query/if-not-exists');
 require('./helpers/query/if-exists');
 require('./helpers/query/definition');
 require('./helpers/query/cascade');
+require('./helpers/query/with');
 
 // Register conditional helpers
 require('./helpers/conditional');
