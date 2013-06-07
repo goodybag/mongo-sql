@@ -30,6 +30,19 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should specify columns and use functions', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , columns: ['max(version) as max']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select max(version) as max from "users"'
+      );
+    });
+
     it ('should specify multiple tables', function(){
       var query = builder.sql({
         type: 'select'
