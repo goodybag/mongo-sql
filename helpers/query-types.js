@@ -34,3 +34,8 @@ queryTypes.add(
   'drop-table'
 , '{with} drop table {ifExists} {table} {cascade}'
 );
+
+queryTypes.add(
+  'alter-table'
+, 'alter table {ifExists} {only} {table} {action}'
+);

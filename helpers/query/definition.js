@@ -12,7 +12,7 @@ helpers.register('definition', function(definition, values, query){
 
     for (var j in definition[k])
       if (defs.has(j))
-        output += ' ' + defs.get(j).fn(definition[k][j], j, query);
+        output += ' ' + defs.get(j).fn(definition[k][j], values, query, j);
 
     output +=  ", ";
   }
