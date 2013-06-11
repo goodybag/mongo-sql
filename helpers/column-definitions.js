@@ -1,3 +1,4 @@
+var utils = require('../lib/utils');
 var defs = require('../lib/column-def-helpers');
 var conditional = require('../lib/condition-builder');
 
@@ -39,7 +40,14 @@ defs.add('null', function($null, values, query){
 });
 
 defs.add('unique', function(unique, values, query){
-  return unique ? 'unique' : '';
+  if (unique == true) return 'unique';
+
+  if (Array.isArray(unique))
+    return '(' + unique.map(function(column){
+      return utils.quoteColumn(column)
+    }).join(', ') + ')';
+
+  return '';
 });
 
 defs.add('default', function(def, values, query){

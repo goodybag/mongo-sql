@@ -237,6 +237,46 @@ describe('Built-In Query Types', function(){
         );
       });
 
+      it('should add a new column as primary key', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            addColumn: {
+              name: 'groupId'
+            , type: 'int'
+            , primaryKey: true
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" add column "groupId" int primary key'
+          ].join('')
+        );
+      });
+
+      it('should add a new column with unique constraint', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            addColumn: {
+              name: 'groupId'
+            , type: 'int'
+            , unique: true
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" add column "groupId" int unique'
+          ].join('')
+        );
+      });
+
       it('should add a new column with a check', function(){
         var query = builder.sql({
           type: 'alter-table'
@@ -364,6 +404,45 @@ describe('Built-In Query Types', function(){
         assert.equal(
           query.toString()
         , [ 'alter table "users" add column "groupId" int references "groups"("id") on update set null'
+          ].join('')
+        );
+      });
+
+      it('should add a new column with all restraints', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            addColumn: {
+              name: 'groupId'
+            , type: 'int'
+            , notNull: true
+            , check: {
+                groupId: { $gt: 100 }
+              }
+            , default: 'now()'
+            , unique: true
+            , primaryKey: true
+            , references: {
+                table: 'groups'
+              , column: 'id'
+              }
+            , deferrable: true
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" add column "groupId" '
+          , 'int '
+          , 'not null '
+          , 'check ("users"."groupId" > $1) '
+          , 'default now() '
+          , 'unique '
+          , 'primary key '
+          , 'references "groups"("id") '
+          , 'deferrable'
           ].join('')
         );
       });

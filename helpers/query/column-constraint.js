@@ -35,6 +35,10 @@ helpers.register('columnConstraint', function(constraint, values, query){
   if (constraint.default)
     output.push( columnDefs.get('default').fn(constraint.default, values, query) )
 
+  // Unique
+  if (constraint.unique)
+    output.push( columnDefs.get('unique').fn(constraint.unique, values, query) )
+
   // Primary key
   if (constraint.primaryKey)
     output.push( columnDefs.get('primaryKey').fn(true, values, query) )
