@@ -25,6 +25,9 @@ require('./helpers/query/if-exists');
 require('./helpers/query/definition');
 require('./helpers/query/cascade');
 require('./helpers/query/with');
+require('./helpers/query/only');
+require('./helpers/query/action');
+require('./helpers/query/column-constraint');
 
 // Register conditional helpers
 require('./helpers/conditional');
@@ -34,6 +37,9 @@ require('./helpers/update');
 
 // Register column definition helpers
 require('./helpers/column-definitions')
+
+// Register column action helpers
+require('./helpers/actions')
 
 module.exports.sql = build;
 module.exports.registerQueryType = queryTypes.add;

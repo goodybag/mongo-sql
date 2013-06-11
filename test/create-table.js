@@ -81,12 +81,19 @@ describe('Built-In Query Types', function(){
 
         , uid: {
             type: 'int'
-          , references: 'users'
+          , references: {
+              table: 'users'
+            , column: 'id'
+            }
           }
 
         , gid: {
             type: 'int'
-          , references: 'groups'
+          , references: {
+              table: 'groups'
+            , column: 'id'
+            , onDelete: 'cascade'
+            }
           }
 
         , createdAt: {
@@ -99,8 +106,8 @@ describe('Built-In Query Types', function(){
         query.toString()
       , [ 'create table if not exists "usersGroups" ('
         , '"id" serial primary key, '
-        , '"uid" int references users, '
-        , '"gid" int references groups, '
+        , '"uid" int references "users"("id"), '
+        , '"gid" int references "groups"("id") on delete cascade, '
         , '"createdAt" timestamp'
         , ')'
         ].join('')
