@@ -40,7 +40,7 @@ helpers.register('columnConstraint', function(constraint, values, query){
     output.push( columnDefs.get('unique').fn(constraint.unique, values, query) )
 
   // Primary key
-  if (constraint.primaryKey)
+  if (constraint.primaryKey == true)
     output.push( columnDefs.get('primaryKey').fn(true, values, query) )
 
   // Reference
