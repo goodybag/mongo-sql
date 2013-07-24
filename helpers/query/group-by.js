@@ -1,19 +1,29 @@
-var helpers = require('../../lib/query-helpers');
-var utils   = require('../../lib/utils');
+if (typeof module === 'object' && typeof define !== 'function') {
+  var define = function(factory) {
+    module.exports = factory(require, exports, module);
+  };
+}
 
-helpers.register('groupBy', function(groupBy, values, query){
-  if (!Array.isArray(groupBy) && typeof groupBy != 'string')
-    throw new Error('Invalid groupBy type: ' + typeof groupBy);
+define(function(require, exports, module){
+  var helpers = require('../../lib/query-helpers');
+  var utils   = require('../../lib/utils');
 
-  var output = "group by ";
+  helpers.register('groupBy', function(groupBy, values, query){
+    if (!Array.isArray(groupBy) && typeof groupBy != 'string')
+      throw new Error('Invalid groupBy type: ' + typeof groupBy);
 
-  if (!Array.isArray(groupBy)) groupBy = [groupBy];
+    var output = "group by ";
 
-  for (var i = 0, l = groupBy.length; i < l; ++i){
-    output += utils.quoteColumn(groupBy[i], query.__defaultTable) + ', ';
-  }
+    if (!Array.isArray(groupBy)) groupBy = [groupBy];
 
-  if (output.indexOf(', ') > -1) output = output.substring(0, output.length - 2);
+    for (var i = 0, l = groupBy.length; i < l; ++i){
+      output += utils.quoteColumn(groupBy[i], query.__defaultTable) + ', ';
+    }
 
-  return output;
+    if (output.indexOf(', ') > -1) output = output.substring(0, output.length - 2);
+
+    return output;
+  });
+
+  return module.exports;
 });

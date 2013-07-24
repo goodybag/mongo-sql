@@ -1,18 +1,28 @@
-var helpers = require('../../lib/query-helpers');
-var utils = require('../../lib/utils');
+if (typeof module === 'object' && typeof define !== 'function') {
+  var define = function(factory) {
+    module.exports = factory(require, exports, module);
+  };
+}
 
-helpers.register('order', function(order, values, query){
-  var output = "order by ";
+define(function(require, exports, module){
+  var helpers = require('../../lib/query-helpers');
+  var utils = require('../../lib/utils');
 
-  if (typeof order == 'string') return output + order;
+  helpers.register('order', function(order, values, query){
+    var output = "order by ";
 
-  if (Array.isArray(order)) return output + order.join(', ');
+    if (typeof order == 'string') return output + order;
 
-  for (var key in order){
-    output += utils.quoteColumn(key, query.__defaultTable) + ' ' + order[key] + ', ';
-  }
+    if (Array.isArray(order)) return output + order.join(', ');
 
-  if (output == "order by ") return ""; 
+    for (var key in order){
+      output += utils.quoteColumn(key, query.__defaultTable) + ' ' + order[key] + ', ';
+    }
 
-  return output.substring(0, output.length - 2);;
+    if (output == "order by ") return ""; 
+
+    return output.substring(0, output.length - 2);;
+  });
+
+  return module.exports;
 });

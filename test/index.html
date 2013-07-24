@@ -1,0 +1,25 @@
+<DOCTYPE HTML>
+<html>
+  <head>
+    <script src="/jam/require.js"></script>
+    <script>
+      require(['../index'], function(builder){
+        console.log(builder);
+        console.log(
+          builder.sql({
+            type: 'select'
+          , table: 'users'
+          , join: {
+              leftJoin: {
+                'groups.id': '$users.id$'
+              }
+            }
+          })
+        );
+      });
+    </script>
+  </head>
+  <body>
+    
+  </body>
+</html>
