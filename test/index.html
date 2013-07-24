@@ -9,8 +9,8 @@
           builder.sql({
             type: 'select'
           , table: 'users'
-          , join: {
-              leftJoin: {
+          , leftJoin: {
+              groups: {
                 'groups.id': '$users.id$'
               }
             }
