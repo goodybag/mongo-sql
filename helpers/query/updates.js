@@ -1,19 +1,29 @@
-var queryTypes = require('../../lib/query-helpers');
-var updateHelpers = require('../../lib/update-helpers');
-var utils = require('../../lib/utils');
+if (typeof module === 'object' && typeof define !== 'function') {
+  var define = function(factory) {
+    module.exports = factory(require, exports, module);
+  };
+}
 
-queryTypes.register('updates', function($updates, values, query){
-  var output = "set ";
-  
-  // Use update behavior, otherwise just use standard
-  for (var key in $updates){
-    if (updateHelpers.has(key)) output += updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
-    else output += utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
+define(function(require, exports, module){
+  var queryTypes = require('../../lib/query-helpers');
+  var updateHelpers = require('../../lib/update-helpers');
+  var utils = require('../../lib/utils');
 
-    output += ", ";
-  }
+  queryTypes.register('updates', function($updates, values, query){
+    var output = "set ";
+    
+    // Use update behavior, otherwise just use standard
+    for (var key in $updates){
+      if (updateHelpers.has(key)) output += updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
+      else output += utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
 
-  output = output.substring(0, output.length - 2);
+      output += ", ";
+    }
 
-  return output;
+    output = output.substring(0, output.length - 2);
+
+    return output;
+  });
+
+  return module.exports;
 });
