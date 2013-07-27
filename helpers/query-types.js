@@ -9,7 +9,7 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'select'
-  , '{with} select {columns} from {table} {tables} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {order} {limit} {offset} {groupBy}'
+  , '{with} select {columns} from {table} {alias} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {order} {limit} {offset} {groupBy}'
   );
 
   queryTypes.add(
@@ -29,7 +29,7 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'remove'
-  , '{with} delete from {table} {where} {returning}'
+  , '{with} delete from {table} {alias} {where} {returning}'
   );
 
   queryTypes.add(
