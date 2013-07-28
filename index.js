@@ -36,6 +36,7 @@ define(function(require, exports, module){
   require('./helpers/query/action');
   require('./helpers/query/column-constraint');
   require('./helpers/query/alias');
+  require('./helpers/query/expression');
 
   // Register conditional helpers
   require('./helpers/conditional');
