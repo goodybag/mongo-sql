@@ -5,8 +5,9 @@ if (typeof module === 'object' && typeof define !== 'function') {
 }
 
 define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils   = require('../../lib/utils');
+  var queryBuilder  = require('../../lib/query-builder');
+  var helpers       = require('../../lib/query-helpers');
+  var utils         = require('../../lib/utils');
 
   helpers.register('columns', function(columns, values, query){
     if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');
@@ -15,7 +16,9 @@ define(function(require, exports, module){
 
     if (Array.isArray(columns)){
       for (var i = 0, l = columns.length; i < l; ++i){
-        if (columns[i].indexOf('(') > -1)
+        if (typeof columns[i] == 'object')
+          output += queryBuilder( columns[i], values ).toString();
+        else if (columns[i].indexOf('(') > -1)
           output += columns[i];
         else
           output += utils.quoteColumn(columns[i], query.__defaultTable);
@@ -27,7 +30,10 @@ define(function(require, exports, module){
         if (key.indexOf('(') > -1)
           output += key + ', ';
         else
-          output += utils.quoteColumn(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
+          output += (
+            typeof columns[key] == 'object' && ('type' in columns[key])
+          ) ? queryBuilder( columns[key], values ).toString() + ' as "' + key + '", '
+            : utils.quoteColumn(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
       }
     }
 
