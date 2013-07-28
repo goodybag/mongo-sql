@@ -46,4 +46,26 @@ define(function(require, exports, module){
     'alter-table'
   , 'alter table {ifExists} {only} {table} {action}'
   );
+
+  [
+    'array_to_json'
+  , 'row_to_json'
+  , 'array_agg'
+  , 'array'
+  , 'row_number'
+  , 'rank'
+  , 'dense_rank'
+  , 'percent_rank'
+  , 'cume_dist'
+  , 'ntile'
+  , 'lag'
+  , 'lead'
+  , 'first_value'
+  , 'last_value'
+  , 'nth_value'
+  , 'max'
+  , 'min'
+  ].forEach(function(fn){
+    queryTypes.add(fn, fn + '( {expression} )')
+  });
 });
