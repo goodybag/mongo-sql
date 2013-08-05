@@ -1,3 +1,8 @@
+/**
+ * These query helpers are now deprecated!
+ * Please use query helper: joins
+ */
+
 if (typeof module === 'object' && typeof define !== 'function') {
   var define = function(factory) {
     module.exports = factory(require, exports, module);
