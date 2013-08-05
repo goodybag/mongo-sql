@@ -327,6 +327,29 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$in', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $in: [1, 2, 3]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where '
+      + '"users"."id" in ($1, $2, $3)'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [1, 2, 3]
+    );
+  });
+
   it ('$nin', function(){
     var query = builder.sql({
       type: 'select'
