@@ -1,3 +1,7 @@
+/**
+ * Query Helper: Joins
+ */
+
 if (typeof module === 'object' && typeof define !== 'function') {
   var define = function(factory) {
     module.exports = factory(require, exports, module);
@@ -7,39 +11,44 @@ if (typeof module === 'object' && typeof define !== 'function') {
 define(function(require, exports, module){
   var helpers = require('../../lib/query-helpers');
   var conditionBuilder = require('../../lib/condition-builder');
+  var queryBuilder = require('../../lib/query-builder');
+  var utils = require('../../lib/utils')
 
-  var buildJoin = function(type, joins, values){
-    var output = "";
-    for (var table in joins){
-      output += ' ' + type + ' join "' + table + '" on ';
-      output += conditionBuilder(joins[table], table, values);
-    }
+  var buildJoin = function(join, values, query){
+    // Require a target
+    if ( !join.target )
+      throw new Error('Invalid join.target type `' + typeof join.target + '` for query helper `joins`');
+
+    // Allow for strings or objects for join.on
+    if ( !join.on || ( typeof join.on !== 'string' && typeof join.on !== 'object' ) )
+      throw new Error('Invalid join.on type `' + typeof join.on + '` for query helper `joins`');
+
+    var output = ( join.type ? ( join.type + ' ' ) : '' ) + "join ";
+
+    if ( typeof join.target === 'object' ) output += '(' + queryBuilder( join.target, values ) + ') ';
+    else output += '"' + join.target + '" ';
+
+    if ( join.alias ) output += '"' + join.alias + '" ';
+
+    if ( typeof join.on === 'string' ) output += 'on ' + join.on;
+    else output += 'on ' + conditionBuilder( join.on, join.alias || join.target, values );
+
     return output;
   };
 
-  helpers.register('join', function(join, values, query){
-    return " " + buildJoin('', join, values);
-  });
+  helpers.register('joins', function(joins, values, query){
+    if ( Array.isArray( joins ) ) return joins.map( buildJoin ).join(' ');
 
-  helpers.register('innerJoin', function(join, values, query){
-    return " " + buildJoin('inner', join, values);
-  });
+    if ( typeof joins === 'object' ) {
+      return Object.keys( joins ).map(function( val ){
+        // For objects, the key is the default alias and target
+        if ( !joins[ val ].alias )  joins[ val ].alias = val;
+        if ( !joins[ val ].target ) joins[ val ].target = val;
 
-  helpers.register('leftJoin', function(join, values, query){
-    return " " + buildJoin('left', join, values);
-  });
+        return buildJoin( joins[ val ] );
+      }).join(' ');
+    }
 
-  helpers.register('leftOuterJoin', function(join, values, query){
-    return " " + buildJoin('left outer', join, values);
+    throw new Error('Invalid type `' + typeof joins + '` for query helper `joins`');
   });
-
-  helpers.register('fullOuterJoin', function(join, values, query){
-    return " " + buildJoin('full outer', join, values);
-  });
-
-  helpers.register('crossOuterJoin', function(join, values, query){
-    return " " + buildJoin('cross outer', join, values);
-  });
-
-  return module.exports;
 });
