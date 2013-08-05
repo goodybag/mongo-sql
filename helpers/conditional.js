@@ -116,6 +116,12 @@ define(function(require, exports, module){
    * @param value  {Mixed}   - String|Array|Function
    */
   conditionals.add('$in', { cascade: false }, function(column, set, values, collection){
+    if (Array.isArray(set)) {
+      return column + ' in (' + set.map( function(val){
+        return '$' + values.push( val );
+      }).join(', ') + ')';
+    }
+
     return column + ' in (' + queryBuilder(set, values).toString() + ')';
   });
 
