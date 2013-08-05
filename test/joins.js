@@ -146,4 +146,221 @@ describe('Joins', function(){
     );
   });
 
+  it ('should build joins from single joins query helper', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: {
+        books: {
+          type: 'left'
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should allow object syntax to override alias and provide a target', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: {
+        booksJoin: {
+          type: 'left'
+        , alias: 'b'
+        , target: 'books'
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" "b" on "b"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should allow sub-queries on targets', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: {
+        books: {
+          type: 'left'
+        , target: {
+            type: 'select'
+          , table: 'books'
+          }
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join (select "books".* from "books") "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should build joins using array syntax', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: "books"
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should build multiple joins from single joins query helper', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: {
+        books: {
+          type: 'left'
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      , things: {
+          type: 'left'
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" "books" on "books"."userId" = "users"."id" '
+      , 'left join "things" "things" on "things"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should build multiple joins using array syntax', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: "books"
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+
+      , {
+          type: 'left'
+        , target: "things"
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" on "books"."userId" = "users"."id" '
+      , 'left join "things" on "things"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('throw an error for an invalid join type', function(){
+    assert.throws(function(){
+      builder.sql({
+        type: 'select'
+      , table: 'users'
+      , joins: 1
+      });
+    }, Error);
+  });
+
+  it ('throw an error when missing target', function(){
+    assert.throws(function(){
+      builder.sql({
+        type: 'select'
+      , table: 'users'
+      , joins: [
+          {
+            alias: 'c'
+          , on: { id: '$users.id$' }
+          }
+        ]
+      });
+    }, Error);
+  });
+
 });

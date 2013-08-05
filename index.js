@@ -19,6 +19,7 @@ define(function(require, exports, module){
   require('./helpers/query/columns');
   require('./helpers/query/group-by');
   require('./helpers/query/joins');
+  require('./helpers/query/joins-dep');
   require('./helpers/query/order');
   require('./helpers/query/updates');
   require('./helpers/query/where');
