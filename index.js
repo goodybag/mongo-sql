@@ -51,6 +51,10 @@ define(function(require, exports, module){
   require('./helpers/actions')
 
   module.exports.sql = build;
+  module.exports.toQuery = function() {
+    return build.apply(build, arguments).toQuery();
+  };
+
   module.exports.registerQueryType = queryTypes.add;
 
   module.exports.registerQueryHelper = function(name, options, fn){
