@@ -29,6 +29,27 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should not do funkiness with empty updates obj', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , updates: {}
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" where "users"."id" = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [7]
+      );
+    });
+
     it('should update and return', function(){
       var query = builder.sql({
         type: 'update'
