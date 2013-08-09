@@ -10,6 +10,9 @@ define(function(require, exports, module){
   helpers.register('values', function(values, valuesArray, query){
     if (typeof values != 'object') throw new Error('Invalid values input in query properties')
 
+    if (query.type === 'update')
+      return helpers.get('updates').fn(values, valuesArray, query);
+
     var output = '("' + Object.keys(values).join('", "') + '") values (';
 
     for (var key in values)
