@@ -11,18 +11,14 @@ define(function(require, exports, module){
 
   queryTypes.register('updates', function($updates, values, query){
     var output = "set ";
-    
-    // Use update behavior, otherwise just use standard
-    for (var key in $updates){
-      if (updateHelpers.has(key)) output += updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
-      else output += utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
 
-      output += ", ";
-    }
+    var result = Object.keys( $updates ).map( function( key ){
+      if (updateHelpers.has(key))
+        return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
+      return utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
+    });
 
-    output = output.substring(0, output.length - 2);
-
-    return output;
+    return result.length > 0 ? ('set ' + result.join(', ')) : '';
   });
 
   return module.exports;
