@@ -363,4 +363,27 @@ describe('Joins', function(){
     }, Error);
   });
 
+  it ('should left join using a value as a pivot', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , leftJoin: {
+        groups: {
+          'groups.id': '$users.id$'
+        , 'groups.other': 'value'
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" left join "groups" on "groups"."id" = "users"."id" and "groups"."other" = $1'
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['value']
+    );
+  });
+
 });

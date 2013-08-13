@@ -45,7 +45,7 @@ define(function(require, exports, module){
         if ( !joins[ val ].alias )  joins[ val ].alias = val;
         if ( !joins[ val ].target ) joins[ val ].target = val;
 
-        return buildJoin( joins[ val ] );
+        return buildJoin( joins[ val ], values, query );
       }).join(' ');
     }
 
