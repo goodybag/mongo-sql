@@ -1,6 +1,6 @@
 {
   "name": "mongo-sql",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "A mongo-like interface for sql generation, postgres-style",
   "main": "index.js",
   "directories": {
