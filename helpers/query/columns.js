@@ -16,12 +16,17 @@ define(function(require, exports, module){
 
     if (Array.isArray(columns)){
       for (var i = 0, l = columns.length; i < l; ++i){
-        if (typeof columns[i] == 'object')
+        if (typeof columns[i] == 'object' && 'table' in columns[i])
+          output += '(' + queryBuilder( columns[i], values ).toString() + ')';
+        else if (typeof columns[i] == 'object')
           output += queryBuilder( columns[i], values ).toString();
         else if (columns[i].indexOf('(') > -1)
           output += columns[i];
         else
           output += utils.quoteColumn(columns[i], query.__defaultTable);
+
+        if ( typeof columns[i] == 'object' && 'as' in columns[i])
+          output += ' as "' + columns[i].as + '"';
 
         output += ", ";
       }
@@ -31,8 +36,10 @@ define(function(require, exports, module){
           output += key + ', ';
         else
           output += (
-            typeof columns[key] == 'object' && ('type' in columns[key])
-          ) ? queryBuilder( columns[key], values ).toString() + ' as "' + key + '", '
+            typeof columns[key] == 'object' && ('table' in columns[key])
+          ) ? '(' + queryBuilder( columns[key], values ).toString() + ') as "' + key + '", '
+            : typeof columns[key] == 'object' && ('type' in columns[key])
+            ? queryBuilder( columns[key], values ).toString() + ' as "' + key + '", '
             : utils.quoteColumn(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
       }
     }

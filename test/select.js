@@ -43,6 +43,25 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should specify columns and use a sub-query', function(){
+      var query = builder.sql({
+        type: 'select'
+      , columns: [
+          {
+            type: 'select'
+          , table: 'consumers'
+          , columns: ['id']
+          , as: 'u'
+          }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select (select "consumers"."id" from "consumers") as "u"'
+      );
+    });
+
     it ('should specify multiple tables', function(){
       var query = builder.sql({
         type: 'select'
