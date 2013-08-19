@@ -15,7 +15,7 @@ define(function(require, exports, module){
     for (var i = 0, l = from.length; i < l; ++i)
       if (from[i].indexOf('"') == -1) from[i] = '"' + from[i] + '"';
 
-    return from.join(', ');
+    return 'from ' + from.join(', ');
   });
 
   return module.exports;
