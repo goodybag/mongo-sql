@@ -38,6 +38,7 @@ describe('Helpers', function(){
 
       var query = builder.sql({
         type: 'findOne'
+      , columns: ['*']
       , table: 'users'
       , whereId: 8
       });
