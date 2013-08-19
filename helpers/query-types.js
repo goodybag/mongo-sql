@@ -14,7 +14,7 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'insert'
-  , '{with} insert into {table} {values} {returning}'
+  , '{with} insert into {table} {columns} {values} {expression} {returning}'
   );
 
   queryTypes.add(

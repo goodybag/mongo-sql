@@ -12,6 +12,12 @@ define(function(require, exports, module){
   helpers.register('columns', function(columns, values, query){
     if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');
 
+    if (query.type == 'insert'){
+      return '(' + columns.map(function(col){
+        return utils.quoteColumn( col );
+      }).join(', ') + ')';
+    }
+
     var output = "";
 
     if (Array.isArray(columns)){
