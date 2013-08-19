@@ -19,7 +19,7 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'update'
-  , '{with} update {table} {values} {updates} {where} {returning}'
+  , '{with} update {table} {values} {updates} {from} {where} {returning}'
   );
 
   queryTypes.add(
