@@ -121,6 +121,38 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('from string', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , updates: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , from: 'other'
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1, "email" = $2 from "other"');
+    });
+
+    it('from array', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , updates: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , from: ['other1', 'other2']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1, "email" = $2 from "other1", "other2"');
+    });
+
   });
 
   describe('Type: update with values', function(){
