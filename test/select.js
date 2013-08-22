@@ -297,5 +297,18 @@ describe('Built-In Query Types', function(){
       , ['other']
       );
     });
+
+    it ('should select distinct', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: true
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select distinct "users".* from "users"'
+      );
+    });
   });
 });
