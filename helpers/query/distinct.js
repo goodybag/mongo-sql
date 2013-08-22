@@ -11,7 +11,7 @@ define(function(require, exports, module){
   helpers.register('distinct', function(distinct, values, query){
     if (typeof distinct != 'boolean') throw new Error('Invalid distinct type: ' + typeof distinct);
 
-    return (query.type === 'select' ? 'distinct ' : '');
+    return (distinct) ? 'distinct ': '';
   });
 
   return module.exports;
