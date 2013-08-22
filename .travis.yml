@@ -1,3 +1,3 @@
-language: node_hs
+language: node_js
 node_js:
   - "0.10"
