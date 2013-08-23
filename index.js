@@ -39,6 +39,7 @@ define(function(require, exports, module){
   require('./helpers/query/alias');
   require('./helpers/query/expression');
   require('./helpers/query/from');
+  require('./helpers/query/distinct');
 
   // Register conditional helpers
   require('./helpers/conditional');
