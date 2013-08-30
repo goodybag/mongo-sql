@@ -153,6 +153,31 @@ describe('Built-In Query Types', function(){
       , 'update "users" set "name" = $1, "email" = $2 from "other1", "other2"');
     });
 
+    it('should update with null value', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , updates: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        , description: null
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1, "email" = $2, "description" = null where "users"."id" = $3'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob', 'bob@bob.com', 7]
+      );
+    });
+
   });
 
   describe('Type: update with values', function(){
@@ -272,6 +297,32 @@ describe('Built-In Query Types', function(){
       , [5, 7]
       );
     });
+
+    it('should update with null value', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        , description: null
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1, "email" = $2, "description" = null where "users"."id" = $3'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob', 'bob@bob.com', 7]
+      );
+    });
+
 
   });
 });
