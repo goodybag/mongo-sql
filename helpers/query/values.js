@@ -14,21 +14,18 @@ define(function(require, exports, module){
     if (query.type === 'update')
       return helpers.get('updates').fn(values, valuesArray, query);
 
-    var output = '("' + Object.keys(values).join('", "') + '") values (';
-
+    var result = [];
     for (var key in values){
-      if (values[ key ] === null)
-        output += 'null, ';
-      else if (typeof values[ key ] == 'object' && 'type' in values[ key ]){
-        output += '(' + queryBuilder( values[ key ], valuesArray ) + '), ';
+      if (values[ key ] === null) {
+        result.push('null');
+      } else if (typeof values[ key ] == 'object' && 'type' in values[ key ]){
+        result.push('(' + queryBuilder( values[ key ], valuesArray ) + ')');
       } else {
-        output += '$' + valuesArray.push(values[key]) + ', ';
+        result.push('$' + valuesArray.push(values[key]));
       }
     }
 
-    if (output.length > 0) output = output.substring(0, output.length - 2);
-
-    return output + ')';
+    return '("' + Object.keys(values).join('", "') + '") values (' + result.join(', ') + ')';
   });
 
   return module.exports;
