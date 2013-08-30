@@ -15,6 +15,8 @@ define(function(require, exports, module){
     var result = Object.keys( $updates ).map( function( key ){
       if (updateHelpers.has(key))
         return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
+      if ($updates[key] === null)
+        return utils.quoteColumn(key) + ' = null';
       return utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
     });
 
