@@ -98,5 +98,27 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should insert with a null value', function() {
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        , description: null
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name", "email", "description") values ($1, $2, null)'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob', 'bob@bob.com']
+      );
+    });
+
   });
 });
