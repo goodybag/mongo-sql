@@ -17,7 +17,9 @@ define(function(require, exports, module){
     var output = '("' + Object.keys(values).join('", "') + '") values (';
 
     for (var key in values){
-      if (typeof values[ key ] == 'object' && 'type' in values[ key ]){
+      if (values[ key ] === null)
+        output += 'null, ';
+      else if (typeof values[ key ] == 'object' && 'type' in values[ key ]){
         output += '(' + queryBuilder( values[ key ], valuesArray ) + '), ';
       } else {
         output += '$' + valuesArray.push(values[key]) + ', ';
