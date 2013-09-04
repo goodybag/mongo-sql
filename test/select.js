@@ -323,5 +323,47 @@ describe('Built-In Query Types', function(){
       , 'select "users".* from "users"'
       );
     });
+
+    it ('should select distinct on single', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: ['id']
+      , order: ['id asc']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select distinct on ("id") "users".* from "users" order by id asc'
+      );
+    });
+
+    it ('should select distinct on multilpe', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: ['id', 'name']
+      , order: ['id asc', 'name asc']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select distinct on ("id", "name") "users".* from "users" order by id asc, name asc'
+      );
+    });
+
+    it ('should not select distinct on', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: []
+      , order: ['id asc']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" order by id asc'
+      );
+    });
   });
 });
