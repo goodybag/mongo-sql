@@ -48,5 +48,29 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should insert where values is a sub-query', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , value: {
+          type: 
+        }
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name", "email") values ($1, $2)'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob', 'bob@bob.com']
+      );
+    });
+
   });
 });

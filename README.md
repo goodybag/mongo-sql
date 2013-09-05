@@ -1,4 +1,4 @@
-# MongoSQL - To be renamed
+# MoSQL - JSON->SQL
 
 Put value and _semantic meaning_ back into your queries by writing your SQL as JSON:
 
@@ -10,7 +10,6 @@ var usersQuery = {
 , table: 'users'
 , where: { $or: { id: 5, name: 'Bob' } }
 };
-
 
 var result = builder.sql(usersQuery);
 
@@ -24,11 +23,32 @@ ___Result:___
 select "users".* from "users" where "users.id" = $1 or "users"."name" = $2
 ```
 
-Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a parameterized query, like [node-pg]() performs by default.
+Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a parameterized query, like [node-pg](https://github.com/brianc/node-postgres) performs by default.
 
-## Why JSON?
+Check out MoSQL in the browser [http://mosql.j0.hn](http://mosql.j0.hn).
 
-This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.
+__Installation:__
+
+Node.js:
+
+```
+npm install mongo-sql
+```
+
+Require.js:
+
+```
+jam install mongo-sql
+```
+
+* [Examples](#examples)
+* [Documentation](#documentation)
+
+## What's the point?
+
+This library helps manage the latent complexity of database queries. It accomplishes this by utilizing a powerful first-class construct built into JavaScript: Objects.
+
+It's not about making SQL look beautiful or easier to write. It's about starting with a foundation that allows developers to build, extend, compose, and interop with. Existing SQL string building libraries do not afford the developer these features. I built MoSQL to circumvent the rigidity of SQL database interaction in JavaScript.
 
 ```javascript
 var builder = require('mongo-sql');
@@ -63,12 +83,23 @@ How about something crazier?
 {
   type: 'select'
 
-, columns: [ '*', 'extension.field1', 'extension.field2' ]
+, columns: [
+    '*'
+  , 'ext.field1'
+  , 'ext.field2'
+  , { type: 'array_agg', expression: 'ext.groups', as: 'groups' }
+  ]
 
 , table: [ 'users', 'extension' ]
 
-, leftJoin: { 
-    extension: { id: 'extension.id' }
+, joins: {
+    extension: {
+      type: 'left'
+    , alias: 'ext'
+    , on: {
+        id: '$extension.id$'
+      }
+    }
   }
 
 , where: {
@@ -96,10 +127,11 @@ ___Result:___
 ```sql
 select
   "users".*
-, "extension"."field1"
-, "extension"."field2"
+, "ext"."field1"
+, "ext"."field2"
+, array_agg( ext.groups ) as "groups"
 from "users", "extension"
-  left join "extension" on "extension"."id" = $1
+  left join "extension" "ext" on "ext"."id" = $1
 where (
   "users"."name" ilike $2 or "users"."name" ilike $3
 ) and "users"."id" not in (
@@ -110,6 +142,10 @@ limit $4
 order by "users"."id" desc
 group by "users"."id", "users"."name"
 ```
+
+You may be asking, "why the hell would I write SQL that way?" My answer is that you shouldn't. When you're developing your database queries, don't start off in MoSQL. Test it out in your SQL console first. Develop your thoughts, and then figure out how it needs to be modeled in code. You'll find that MoSQL is up for building just about any query. Furthermore, you'll be able to programmatically construct your query and reflect upon its current state.
+
+_Being able to easily reflect on your query state allows you to properly organize your query into logical units_. No need to create your own data structure for representing the state of your query. MoSQL is essentially a SQL ASM building technique that allows you to perform code analysis at any time during the construction of your query.
 
 ## Declarative Style and Extensibility
 
