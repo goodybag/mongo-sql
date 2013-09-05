@@ -365,5 +365,50 @@ describe('Built-In Query Types', function(){
       , 'select "users".* from "users" order by id asc'
       );
     });
+
+    it ('allow sub-queries on table', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: {
+          type: 'select'
+        , table: 'users'
+        , alias: 'u'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "u".* from (select "users".* from "users") "u"'
+      );
+    });
+
+    it ('allow arbitrary sub-queries on table', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: {
+          type: 'select'
+        , table: {
+            type: 'select'
+          , table: {
+              type: 'select'
+            , table: 'users'
+            , alias: 'uuu'
+            }
+          , alias: 'uu'
+          }
+        , alias: 'u'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "u".* from '
+        , '(select "uu".* from '
+        , '(select "uuu".* from '
+        , '(select "users".* from "users") "uuu") "uu") "u"'
+        ].join('')
+      );
+    });
   });
 });
