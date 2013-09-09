@@ -7,7 +7,12 @@
     <meta name="description" content="MoSQL : " />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <style>
+      .mosql-frame {
+        width: 100%;
+        height: 200px;
+      }
+    </style>
     <title>MoSQL</title>
   </head>
 
@@ -36,27 +41,7 @@
 
 <p>Put value and <em>semantic meaning</em> back into your queries by writing your SQL as JSON:</p>
 
-
-
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">builder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongo-sql'</span><span class="p">);</span>
-
-<span class="kd">var</span> <span class="nx">usersQuery</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
-<span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="s1">'users'</span>
-<span class="p">,</span> <span class="nx">where</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$or</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">'Bob'</span> <span class="p">}</span> <span class="p">}</span>
-<span class="p">};</span>
-
-
-<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">builder</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="nx">usersQuery</span><span class="p">);</span>
-
-<span class="nx">result</span><span class="p">.</span><span class="nx">values</span>     <span class="c1">// Array of values</span>
-<span class="nx">result</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="c1">// Sql string value</span>
-</pre></div>
-
-<p><strong><em>Result:</em></strong></p>
-
-<div class="highlight highlight-sql"><pre><span class="k">select</span> <span class="ss">"users"</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span> <span class="ss">"users"</span> <span class="k">where</span> <span class="ss">"users.id"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">1</span> <span class="k">or</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"name"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">2</span>
-</pre></div>
+<iframe class="mosql-frame" src="http://mosql.j0.hn/#/no-header-snippets/3"></iframe>
 
 <p>Notice the <code>$1</code> and <code>$2</code>. The outputted SQL is meant to be used in a parameterized query, like <a href="">node-pg</a> performs by default.</p>
 
