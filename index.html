@@ -50,30 +50,7 @@
 
 <p>This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">builder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongo-sql'</span><span class="p">);</span>
-
-<span class="kd">var</span> <span class="nx">someGroup</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">type</span><span class="o">:</span>     <span class="s1">'select'</span>
-<span class="p">,</span> <span class="nx">table</span><span class="o">:</span>    <span class="s1">'groups'</span>
-<span class="p">,</span> <span class="nx">columns</span><span class="o">:</span>  <span class="p">[</span><span class="s1">'userId'</span><span class="p">]</span>
-<span class="p">,</span> <span class="nx">where</span><span class="o">:</span>    <span class="p">{</span> <span class="s2">"groupId"</span><span class="o">:</span> <span class="mi">5</span> <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">type</span><span class="o">:</span>   <span class="s1">'select'</span>
-<span class="p">,</span> <span class="nx">table</span><span class="o">:</span>  <span class="s1">'users'</span>
-<span class="p">,</span> <span class="nx">where</span><span class="o">:</span>  <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$nin</span><span class="o">:</span> <span class="nx">someGroup</span> <span class="p">}</span> <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="nx">builder</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
-</pre></div>
-
-<p><strong><em>Result:</em></strong></p>
-
-<div class="highlight highlight-sql"><pre><span class="k">select</span> <span class="ss">"users"</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span> <span class="ss">"users"</span> <span class="k">where</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"id"</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span>
-  <span class="k">select</span> <span class="ss">"groups"</span><span class="p">.</span><span class="ss">"userId"</span> <span class="k">from</span> <span class="ss">"groups"</span> <span class="k">where</span>  <span class="ss">"groups"</span><span class="p">.</span><span class="ss">"groupId"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">1</span>
-<span class="p">)</span>
-</pre></div>
+<iframe class="mosql-frame" src="http://mosql.j0.hn/#/no-header-snippets/4"></iframe>
 
 <p>How about something crazier?</p>
 
