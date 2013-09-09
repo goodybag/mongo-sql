@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>MoSQL by goodybag</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>MoSQL</h1>
+          <h2></h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/goodybag/mongo-sql/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/goodybag/mongo-sql/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/goodybag/mongo-sql" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="mosql---sql-queries-in-javascript" class="anchor" href="#mosql---sql-queries-in-javascript"><span class="octicon octicon-link"></span></a>MoSQL - SQL queries in JavaScript</h1>
+
+<p>Put value and <em>semantic meaning</em> back into your queries by writing your SQL as JSON:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">builder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongo-sql'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">usersQuery</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
+<span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="s1">'users'</span>
+<span class="p">,</span> <span class="nx">where</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$or</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">'Bob'</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">builder</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="nx">usersQuery</span><span class="p">);</span>
+
+<span class="nx">result</span><span class="p">.</span><span class="nx">values</span>     <span class="c1">// Array of values</span>
+<span class="nx">result</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="c1">// Sql string value</span>
+</pre></div>
+
+<p><strong><em>Result:</em></strong></p>
+
+<div class="highlight highlight-sql"><pre><span class="k">select</span> <span class="ss">"users"</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span> <span class="ss">"users"</span> <span class="k">where</span> <span class="ss">"users.id"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">1</span> <span class="k">or</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"name"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">2</span>
+</pre></div>
+
+<p>Notice the <code>$1</code> and <code>$2</code>. The outputted SQL is meant to be used in a parameterized query, like <a href="">node-pg</a> performs by default.</p>
+
+<h2>
+<a name="why-json" class="anchor" href="#why-json"><span class="octicon octicon-link"></span></a>Why JSON?</h2>
+
+<p>This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">builder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongo-sql'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">someGroup</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">type</span><span class="o">:</span>     <span class="s1">'select'</span>
+<span class="p">,</span> <span class="nx">table</span><span class="o">:</span>    <span class="s1">'groups'</span>
+<span class="p">,</span> <span class="nx">columns</span><span class="o">:</span>  <span class="p">[</span><span class="s1">'userId'</span><span class="p">]</span>
+<span class="p">,</span> <span class="nx">where</span><span class="o">:</span>    <span class="p">{</span> <span class="s2">"groupId"</span><span class="o">:</span> <span class="mi">5</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">type</span><span class="o">:</span>   <span class="s1">'select'</span>
+<span class="p">,</span> <span class="nx">table</span><span class="o">:</span>  <span class="s1">'users'</span>
+<span class="p">,</span> <span class="nx">where</span><span class="o">:</span>  <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$nin</span><span class="o">:</span> <span class="nx">someGroup</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">builder</span><span class="p">.</span><span class="nx">sql</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+</pre></div>
+
+<p><strong><em>Result:</em></strong></p>
+
+<div class="highlight highlight-sql"><pre><span class="k">select</span> <span class="ss">"users"</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span> <span class="ss">"users"</span> <span class="k">where</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"id"</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="ss">"groups"</span><span class="p">.</span><span class="ss">"userId"</span> <span class="k">from</span> <span class="ss">"groups"</span> <span class="k">where</span>  <span class="ss">"groups"</span><span class="p">.</span><span class="ss">"groupId"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+
+<p>How about something crazier?</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
+
+<span class="p">,</span> <span class="nx">columns</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'*'</span><span class="p">,</span> <span class="s1">'extension.field1'</span><span class="p">,</span> <span class="s1">'extension.field2'</span> <span class="p">]</span>
+
+<span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'users'</span><span class="p">,</span> <span class="s1">'extension'</span> <span class="p">]</span>
+
+<span class="p">,</span> <span class="nx">leftJoin</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="nx">extension</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">'extension.id'</span> <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">,</span> <span class="nx">where</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$ilike</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$or</span><span class="o">:</span> <span class="p">[</span><span class="s1">'bob'</span><span class="p">,</span> <span class="s1">'alice'</span><span class="p">]</span> <span class="p">}</span> <span class="p">}</span>
+  <span class="p">,</span> <span class="nx">id</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">$nin</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
+      <span class="p">,</span> <span class="nx">columns</span><span class="o">:</span> <span class="p">[</span><span class="s1">'id'</span><span class="p">]</span>
+      <span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="s1">'otherUsers'</span>
+      <span class="p">,</span> <span class="nx">where</span><span class="o">:</span> <span class="p">{</span> <span class="nx">someCondition</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">,</span> <span class="nx">limit</span><span class="o">:</span> <span class="mi">100</span>
+
+<span class="p">,</span> <span class="nx">order</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">'desc'</span> <span class="p">}</span>
+
+<span class="p">,</span> <span class="nx">groupBy</span><span class="o">:</span> <span class="p">[</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<p><strong><em>Result:</em></strong></p>
+
+<div class="highlight highlight-sql"><pre><span class="k">select</span>
+  <span class="ss">"users"</span><span class="p">.</span><span class="o">*</span>
+<span class="p">,</span> <span class="ss">"extension"</span><span class="p">.</span><span class="ss">"field1"</span>
+<span class="p">,</span> <span class="ss">"extension"</span><span class="p">.</span><span class="ss">"field2"</span>
+<span class="k">from</span> <span class="ss">"users"</span><span class="p">,</span> <span class="ss">"extension"</span>
+  <span class="k">left</span> <span class="k">join</span> <span class="ss">"extension"</span> <span class="k">on</span> <span class="ss">"extension"</span><span class="p">.</span><span class="ss">"id"</span> <span class="o">=</span> <span class="err">$</span><span class="mi">1</span>
+<span class="k">where</span> <span class="p">(</span>
+  <span class="ss">"users"</span><span class="p">.</span><span class="ss">"name"</span> <span class="k">ilike</span> <span class="err">$</span><span class="mi">2</span> <span class="k">or</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"name"</span> <span class="k">ilike</span> <span class="err">$</span><span class="mi">3</span>
+<span class="p">)</span> <span class="k">and</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"id"</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="ss">"otherUsers"</span><span class="p">.</span><span class="ss">"id"</span> <span class="k">from</span> <span class="ss">"otherUsers"</span>
+  <span class="k">where</span> <span class="ss">"otherUsers"</span><span class="p">.</span><span class="ss">"someCondition"</span> <span class="k">is</span> <span class="k">true</span>
+<span class="p">)</span>
+<span class="k">limit</span> <span class="err">$</span><span class="mi">4</span>
+<span class="k">order</span> <span class="k">by</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"id"</span> <span class="k">desc</span>
+<span class="k">group</span> <span class="k">by</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"id"</span><span class="p">,</span> <span class="ss">"users"</span><span class="p">.</span><span class="ss">"name"</span>
+</pre></div>
+
+<h2>
+<a name="declarative-style-and-extensibility" class="anchor" href="#declarative-style-and-extensibility"><span class="octicon octicon-link"></span></a>Declarative Style and Extensibility</h2>
+
+<p>This library spawned from my frustrations in using popular string-building libraries for node. Other approaches require an imperative approach to string building which is just as ugly if not uglier than string concatenation and array joining.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">users</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">users</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">users</span><span class="p">.</span><span class="nx">name</span><span class="p">).</span><span class="nx">where</span><span class="p">(</span>
+  <span class="nx">users</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="s1">'Bob'</span><span class="p">).</span><span class="nx">and</span><span class="p">(</span>
+    <span class="nx">users</span><span class="p">.</span><span class="nx">createdAt</span><span class="p">.</span><span class="nx">greaterThan</span><span class="p">(</span><span class="s1">'2013-05-05'</span><span class="p">)</span>
+  <span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>At first this stuff seems great. But then as your queries get more complex you realize that it only solves the easy problems. It only solves the queries that you actually wouldn't mind just writing the string for. Swapping logic and overriding previously declared parts of your query become difficult because of the imperative style. Sub-queries and joins are awkward if supported at all and the general verbosity doesn't help either.</p>
+
+<p>Using existing query builders, I found myself wanting to extend the behavior of the builder, but found no outlet to do so. I could fork the repo, implement the behavior myself, but that's no good. There needs to be a clear interface that allows anyone to add any behavior they want.</p>
+
+<h3>
+<a name="helpers" class="anchor" href="#helpers"><span class="octicon octicon-link"></span></a>Helpers</h3>
+
+<p>This library is completely built on top of helpers. They're registered exactly the same way as a consumer of the library would register.</p>
+
+<h4>
+<a name="query-types" class="anchor" href="#query-types"><span class="octicon octicon-link"></span></a>Query Types</h4>
+
+<p>Query types are the base structure of a query. They provide ordering for the different components of a query. Here's a built-in query type:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">mongoSql</span><span class="p">.</span><span class="nx">registerQueryType</span><span class="p">(</span>
+  <span class="c1">// Type identifier</span>
+  <span class="s1">'select'</span>
+
+  <span class="c1">// Type specification</span>
+<span class="p">,</span> <span class="s1">'select {columns} from {table} {tables} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {limit} {offset} {order} {groupBy}'</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>When you run a query object through the evaluator, it first checks to ensure you have specified a type. So if you used <code>type: 'select'</code>, then the evaluator will start off with the above registered query type. Each variable enclosed in <code>{</code> brackets `<code>}</code> is called a query helper. If you want to utilize a query helper, then specify a key on your query object with the appropriate value for that helper. If the query object does not specify values for a query helper, then those helpers are ignored.</p>
+
+<h4>
+<a name="query-helpers" class="anchor" href="#query-helpers"><span class="octicon octicon-link"></span></a>Query Helpers</h4>
+
+<p>Query helpers provide the strings replacements for the query helper variables in query types. In the above example, anything in <code>{</code> brackets <code>}</code> are query helpers. For example, look at the columns query helper:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// helpers/query/columns.js</span>
+
+<span class="kd">var</span> <span class="nx">helpers</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'../../lib/query-helpers'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">utils</span>   <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'../../lib/utils'</span><span class="p">);</span>
+
+<span class="nx">helpers</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s1">'columns'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">columns</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">query</span><span class="p">){</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">columns</span> <span class="o">!=</span> <span class="s1">'object'</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Invalid columns input in query properties'</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">columns</span><span class="p">)){</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">columns</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span>
+      <span class="nx">output</span> <span class="o">+=</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">quoteColumn</span><span class="p">(</span><span class="nx">columns</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">query</span><span class="p">.</span><span class="nx">__defaultTable</span><span class="p">)</span> <span class="o">+</span> <span class="s1">', '</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">columns</span><span class="p">)</span>
+      <span class="nx">output</span> <span class="o">+=</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">quoteColumn</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">query</span><span class="p">.</span><span class="nx">__defaultTable</span><span class="p">)</span> <span class="o">+</span> <span class="s1">' as "'</span> <span class="o">+</span> <span class="nx">columns</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'", '</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">output</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">output</span> <span class="o">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">output</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="nx">output</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The first parameter to a query helper definition is the value to the corresponding key in the query object. For a query like the one below, the columns array is passed as the first parameter.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
+<span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="s1">'groups'</span>
+<span class="p">,</span> <span class="nx">columns</span><span class="o">:</span> <span class="p">[</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The second parameter passed to query helpers is the values array for the whole sql query. This is for parameterized output.</p>
+
+<h4>
+<a name="conditional-helpers" class="anchor" href="#conditional-helpers"><span class="octicon octicon-link"></span></a>Conditional Helpers</h4>
+
+<p>Some query helpers, like <code>{where}</code> and <code>{joins}</code>, got so complex, I had to write a helper system just for theme. These helpers are called conditional helpers. The where and join helpers allow arbitrarily compex objects:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
+<span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="s1">'users'</span>
+<span class="p">,</span> <span class="nx">where</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">$gt</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">$lte</span><span class="o">:</span> <span class="mi">200</span>
+    <span class="p">,</span> <span class="nx">$nin</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">'select'</span>
+      <span class="p">,</span> <span class="nx">table</span><span class="o">:</span> <span class="s1">'dumbUsers'</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// Immediate children of $or are OR'd</span>
+  <span class="p">,</span> <span class="nx">$or</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">$gt</span><span class="o">:</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">'Bob'</span> <span class="p">}</span>
+      <span class="c1">// But the sub-sequent children are AND'd</span>
+    <span class="p">,</span> <span class="nx">$ilike</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">'Pam'</span>
+      <span class="p">,</span> <span class="nx">lastName</span><span class="o">:</span> <span class="s1">'Sue'</span>
+      <span class="p">}</span>
+    <span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$ilike</span><span class="o">:</span> <span class="s1">'Steve'</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Things like <code>$or</code>, <code>$lte</code>, <code>$nin</code> are all conditional helpers. </p>
+        </section>
+
+        <footer>
+          MoSQL is maintained by <a href="https://github.com/goodybag">goodybag</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
