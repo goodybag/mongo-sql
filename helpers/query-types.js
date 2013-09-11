@@ -47,6 +47,11 @@ define(function(require, exports, module){
   , 'alter table {ifExists} {only} {table} {action}'
   );
 
+  queryTypes.add(
+    'create-view'
+  , 'create {orReplace} {temporary} view {view} {columns} as {expression}'
+  );
+
   [
     'array_to_json'
   , 'row_to_json'
