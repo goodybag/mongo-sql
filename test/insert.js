@@ -120,5 +120,29 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should do multi-insert', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: [
+          { name: 'Bob', email: 'bob@bob.com' }
+        , { name: 'Tom', email: 'tom@tom.com' }
+        , { name: 'Pam', email: 'pam@pam.com' }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name", "email") values ($1, $2), ($3, $4), ($5, $6)'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [ query.original.values[0].name, query.original.values[0].email
+        , query.original.values[1].name, query.original.values[1].email
+        , query.original.values[2].name, query.original.values[2].email ]
+      );
+    });
+
   });
 });

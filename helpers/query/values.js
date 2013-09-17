@@ -14,18 +14,25 @@ define(function(require, exports, module){
     if (query.type === 'update')
       return helpers.get('updates').fn(values, valuesArray, query);
 
-    var result = [];
-    for (var key in values){
-      if (values[ key ] === null) {
-        result.push('null');
-      } else if (typeof values[ key ] == 'object' && 'type' in values[ key ]){
-        result.push('(' + queryBuilder( values[ key ], valuesArray ) + ')');
-      } else {
-        result.push('$' + valuesArray.push(values[key]));
-      }
-    }
+    if ( !Array.isArray( values ) ) values = [ values ];
 
-    return '("' + Object.keys(values).join('", "') + '") values (' + result.join(', ') + ')';
+    if ( values.length == 0 ) throw new Error('MoSQL.queryHelper.values - Invalid values array length `0`');
+
+    var allValues = values.map( function( value ){
+      var result = [];
+      for (var key in value){
+        if (value[ key ] === null) {
+          result.push('null');
+        } else if (typeof value[ key ] == 'object' && 'type' in value[ key ]){
+          result.push('(' + queryBuilder( value[ key ], valuesArray ) + ')');
+        } else {
+          result.push('$' + valuesArray.push(value[key]));
+        }
+      }
+      return '(' + result.join(', ') + ')';
+    }).join(', ')
+
+    return '("' + Object.keys(values[0]).join('", "') + '") values ' + allValues;
   });
 
   return module.exports;
