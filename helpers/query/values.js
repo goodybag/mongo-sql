@@ -14,18 +14,35 @@ define(function(require, exports, module){
     if (query.type === 'update')
       return helpers.get('updates').fn(values, valuesArray, query);
 
-    var result = [];
-    for (var key in values){
-      if (values[ key ] === null) {
-        result.push('null');
-      } else if (typeof values[ key ] == 'object' && 'type' in values[ key ]){
-        result.push('(' + queryBuilder( values[ key ], valuesArray ) + ')');
-      } else {
-        result.push('$' + valuesArray.push(values[key]));
-      }
+    if ( !Array.isArray( values ) ) values = [ values ];
+
+    if ( values.length == 0 ) throw new Error('MoSQL.queryHelper.values - Invalid values array length `0`');
+
+    // Build object keys union
+    var keys = [], checkKeys = function( k ){
+      if ( keys.indexOf( k ) > -1 ) return;
+      keys.push( k );
+    };
+
+    for ( var i = 0, l = values.length; i < l; ++i ) {
+      Object.keys( values[i] ).forEach( checkKeys )
     }
 
-    return '("' + Object.keys(values).join('", "') + '") values (' + result.join(', ') + ')';
+    var allValues = values.map( function( value ){
+      var result = [];
+      for ( var i = 0, l = keys.length; i < l; ++i ){
+        if (value[ keys[i] ] === null || value[ keys[i] ] === undefined) {
+          result.push('null');
+        } else if (typeof value[ keys[i] ] == 'object' && 'type' in value[ keys[i] ]){
+          result.push('(' + queryBuilder( value[ keys[i] ], valuesArray ) + ')');
+        } else {
+          result.push('$' + valuesArray.push(value[keys[i]]));
+        }
+      }
+      return '(' + result.join(', ') + ')';
+    }).join(', ')
+
+    return '("' + keys.join('", "') + '") values ' + allValues;
   });
 
   return module.exports;
