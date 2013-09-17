@@ -18,21 +18,31 @@ define(function(require, exports, module){
 
     if ( values.length == 0 ) throw new Error('MoSQL.queryHelper.values - Invalid values array length `0`');
 
+    // Build object keys union
+    var keys = [], checkKeys = function( k ){
+      if ( keys.indexOf( k ) > -1 ) return;
+      keys.push( k );
+    };
+
+    for ( var i = 0, l = values.length; i < l; ++i ) {
+      Object.keys( values[i] ).forEach( checkKeys )
+    }
+
     var allValues = values.map( function( value ){
       var result = [];
-      for (var key in value){
-        if (value[ key ] === null) {
+      for ( var i = 0, l = keys.length; i < l; ++i ){
+        if (value[ keys[i] ] === null || value[ keys[i] ] === undefined) {
           result.push('null');
-        } else if (typeof value[ key ] == 'object' && 'type' in value[ key ]){
-          result.push('(' + queryBuilder( value[ key ], valuesArray ) + ')');
+        } else if (typeof value[ keys[i] ] == 'object' && 'type' in value[ keys[i] ]){
+          result.push('(' + queryBuilder( value[ keys[i] ], valuesArray ) + ')');
         } else {
-          result.push('$' + valuesArray.push(value[key]));
+          result.push('$' + valuesArray.push(value[keys[i]]));
         }
       }
       return '(' + result.join(', ') + ')';
     }).join(', ')
 
-    return '("' + Object.keys(values[0]).join('", "') + '") values ' + allValues;
+    return '("' + keys.join('", "') + '") values ' + allValues;
   });
 
   return module.exports;
