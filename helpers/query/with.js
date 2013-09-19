@@ -9,13 +9,13 @@ define(function(require, exports, module){
   var queryBuilder = require('../../lib/query-builder');
 
   helpers.register('with', function(withObj, values, query){
-    var output = "with ";
+    if (typeof withObj != 'object') return '';
 
-    for (var key in withObj)
-      output += '"' + key + '"' + ' as (' + queryBuilder(withObj[key], values) + ')';
+    var output = Object.keys( withObj ).map( function( alias ){
+      return '"' + alias + '"' + ' as (' + queryBuilder( withObj[ alias ], values ) + ')';
+    }).join(', ');
 
-    // If make sure withObj wasn't just an empty object
-    return output != 'with ' ? output : '';
+    return output ? ( 'with ' + output) : '';
   });
 
   return module.exports;
