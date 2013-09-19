@@ -298,6 +298,61 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should support multiple withs', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , with: {
+          otherUsers: {
+            type: 'select'
+          , table: 'users'
+          , where: {
+              columnA: 'other'
+            }
+          }
+        , otherUsers2: {
+            type: 'select'
+          , table: 'users'
+          , where: {
+              columnA: 'other2'
+            }
+          }
+        }
+      , where: {
+          id: {
+            $nin: {
+              type: 'select'
+            , table: 'otherUsers'
+            , columns: ['id']
+            }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'with "otherUsers" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $1'
+          , '), '
+        , '"otherUsers2" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $2'
+          , ') '
+        , 'select "users".* from "users" '
+        , 'where "users"."id" not in ('
+          , 'select "otherUsers"."id" from "otherUsers"'
+        , ')'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['other', 'other2']
+      );
+    });
+
     it ('should select distinct', function(){
       var query = builder.sql({
         type: 'select'
