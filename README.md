@@ -26,6 +26,8 @@ select "users".* from "users" where "users.id" = $1 or "users"."name" = $2
 
 Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a parameterized query, like [node-pg]() performs by default.
 
+Looking for a sandbox? Check out http://mosql.j0.hn
+
 ## Why JSON?
 
 This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.
