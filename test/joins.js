@@ -386,4 +386,38 @@ describe('Joins', function(){
     );
   });
 
+  it ('should join with array syntax', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: 'books'
+        , alias: 'books'
+        , on: { userId: '$users.id$' }
+        }
+      , {
+          type: 'left'
+        , target: 'things'
+        , on: { userId: '$users.id$' }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" "books" on "books"."userId" = "users"."id" '
+      , 'left join "things" on "things"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
 });
