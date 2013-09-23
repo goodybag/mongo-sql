@@ -353,6 +353,75 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should support multiple withs in array syntax', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , with: [
+          {
+            type: 'select'
+          , table: 'users'
+          , name: 'otherUsers'
+          , where: {
+              columnA: 'other'
+            }
+          }
+        , {
+            type: 'select'
+          , table: 'users'
+          , name: 'otherUsers2'
+          , where: {
+              columnA: 'other2'
+            }
+          }
+        , {
+            type: 'select'
+          , table: 'users'
+          , name: 'otherUsers3'
+          , where: {
+              columnA: 'other3'
+            }
+          }
+        ]
+      , where: {
+          id: {
+            $nin: {
+              type: 'select'
+            , table: 'otherUsers'
+            , columns: ['id']
+            }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'with "otherUsers" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $1'
+          , '), '
+        , '"otherUsers2" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $2'
+          , '), '
+        , '"otherUsers3" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $3'
+          , ') '
+        , 'select "users".* from "users" '
+        , 'where "users"."id" not in ('
+          , 'select "otherUsers"."id" from "otherUsers"'
+        , ')'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['other', 'other2', 'other3']
+      );
+    });
+
     it ('should select distinct', function(){
       var query = builder.sql({
         type: 'select'
