@@ -30,6 +30,23 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should specify columns that are objects', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , columns: [
+          { name: 'id', alias: 'user_id' }
+        , 'name'
+        , { name: 'test', table: 'things' }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users"."id" as "user_id", "users"."name", "things"."test" from "users"'
+      );
+    });
+
     it ('should specify columns and use functions', function(){
       var query = builder.sql({
         type: 'select'
