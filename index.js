@@ -42,6 +42,7 @@ define(function(require, exports, module){
   require('./helpers/query/distinct');
   require('./helpers/query/boolean-helpers');
   require('./helpers/query/view');
+  require('./helpers/query/function');
 
   // Register conditional helpers
   require('./helpers/conditional');
