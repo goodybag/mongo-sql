@@ -52,25 +52,5 @@ define(function(require, exports, module){
   , 'create {orReplace} {temporary} view {view} {columns} as {expression}'
   );
 
-  [
-    'array_to_json'
-  , 'row_to_json'
-  , 'array_agg'
-  , 'array'
-  , 'row_number'
-  , 'rank'
-  , 'dense_rank'
-  , 'percent_rank'
-  , 'cume_dist'
-  , 'ntile'
-  , 'lag'
-  , 'lead'
-  , 'first_value'
-  , 'last_value'
-  , 'nth_value'
-  , 'max'
-  , 'min'
-  ].forEach(function(fn){
-    queryTypes.add(fn, fn + '( {expression} )')
-  });
+  queryTypes.add('function', '{function}( {expression} )');
 });
