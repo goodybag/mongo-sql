@@ -33,7 +33,7 @@ __Definition:__
 {where} {groupBy} {order} {limit} {offset}
 ```
 
-__Helpers Used__: [with](./query-helpers.md#helper-with), [distinct](./query-helpers.md#helper-distinct), [columns](./query-helpers.md#helper-columns), [table](./query-helpers.md#helper-table), [alias](./query-helpers.md#helper-alias), [joins](./query-helpers.md#helper-joins), [join](./query-helpers.md#helper-join), [innerJoin](./query-helpers.md#helper-innerJoin), [leftJoin](./query-helpers.md#helper-leftJoin), [leftOuterJoin](./query-helpers.md#helper-leftOuterJoin), [fullOuterJoin](./query-helpers.md#helper-fullOuterJoin), [crossOuterJoin](./query-helpers.md#helper-crossOuterJoin), [where](./query-helpers.md#helper-where), [groupBy](./query-helpers.md#helper-groupBy), [order](./query-helpers.md#helper-order), [limit](./query-helpers.md#helper-limit), [offset](./query-helpers.md#helper-offset)
+__Helpers Used__: [with](./query-helpers.md#helper-with), [distinct](./query-helpers.md#helper-distinct), [columns](./query-helpers.md#helper-columns), [table](./query-helpers.md#helper-table), [alias](./query-helpers.md#helper-alias), [joins](./query-helpers.md#helper-joins), [join](./query-helpers.md#helper-join), [innerJoin](./query-helpers.md#helper-innerjoin), [leftJoin](./query-helpers.md#helper-leftjoin), [leftOuterJoin](./query-helpers.md#helper-leftouterjoin), [fullOuterJoin](./query-helpers.md#helper-fullouterjoin), [crossOuterJoin](./query-helpers.md#helper-crossouterjoin), [where](./query-helpers.md#helper-where), [groupBy](./query-helpers.md#helper-groupby), [order](./query-helpers.md#helper-order), [limit](./query-helpers.md#helper-limit), [offset](./query-helpers.md#helper-offset)
 
 ___Note:___ _The [where helper](./conditional-helpers.md) was sufficiently complex to warrant its own helper system._
 
@@ -99,7 +99,7 @@ __Definition:__
 {with} create table {ifNotExists} {table} ({definition})
 ```
 
-__Helpers Used:__ [with](./query-helpers.md#with), [ifNotExists](./query-helpers.md#ifNotExists), [table](./query-helpers.md#table), [definition](./query-helpers.md#definition)
+__Helpers Used:__ [with](./query-helpers.md#with), [ifNotExists](./query-helpers.md#ifnotexists), [table](./query-helpers.md#table), [definition](./query-helpers.md#definition)
 
 ___Note:___ _The [definition helper](./column-definitions.md) was sufficiently complex to warrant its own helper system._
 
@@ -113,7 +113,7 @@ __Definition:__
 {with} drop table {ifExists} {table} {cascade}
 ```
 
-__Helpers Used:__ [with](./query-helpers.md#with), [ifExists](./query-helpers.md#ifExists), [table](./query-helpers.md#table), [cascade](./query-helpers.md#cascade)
+__Helpers Used:__ [with](./query-helpers.md#with), [ifExists](./query-helpers.md#ifexists), [table](./query-helpers.md#table), [cascade](./query-helpers.md#cascade)
 
 ### Type: 'alter-table'
 
@@ -125,7 +125,7 @@ __Definition:__
 alter table {ifExists} {only} {table} {action}
 ```
 
-__Helpers Used:__ [ifExists](./query-helpers.md#ifExists), [only](./query-helpers.md#only), [table](./query-helpers.md#table), [action](./query-helpers.md#action)
+__Helpers Used:__ [ifExists](./query-helpers.md#ifexists), [only](./query-helpers.md#only), [table](./query-helpers.md#table), [action](./query-helpers.md#action)
 
 ___Note:___ _The [action helper](./actions.md) was sufficiently complex to warrant its own helper system._
 
@@ -139,7 +139,7 @@ __Definition:__
 create {orReplace} {temporary} view {view} {columns} as {expression}
 ```
 
-__Helpers Used:__ [orReplace](./query-helpers.md#orReplace), [temporary](./query-helpers.md#temporary), [view](./query-helpers.md#view), [columns](./query-helpers.md#columns), [expression](./query-helpers.md#expression)
+__Helpers Used:__ [orReplace](./query-helpers.md#orreplace), [temporary](./query-helpers.md#temporary), [view](./query-helpers.md#view), [columns](./query-helpers.md#columns), [expression](./query-helpers.md#expression)
 
 ### Type: 'function'
 
