@@ -9,13 +9,29 @@ define(function(require, exports, module){
   var queryBuilder = require('../../lib/query-builder');
 
   helpers.register('with', function(withObj, values, query){
-    var output = "with ";
+    if (typeof withObj != 'object') return '';
 
-    for (var key in withObj)
-      output += '"' + key + '"' + ' as (' + queryBuilder(withObj[key], values) + ')';
+    // Avoid mutating objects by storing objSyntax names in this array.
+    // Indices match up with the newly created withObj array
+    var names = [];
 
-    // If make sure withObj wasn't just an empty object
-    return output != 'with ' ? output : '';
+    // Convert Object syntax to array syntax, pushing to names
+    if ( !Array.isArray( withObj ) ){
+      withObj = Object.keys( withObj ).map( function( name ){
+        names.push( name );
+        return withObj[ name ];
+      });
+    }
+
+    var output = withObj.map( function( obj, i ){
+      var name = 'name' in obj ? obj.name : names[ i ];
+
+      if ( !name ) throw new Error('MoSQL.queryHelper.with requires property `name`');
+
+      return '"' + name + '"' + ' as (' + queryBuilder( obj, values ) + ')';
+    }).join(', ');
+
+    return output ? ( 'with ' + output) : '';
   });
 
   return module.exports;

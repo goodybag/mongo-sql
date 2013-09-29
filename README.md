@@ -25,7 +25,9 @@ select "users".* from "users" where "users.id" = $1 or "users"."name" = $2
 
 Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a parameterized query, like [node-pg](https://github.com/brianc/node-postgres) performs by default.
 
-Check out MoSQL in the browser [http://mosql.j0.hn](http://mosql.j0.hn).
+Looking for a sandbox? Check out http://mosql.j0.hn
+
+## Why JSON?
 
 __Installation:__
 

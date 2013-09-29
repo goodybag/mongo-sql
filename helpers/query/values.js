@@ -6,6 +6,7 @@ if (typeof module === 'object' && typeof define !== 'function') {
 
 define(function(require, exports, module){
   var helpers = require('../../lib/query-helpers');
+  var queryBuilder = require('../../lib/query-builder');
 
   helpers.register('values', function(values, valuesArray, query){
     if (typeof values != 'object') throw new Error('Invalid values input in query properties')
@@ -13,14 +14,35 @@ define(function(require, exports, module){
     if (query.type === 'update')
       return helpers.get('updates').fn(values, valuesArray, query);
 
-    var output = '("' + Object.keys(values).join('", "') + '") values (';
+    if ( !Array.isArray( values ) ) values = [ values ];
 
-    for (var key in values)
-      output += '$' + valuesArray.push(values[key]) + ', ';
+    if ( values.length == 0 ) throw new Error('MoSQL.queryHelper.values - Invalid values array length `0`');
 
-    if (output.length > 0) output = output.substring(0, output.length - 2);
+    // Build object keys union
+    var keys = [], checkKeys = function( k ){
+      if ( keys.indexOf( k ) > -1 ) return;
+      keys.push( k );
+    };
 
-    return output + ')';
+    for ( var i = 0, l = values.length; i < l; ++i ) {
+      Object.keys( values[i] ).forEach( checkKeys )
+    }
+
+    var allValues = values.map( function( value ){
+      var result = [];
+      for ( var i = 0, l = keys.length; i < l; ++i ){
+        if (value[ keys[i] ] === null || value[ keys[i] ] === undefined) {
+          result.push('null');
+        } else if (typeof value[ keys[i] ] == 'object' && 'type' in value[ keys[i] ]){
+          result.push('(' + queryBuilder( value[ keys[i] ], valuesArray ) + ')');
+        } else {
+          result.push('$' + valuesArray.push(value[keys[i]]));
+        }
+      }
+      return '(' + result.join(', ') + ')';
+    }).join(', ')
+
+    return '("' + keys.join('", "') + '") values ' + allValues;
   });
 
   return module.exports;

@@ -38,6 +38,11 @@ define(function(require, exports, module){
   require('./helpers/query/column-constraint');
   require('./helpers/query/alias');
   require('./helpers/query/expression');
+  require('./helpers/query/from');
+  require('./helpers/query/distinct');
+  require('./helpers/query/boolean-helpers');
+  require('./helpers/query/view');
+  require('./helpers/query/function');
 
   // Register conditional helpers
   require('./helpers/conditional');

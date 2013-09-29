@@ -9,17 +9,17 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'select'
-  , '{with} select {columns} {table} {alias} {joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {groupBy} {order} {limit} {offset}'
+  , '{with} select {distinct} {columns} {table} {alias} {joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {groupBy} {order} {limit} {offset}'
   );
 
   queryTypes.add(
     'insert'
-  , '{with} insert into {table} {values} {returning}'
+  , '{with} insert into {table} {columns} {values} {expression} {returning}'
   );
 
   queryTypes.add(
     'update'
-  , '{with} update {table} {values} {updates} {where} {returning}'
+  , '{with} update {table} {values} {updates} {from} {where} {returning}'
   );
 
   queryTypes.add(
@@ -47,25 +47,10 @@ define(function(require, exports, module){
   , 'alter table {ifExists} {only} {table} {action}'
   );
 
-  [
-    'array_to_json'
-  , 'row_to_json'
-  , 'array_agg'
-  , 'array'
-  , 'row_number'
-  , 'rank'
-  , 'dense_rank'
-  , 'percent_rank'
-  , 'cume_dist'
-  , 'ntile'
-  , 'lag'
-  , 'lead'
-  , 'first_value'
-  , 'last_value'
-  , 'nth_value'
-  , 'max'
-  , 'min'
-  ].forEach(function(fn){
-    queryTypes.add(fn, fn + '( {expression} )')
-  });
+  queryTypes.add(
+    'create-view'
+  , 'create {orReplace} {temporary} view {view} {columns} as {expression}'
+  );
+
+  queryTypes.add('function', '{function}( {expression} )');
 });

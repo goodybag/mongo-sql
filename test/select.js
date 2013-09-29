@@ -30,6 +30,23 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should specify columns that are objects', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , columns: [
+          { name: 'id', alias: 'user_id' }
+        , 'name'
+        , { name: 'test', table: 'things' }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users"."id" as "user_id", "users"."name", "things"."test" from "users"'
+      );
+    });
+
     it ('should specify columns and use functions', function(){
       var query = builder.sql({
         type: 'select'
@@ -295,6 +312,243 @@ describe('Built-In Query Types', function(){
       assert.deepEqual(
         query.values
       , ['other']
+      );
+    });
+
+    it ('should support multiple withs', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , with: {
+          otherUsers: {
+            type: 'select'
+          , table: 'users'
+          , where: {
+              columnA: 'other'
+            }
+          }
+        , otherUsers2: {
+            type: 'select'
+          , table: 'users'
+          , where: {
+              columnA: 'other2'
+            }
+          }
+        }
+      , where: {
+          id: {
+            $nin: {
+              type: 'select'
+            , table: 'otherUsers'
+            , columns: ['id']
+            }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'with "otherUsers" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $1'
+          , '), '
+        , '"otherUsers2" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $2'
+          , ') '
+        , 'select "users".* from "users" '
+        , 'where "users"."id" not in ('
+          , 'select "otherUsers"."id" from "otherUsers"'
+        , ')'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['other', 'other2']
+      );
+    });
+
+    it ('should support multiple withs in array syntax', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , with: [
+          {
+            type: 'select'
+          , table: 'users'
+          , name: 'otherUsers'
+          , where: {
+              columnA: 'other'
+            }
+          }
+        , {
+            type: 'select'
+          , table: 'users'
+          , name: 'otherUsers2'
+          , where: {
+              columnA: 'other2'
+            }
+          }
+        , {
+            type: 'select'
+          , table: 'users'
+          , name: 'otherUsers3'
+          , where: {
+              columnA: 'other3'
+            }
+          }
+        ]
+      , where: {
+          id: {
+            $nin: {
+              type: 'select'
+            , table: 'otherUsers'
+            , columns: ['id']
+            }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'with "otherUsers" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $1'
+          , '), '
+        , '"otherUsers2" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $2'
+          , '), '
+        , '"otherUsers3" as ('
+          , 'select "users".* from "users" '
+            , 'where "users"."columnA" = $3'
+          , ') '
+        , 'select "users".* from "users" '
+        , 'where "users"."id" not in ('
+          , 'select "otherUsers"."id" from "otherUsers"'
+        , ')'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['other', 'other2', 'other3']
+      );
+    });
+
+    it ('should select distinct', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: true
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select distinct "users".* from "users"'
+      );
+    });
+
+    it ('should not select distinct', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: false
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users"'
+      );
+    });
+
+    it ('should select distinct on single', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: ['id']
+      , order: ['id asc']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select distinct on ("id") "users".* from "users" order by id asc'
+      );
+    });
+
+    it ('should select distinct on multilpe', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: ['id', 'name']
+      , order: ['id asc', 'name asc']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select distinct on ("id", "name") "users".* from "users" order by id asc, name asc'
+      );
+    });
+
+    it ('should not select distinct on', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , distinct: []
+      , order: ['id asc']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" order by id asc'
+      );
+    });
+
+    it ('allow sub-queries on table', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: {
+          type: 'select'
+        , table: 'users'
+        , alias: 'u'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "u".* from (select "users".* from "users") "u"'
+      );
+    });
+
+    it ('allow arbitrary sub-queries on table', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: {
+          type: 'select'
+        , table: {
+            type: 'select'
+          , table: {
+              type: 'select'
+            , table: 'users'
+            , alias: 'uuu'
+            }
+          , alias: 'uu'
+          }
+        , alias: 'u'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "u".* from '
+        , '(select "uu".* from '
+        , '(select "uuu".* from '
+        , '(select "users".* from "users") "uuu") "uu") "u"'
+        ].join('')
       );
     });
   });

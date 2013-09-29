@@ -12,21 +12,29 @@ define(function(require, exports, module){
   helpers.register('columns', function(columns, values, query){
     if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');
 
+    if (['insert', 'create-view'].indexOf(query.type) > -1){
+      return '(' + columns.map(function(col){
+        return utils.quoteColumn( col );
+      }).join(', ') + ')';
+    }
+
     var output = "";
 
     if (Array.isArray(columns)){
       for (var i = 0, l = columns.length; i < l; ++i){
-        if (typeof columns[i] == 'object' && 'table' in columns[i])
+        if (typeof columns[i] == 'object' && 'type' in columns[i] && !('expression' in columns[i]))
           output += '(' + queryBuilder( columns[i], values ).toString() + ')';
-        else if (typeof columns[i] == 'object')
+        else if (typeof columns[i] == 'object' && 'expression' in columns[i])
           output += queryBuilder( columns[i], values ).toString();
+        else if (typeof columns[i] == 'object')
+          output += utils.quoteColumn(columns[i].name, columns[i].table || query.__defaultTable);
         else if (columns[i].indexOf('(') > -1)
           output += columns[i];
         else
           output += utils.quoteColumn(columns[i], query.__defaultTable);
 
-        if ( typeof columns[i] == 'object' && 'as' in columns[i])
-          output += ' as "' + columns[i].as + '"';
+        if ( typeof columns[i] == 'object' && ('as' in columns[i] || 'alias' in columns[i]))
+          output += ' as "' + (columns[i].as || columns[i].alias) + '"';
 
         output += ", ";
       }

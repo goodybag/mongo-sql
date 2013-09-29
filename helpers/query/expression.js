@@ -10,6 +10,8 @@ define(function(require, exports, module){
 
   helpers.register('expression', function(exp, values, query){
     if (Array.isArray(exp)) return exp.join(', ');
+    if (query.type == 'insert' && typeof exp == 'object')
+      return '(' + queryBuilder(exp, values) + ')';
     if (typeof exp == 'object') return queryBuilder(exp, values);
     return exp;
   });

@@ -248,6 +248,19 @@ describe('Conditions', function(){
     );
   });
 
+  it ('should use $null when value is null', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: { id: null }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."id" is null'
+    );
+  });
+
   it ('$notNull', function(){
     var query = builder.sql({
       type: 'select'
