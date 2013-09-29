@@ -111,7 +111,7 @@ __Definition:__
 alter table {ifExists} {only} {table} {action}
 ```
 
-___Note:___ _The [action helper](./actions.md) was sufficiently complex to warrant its own helper system.
+___Note:___ _The [action helper](./actions.md) was sufficiently complex to warrant its own helper system._
 
 ### Type: 'create-view'
 
