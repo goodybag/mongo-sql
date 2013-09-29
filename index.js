@@ -10,6 +10,9 @@ define(function(require, exports, module){
   , queryTypes          = require('./lib/query-types')
   , queryHelpers        = require('./lib/query-helpers')
   , conditionalHelpers  = require('./lib/conditional-helpers')
+  , updateHelpers       = require('./lib/update-helpers')
+  , actionHelpers       = require('./lib/action-helpers')
+  , columnDefHelpers    = require('./lib/column-def-helpers')
   ;
 
   // Register query types
@@ -61,14 +64,32 @@ define(function(require, exports, module){
     return build.apply(build, arguments).toQuery();
   };
 
+  module.exports.queryTypes = queryTypes;
   module.exports.registerQueryType = queryTypes.add;
 
+  module.exports.queryHelpers = queryHelpers;
   module.exports.registerQueryHelper = function(name, options, fn){
     return queryHelpers.add(name, options, fn);
   };
 
+  module.exports.conditionalHelpers = conditionalHelpers;
   module.exports.registerConditionalHelper = function(name, options, fn){
     return conditionalHelpers.add(name, options, fn);
+  };
+
+  module.exports.actionHelpers = actionHelpers;
+  module.exports.registerActionHelper = function(name, options, fn){
+    return actionHelpers.add(name, options, fn);
+  };
+
+  module.exports.updateHelpers = updateHelpers;
+  module.exports.registerUpdateHelper = function(name, options, fn){
+    return updateHelpers.add(name, options, fn);
+  };
+
+  module.exports.columnDefHelpers = columnDefHelpers;
+  module.exports.registerColumnDefHelper = function(name, options, fn){
+    return columnDefHelpers.add(name, options, fn);
   };
 
   return module.exports;
