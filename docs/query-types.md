@@ -33,6 +33,8 @@ __Definition:__
 {where} {groupBy} {order} {limit} {offset}
 ```
 
+__Helpers Used__: [with](./query-helpers.md#helper-with), [distinct](./query-helpers.md#helper-distinct), [columns](./query-helpers.md#helper-columns), [table](./query-helpers.md#helper-table), [alias](./query-helpers.md#helper-alias), [joins](./query-helpers.md#helper-joins), [join](./query-helpers.md#helper-join), [innerJoin](./query-helpers.md#helper-innerJoin), [leftJoin](./query-helpers.md#helper-leftJoin), [leftOuterJoin](./query-helpers.md#helper-leftOuterJoin), [fullOuterJoin](./query-helpers.md#helper-fullOuterJoin), [crossOuterJoin](./query-helpers.md#helper-crossOuterJoin), [where](./query-helpers.md#helper-where), [groupBy](./query-helpers.md#helper-groupBy), [order](./query-helpers.md#helper-order), [limit](./query-helpers.md#helper-limit), [offset](./query-helpers.md#helper-offset)
+
 ___Note:___ _The [where helper](./conditional-helpers.md) was sufficiently complex to warrant its own helper system._
 
 ___Note:___ _The use of join, innerJoin, leftJoin, etc is deprecated. Instead, use the [joins helper](./query-helpers.md#joins) instead._
@@ -47,6 +49,8 @@ __Definition:__
 {with} insert into {table} {columns} {values} {expression} {returning}
 ```
 
+__Helpers Used:__ [with](./query-helpers.md#with), [table](./query-helpers.md#table), [columns](./query-helpers.md#columns), [values](./query-helpers.md#values), [expression](./query-helpers.md#expression), [returning](./query-helpers.md#returning)
+
 ### Type: 'update'
 
 Performs an update query
@@ -57,7 +61,9 @@ __Definition:__
 {with} update {table} {values} {updates} {from} {where} {returning}
 ```
 
-___Note:___ _The [updates helper](./update-helpers.md) was sufficiently complex to warrant its own helper system.
+___Note:___ _The [updates helper](./update-helpers.md) was sufficiently complex to warrant its own helper system._
+
+__Helpers Used:__ [with](./query-helpers.md#with), [table](./query-helpers.md#table), [values](./query-helpers.md#values), [updates](./query-helpers.md#updates), [from](./query-helpers.md#from), [where](./query-helpers.md#where), [returning](./query-helpers.md#returning)
 
 ### Type: 'delete'
 
@@ -69,6 +75,8 @@ __Definition:__
 {with} delete from {table} {alias} {where} {returning}
 ```
 
+__Helpers Used:__ [with](./query-helpers.md#with), [table](./query-helpers.md#table), [alias](./query-helpers.md#alias), [where](./query-helpers.md#where), [returning](./query-helpers.md#returning)
+
 ### Type: 'remove'
 
 Performs a delete query.
@@ -79,6 +87,8 @@ __Definition:__
 {with} delete from {table} {alias} {where} {returning}
 ```
 
+__Helpers Used:__ [with](./query-helpers.md#with), [table](./query-helpers.md#table), [alias](./query-helpers.md#alias), [where](./query-helpers.md#where), [returning](./query-helpers.md#returning)
+
 ### Type: 'create-table'
 
 Create table statement.
@@ -88,6 +98,8 @@ __Definition:__
 ```
 {with} create table {ifNotExists} {table} ({definition})
 ```
+
+__Helpers Used:__ [with](./query-helpers.md#with), [ifNotExists](./query-helpers.md#ifNotExists), [table](./query-helpers.md#table), [definition](./query-helpers.md#definition)
 
 ___Note:___ _The [definition helper](./column-definitions.md) was sufficiently complex to warrant its own helper system._
 
@@ -101,6 +113,8 @@ __Definition:__
 {with} drop table {ifExists} {table} {cascade}
 ```
 
+__Helpers Used:__ [with](./query-helpers.md#with), [ifExists](./query-helpers.md#ifExists), [table](./query-helpers.md#table), [cascade](./query-helpers.md#cascade)
+
 ### Type: 'alter-table'
 
 Alter a table.
@@ -110,6 +124,8 @@ __Definition:__
 ```
 alter table {ifExists} {only} {table} {action}
 ```
+
+__Helpers Used:__ [ifExists](./query-helpers.md#ifExists), [only](./query-helpers.md#only), [table](./query-helpers.md#table), [action](./query-helpers.md#action)
 
 ___Note:___ _The [action helper](./actions.md) was sufficiently complex to warrant its own helper system._
 
@@ -123,6 +139,8 @@ __Definition:__
 create {orReplace} {temporary} view {view} {columns} as {expression}
 ```
 
+__Helpers Used:__ [orReplace](./query-helpers.md#orReplace), [temporary](./query-helpers.md#temporary), [view](./query-helpers.md#view), [columns](./query-helpers.md#columns), [expression](./query-helpers.md#expression)
+
 ### Type: 'function'
 
 Function expression.
@@ -132,6 +150,8 @@ __Definition:__
 ```
 {function}( {expression} )
 ```
+
+__Helpers Used:__ [function](./query-helpers.md#function), [expression](./query-helpers.md#expression)
 
 ___Note:___ _If your query type is not defined, MoSQL assumes you meant to call a function whose name corresponds to the passed in query type._
 
