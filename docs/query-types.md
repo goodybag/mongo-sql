@@ -21,7 +21,7 @@ Query Types are the base structure of a query. They are composed of various stri
 
 Listed here are the available query types out of the box with MoSQL. Use the ```type``` directive to select what type of query you want to use.
 
-### select
+### Type: 'select'
 
 Performs a select query.
 
@@ -33,11 +33,11 @@ __Definition:__
 {where} {groupBy} {order} {limit} {offset}
 ```
 
-___Note:___ _The [where helper](./conditional-helpers.md) was sufficiently complex to warrant its own helper system.
+___Note:___ _The [where helper](./conditional-helpers.md) was sufficiently complex to warrant its own helper system._
 
-___Note:___ The use of join, innerJoin, leftJoin, etc is deprecated. Instead, use the [joins helper](./query-helpers.md#joins) instead.
+___Note:___ _The use of join, innerJoin, leftJoin, etc is deprecated. Instead, use the [joins helper](./query-helpers.md#joins) instead._
 
-### insert
+### Type: 'insert'
 
 Performs an insert query.
 
@@ -47,7 +47,7 @@ __Definition:__
 {with} insert into {table} {columns} {values} {expression} {returning}
 ```
 
-### update
+### Type: 'update'
 
 Performs an update query
 
@@ -59,7 +59,7 @@ __Definition:__
 
 ___Note:___ _The [updates helper](./update-helpers.md) was sufficiently complex to warrant its own helper system.
 
-### delete
+### Type: 'delete'
 
 Performs a delete query.
 
@@ -69,7 +69,7 @@ __Definition:__
 {with} delete from {table} {alias} {where} {returning}
 ```
 
-### remove
+### Type: 'remove'
 
 Performs a delete query.
 
@@ -79,7 +79,7 @@ __Definition:__
 {with} delete from {table} {alias} {where} {returning}
 ```
 
-### create-table
+### Type: 'create-table'
 
 Create table statement.
 
@@ -89,9 +89,9 @@ __Definition:__
 {with} create table {ifNotExists} {table} ({definition})
 ```
 
-___Note:___ _The [definition helper](./column-definitions.md) was sufficiently complex to warrant its own helper system.
+___Note:___ _The [definition helper](./column-definitions.md) was sufficiently complex to warrant its own helper system._
 
-### drop-table
+### Type: 'drop-table'
 
 Drop table statement.
 
@@ -101,7 +101,7 @@ __Definition:__
 {with} drop table {ifExists} {table} {cascade}
 ```
 
-### alter-table
+### Type: 'alter-table'
 
 Alter a table.
 
@@ -113,9 +113,9 @@ alter table {ifExists} {only} {table} {action}
 
 ___Note:___ _The [action helper](./actions.md) was sufficiently complex to warrant its own helper system.
 
-### create-view
+### Type: 'create-view'
 
-Create a view
+Create a view.
 
 __Definition:__
 
@@ -123,7 +123,7 @@ __Definition:__
 create {orReplace} {temporary} view {view} {columns} as {expression}
 ```
 
-### function
+### Type: 'function'
 
 Function expression.
 
