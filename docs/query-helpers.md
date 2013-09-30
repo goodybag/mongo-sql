@@ -179,3 +179,29 @@ Used for the [create-table](./query-types#type-create-table) query type to defin
 ```
 
 [Playground](http://mosql.j0.hn/#/snippets/14)
+
+### Helper: 'distinct'
+
+Specifies whether or not to select distinct on a query. This query helper _has two possible value types:_ Boolean, Array. If it's a booleant, then it will simply return the 'distinct' keyword in the correct spot as shown in the example below:
+
+```javascript
+// select distinct "users".* from "users"
+{
+  type: 'select'
+, table: 'users'
+, distinct: true
+}
+```
+
+An array allows you to specify which columns to select distinct on:
+
+```javascript
+// select distinct on ("id", "name") "users".* from "users"
+{
+  type: 'select'
+, table: 'users'
+, distinct: ['id', 'name']
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/15)
