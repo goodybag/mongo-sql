@@ -106,16 +106,16 @@ Here's a mix-up of various kinds of things that can go in the columns helper:
   type: "select"
 , table: "users"
 , columns: [
-    { name: 'id', alias: 'user_id' }
-  , 'name'
+    'first_name'
+  , { name: 'id', alias: 'user_id' }
   , { name: 'test', table: 'things' }
-  , {
+  , { // Sub-query in column selection
       type: 'select'
     , table: 'consumers'
     , columns: ['id']
     , as: 'u'
     }
-  , {
+  , { // Function in column selection
       type: 'array_agg'
     , expression: {
         type: 'select'
