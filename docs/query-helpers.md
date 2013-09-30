@@ -143,3 +143,39 @@ Because column selection may have many different variations in form, it is recom
 }
 ```
 
+### Helper: 'definition'
+
+Used for the [create-table](./query-types#type-create-table) query type to define the schema for a table. Definition has helpers of its own that this query helper references. You can find them in the [Column Definitions Document](./column-definitions.md)
+
+```javascript
+{
+  type: 'create-table'
+, table: 'jobs'
+, definition: {
+    id: {
+      type: 'serial'
+    , primaryKey: true
+    }
+
+  , gid: {
+      type: 'int'
+    , references: {
+        table: 'groups'
+      , column: 'id'
+      , onDelete: 'cascade'
+      }
+    }
+
+  , name: {
+      type: 'text'
+    }
+
+  , createdAt: {
+      type: 'timestamp'
+    , default: 'now()'
+    }
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/14)
