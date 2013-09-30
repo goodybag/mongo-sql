@@ -1,6 +1,6 @@
 # Query Types
 
-Query Types are the base structure of a query. They are composed of various strings and query helpers. MoSQL queries themselves are objects that have a query-type. This allows for natural query combination in cases of sub-queries nd expressions.
+Query Types are the base structure of a query. They are composed of various strings and query helpers. MoSQL queries themselves are objects that have a query-type. This allows for natural query combination in cases of sub-queries and expressions.
 
 ```javascript
 {
