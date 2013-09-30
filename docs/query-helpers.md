@@ -205,3 +205,32 @@ An array allows you to specify which columns to select distinct on:
 ```
 
 [Playground](http://mosql.j0.hn/#/snippets/15)
+
+### Helper: 'expression'
+
+Expression is perhaps the most useful query-helper. If the input is a string, then expression simply returns the string. If the input is an array, then it will expect that each element in the array is a string and join that string on ```, ```. The more common use-case is using expression for sub-queries. If you pass in an object, expression will return the result of sending that object through the MoSQL query builder, just as if you were to call the ```sql``` function in the Root namespace
+
+Insert values returned by a sub-query
+
+```javascript
+// insert into "users" ("name", "email") (
+//   select "other_users"."name", "other_users"."email"
+//   from "other_users"
+//   where "other_users"."id" = $1
+// )
+{
+  type: 'insert'
+, table: 'users'
+, columns: [ 'name', 'email' ]
+, expression: {
+    type: 'select'
+  , table: 'other_users'
+  , columns: [ 'name', 'email' ]
+  , where: { id: 7 }
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/16)
+
+See the [columns helper examples](#helper-columns) for more uses of expression.
