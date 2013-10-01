@@ -305,3 +305,21 @@ Adds IF EXISTS condition to [drop-table](./query-types.md#type-drop-table) and [
 ```
 
 [Playground](http://mosql.j0.hn/#/snippets/1a)
+
+### Helper: 'ifNotExists'
+
+Add IF NOT EXISTS condition to [create-table](./query-types.md#type-create-table) query type.
+
+```javascript
+{
+  type: 'create-table'
+, table: 'users'
+, ifNotExists: true
+, definition: {
+    id:   { type: 'serial', primaryKey: true }
+  , name: { type: 'text' }
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/14)
