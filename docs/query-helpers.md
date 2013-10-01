@@ -496,3 +496,19 @@ Add an ORDER BY clause. There are many different acceptable inputs here best des
 , order:    'id desc'
 }
 ```
+
+### Helper: 'returning'
+
+Specifies what to return an [insert](./query-types.md#type-insert) or [update](./query-types.md#type-update) query type. Valid input is an array of string column names:
+
+```javascript
+{
+  type: 'insert'
+, table: 'users'
+, values: {
+    name: 'Bob'
+  , email: 'bob@bob.com'
+  }
+, returning: ['id']
+}
+```
