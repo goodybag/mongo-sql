@@ -65,6 +65,8 @@ ___Note:___ _The [updates helper](./update-helpers.md) was sufficiently complex 
 
 __Helpers Used:__ [with](./query-helpers.md#helper-with), [table](./query-helpers.md#helper-table), [values](./query-helpers.md#helper-values), [updates](./query-helpers.md#helper-updates), [from](./query-helpers.md#helper-from), [where](./query-helpers.md#helper-where), [returning](./query-helpers.md#helper-returning)
 
+[Playground](http://mosql.j0.hn/#/snippets/17)
+
 ### Type: 'delete'
 
 Performs a delete query.

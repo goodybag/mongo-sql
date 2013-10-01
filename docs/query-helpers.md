@@ -234,3 +234,24 @@ Insert values returned by a sub-query
 [Playground](http://mosql.j0.hn/#/snippets/16)
 
 See the [columns helper examples](#helper-columns) for more uses of expression.
+
+### Helper: 'from'
+
+Used in the [update](./query-types.md#type-update) query helper to specify a list of table expressions, allowing columns from other tables to appear in the WHERE condition and the update expressions. Pass a string or an array of strings.
+
+```javascript
+{
+  type: 'update'
+, table: 'employees'
+, update: {
+    sales_count: { $inc: 1 }
+  }
+, from: 'accounts'
+, where: {
+    'accounts.name': 'Acme Corporation'
+  , id: '$accounts.sales_person$'
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/17)
