@@ -433,3 +433,30 @@ Like in a lot of places, joins have a property that will accept sub-queries. The
   ]
 }
 ```
+
+### Helper: 'limit'
+
+Add a limit to your select query.
+
+```javascript
+// select "users".* from "users" limit 10
+{
+  type: 'select'
+, table: 'users'
+, limit: 10
+}
+```
+
+### Helper: 'offset'
+
+Add an offset to your select query
+
+```javascript
+// select "users".* from "users" limit 10 offset 10
+{
+  type: 'select'
+, table: 'users'
+, limit: 10
+, offset: 10
+}
+```
