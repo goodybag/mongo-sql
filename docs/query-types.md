@@ -131,6 +131,8 @@ __Helpers Used:__ [ifExists](./query-helpers.md#helper-ifexists), [only](./query
 
 ___Note:___ _The [action helper](./actions.md) was sufficiently complex to warrant its own helper system._
 
+[Playground](http://mosql.j0.hn/#/snippets/1a)
+
 ### Type: 'create-view'
 
 Create a view.

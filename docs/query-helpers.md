@@ -274,3 +274,34 @@ Simply returns the name of the passed function.
 ```
 
 [Playground](http://mosql.j0.hn/#/snippets/18)
+
+### Helper: 'groupBy'
+
+Adds a group by clause. GROUP BY will condense into a single row all selected rows that share the same values for the grouped expressions. Pass a string or an array of strings representing columns.
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, groupBy: ['id', 'name']
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/19)
+
+### Helper: 'ifExists'
+
+Adds IF EXISTS condition to [drop-table](./query-types.md#type-drop-table) and [alter-table](./query-types.md#type-alter-table) query types.
+
+```javascript
+{
+  type: 'alter-table'
+, ifExists: true
+, table: 'users'
+, action: {
+    renameTable: 'consumers'
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/1a)
