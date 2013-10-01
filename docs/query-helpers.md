@@ -460,3 +460,21 @@ Add an offset to your select query
 , offset: 10
 }
 ```
+
+### Helper: 'only'
+
+Used in the [alter-table](./query-types.md#type-alter-table) query type to remove a check constraint from one table only. If a truthy value, returns the string only.
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, only: true
+, action: {
+    renameConstraint: {
+      from: 'something'
+    , to:   'other_thing'
+    }
+  }
+}
+```
