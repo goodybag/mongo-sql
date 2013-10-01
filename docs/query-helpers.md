@@ -478,3 +478,21 @@ Used in the [alter-table](./query-types.md#type-alter-table) query type to remov
   }
 }
 ```
+
+### Helper: 'order'
+
+Add an ORDER BY clause. There are many different acceptable inputs here best described by an example:
+
+```javascript
+// select "users".* from "users" order by "order"."id" desc, "order"."name" asc
+{
+  type:     'select'
+, table:    'users'
+
+  // Object syntax is the preferable way since it can automatically
+  // quote your columns and add in the default table
+, order:    { id: 'desc', name: 'asc' }
+, order:    ['id desc', 'name asc']
+, order:    'id desc'
+}
+```
