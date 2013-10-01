@@ -555,3 +555,40 @@ Specifies the updates for an update statement.
 
 ___Note:___ _The [updates helper](./update-helpers.md) was sufficiently complex to warrant its own helper system._
 
+### Helper: 'values'
+
+Specifies values for an insert or update statement. If used in an update statement, will work as an alias for the updates helper. May pass in an object whose keys are the column names and values are the values, or an array of objects for _batch inserts_.
+
+Each value may be a MoSQL query object for sub-queries.
+
+```javascript
+{
+  type: 'insert'
+, table: 'users'
+, values: {
+    name: 'Bob'
+  , email: {
+      type: 'select'
+    , table: 'other_users'
+    , columns: [ 'email' ]
+    , where: { id: 7 }
+    }
+  }
+}
+```
+
+__Batch Inserts:__
+
+```javascript
+// insert into "users" ("name", "email", "code") values
+// ($1, $2, null), ($3, null, null), ($4, null, $5)
+{
+  type: 'insert'
+, table: 'users'
+, values: [
+    { name: 'Bob', email: 'bob@bob.com' }
+  , { name: 'Tom' }
+  , { name: 'Pam', code: 'aas123' }
+  ]
+}
+```
