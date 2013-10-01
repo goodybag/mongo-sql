@@ -712,3 +712,105 @@ Notice how ```id``` and ```name``` are grouped and the groups are joined by an O
 ```
 
 This covers the bulk of the where helper. Just try out anything with the where helper, it will probably figure out what you meant. For a list of all conditional helpers, take a look at the [conditional helper docs](./conditional-helpers.md)
+
+### Helper: 'with'
+
+Add WITH sub-queries before any query type. Valid input is either an array of MoSQL query objects or an object whose keys represent the alias of the WITH sub-query, and the value is a MoSQL query object. If ordering matters for WITH queries, then you should use the array syntax.
+
+```javascript
+{
+  type:     'select'
+, table:    'users'
+, with: {
+    otherUsers: {
+      type: 'select'
+    , table: 'users'
+    , where: {
+        columnA: 'other'
+      }
+    }
+  }
+, where: {
+    id: {
+      $nin: {
+        type: 'select'
+      , table: 'otherUsers'
+      , columns: ['id']
+      }
+    }
+  }
+}
+```
+
+```sql
+with "otherUsers" as (
+  select "users".* from "users" 
+  where "users"."columnA" = $1
+) 
+select "users".* from "users" where "users"."id" not in (
+  select "otherUsers"."id" from "otherUsers"
+)
+```
+
+__Array Syntax:__
+
+```javascript
+{
+  type:     'select'
+, table:    'users'
+, with: [
+    {
+      type: 'select'
+    , table: 'users'
+    , name: 'otherUsers'
+    , where: {
+        columnA: 'other'
+      }
+    }
+  , {
+      type: 'select'
+    , table: 'users'
+    , name: 'otherUsers2'
+    , where: {
+        columnA: 'other2'
+      }
+    }
+  , {
+      type: 'select'
+    , table: 'users'
+    , name: 'otherUsers3'
+    , where: {
+        columnA: 'other3'
+      }
+    }
+  ]
+, where: {
+    id: {
+      $nin: {
+        type: 'select'
+      , table: 'otherUsers'
+      , columns: ['id']
+      }
+    }
+  }
+}
+```
+
+```sql
+with "otherUsers" as (
+  select "users".* from "users"
+  where "users"."columnA" = $1
+),
+"otherUsers2" as (
+  select "users".* from "users"
+  where "users"."columnA" = $2
+),
+"otherUsers3" as (
+  select "users".* from "users"
+  where "users"."columnA" = $3
+)
+select "users".* from "users"
+where "users"."id" not in (
+  select "otherUsers"."id" from "otherUsers"
+)
+```
