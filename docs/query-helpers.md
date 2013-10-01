@@ -611,3 +611,104 @@ Used in the [create-view](./query-types.md#type-create-view) query type. Simply 
   }
 }
 ```
+
+### Helper: 'where'
+
+Used to build conditional clauses in the select, update, and delete query types. The conditional builder has its own [helper system](./conditional-helpers.md).
+
+The where helper is probably the most complex helper in all of MoSQL. It's helpers can have the option of cascading, which means its actions propagate through object levels. You'll find that mostly any combination of helpers-to-values will work because of this.
+
+```javascript
+// select "users".* from "users"
+// where "users"."id" = $1 or "users"."name" = $2
+{
+  type: 'select'
+, table: 'users'
+, where: { $or: { id: 5, name: 'Bob' } }
+}
+
+// select "users".* from "users"
+// where "users"."id" = $1 or "users"."name" = $2
+{
+  type: 'select'
+, table: 'users'
+, where: { $or: [ { id: 5 }, { name: 'Bob' }] }
+}
+
+// select "users".* from "users"
+// where "users"."id" = $1 or "users"."id" = $2
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $or: [5, 7] } }
+}
+```
+
+Notice how the placement of the conditional helper ```$or``` can change. You can pretty much put it anywhere that "looks right" and it will work.
+
+Conditional statements are arbitrarily embeddable.
+
+```javascript
+// select "users".*
+// from "users"
+// where "users"."id" > 7
+//   or "users"."id" < 10
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    id: { $gt: { $or: [7, { id: { $lt: 10 } }] } }
+  }
+}
+
+// Or a much nicer way of representing that
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    id: { $or: { $gt: 7, $lt: 10 } }
+  }
+}
+```
+
+If ```$or``` is not specified at some level, then ```$and``` will be used by default. The ```$or``` and ```$and``` helpers _do not cascade_. Or rather, their effects are only one object deep:
+
+```javascript
+// select "users".*
+// from "users"
+// where ("users"."id" = 7
+//        and "users"."id" = 8)
+//   or ("users"."name" > 'Bob'
+//       and "users"."name" < 'Helen')
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    $or: {
+      id: [ 7, 8 ]
+    , name: { $gt: 'Bob', $lt: 'Helen' }
+    }
+  }
+}
+```
+
+Notice how ```id``` and ```name``` are grouped and the groups are joined by an OR clause, but the inside of the groups are joined by AND. This is because ```$or``` and ```$and``` do not cascade. However, operation like ```$lte``` and ```$gt``` do cascade:
+
+```javascript
+// select "users".*
+// from "users"
+// where ("users"."name" > $1
+//        or "users"."id" > $2)
+//   and ("users"."name" <= $3
+//        or "users"."id" <= $4)
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    $gt:  { $or: { name: 'Bob', id: 10 } }
+  , $lte: { $or: { name: 'Sam', id: 100 } }
+  }
+}
+```
+
+This covers the bulk of the where helper. Just try out anything with the where helper, it will probably figure out what you meant. For a list of all conditional helpers, take a look at the [conditional helper docs](./conditional-helpers.md)
