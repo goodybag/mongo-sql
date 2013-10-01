@@ -323,3 +323,113 @@ Add IF NOT EXISTS condition to [create-table](./query-types.md#type-create-table
 ```
 
 [Playground](http://mosql.j0.hn/#/snippets/14)
+
+### Helper: 'join'
+
+__[Deprecated]__ Perform join
+
+### Helper: 'innerJoin'
+
+__[Deprecated]__ Perform innerJoin
+
+### Helper: 'leftJoin'
+
+__[Deprecated]__ Perform leftJoin
+
+### Helper: 'leftOuterJoin'
+
+__[Deprecated]__ Perform leftOuterJoin
+
+### Helper: 'fullOuterJoin'
+
+__[Deprecated]__ Perform fullOuterJoin
+
+### Helper: 'crossOuterJoin'
+
+__[Deprecated]__ Perform crossOuterJoin
+
+### Helper: 'joins'
+
+Add one or more joins of any type to the query. May pass in an array of objects or an object. If you join ordering is required, then you need to use the array syntax.
+
+__Array Syntax:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, joins: [
+    {
+      type: 'left'
+    , target: "books"
+    , on: {
+        userId: '$users.id$'
+      }
+    }
+  ]
+}
+```
+
+For a more advanced example, see the [Playground](http://mosql.j0.hn/#/snippets/1b).
+
+__Object Syntax:__
+
+Object syntax will automatically alias tables for you and can be a little more terse:
+
+```javascript
+// select "users".* from "users"
+// left join "books" "books" on "books"."userId" = "users"."id"
+{
+  type: 'select'
+, table: 'users'
+, joins: {
+    // No table or alias specified, but will use books by default
+    books: { type: 'left', on: { userId: '$users.id$' } }
+  }
+}
+```
+
+__Sub-queries in joins:__
+
+Like in a lot of places, joins have a property that will accept sub-queries. The ```target``` directive can either specify a string table name or it can be a sub-query like in the Playground example:
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, columns: [
+    '*'
+    // Aggregate each ubooks json row into a json array
+  , {
+      type: 'to_json'
+    , as: 'books'
+    , expression: 'ubooks.book'
+    }
+  ]
+  
+  // Where the joining magic happens!
+, joins: [
+    // Join on the junction table to get all users books ids
+    {
+      type: 'left'
+    , target: "usersBooks"
+    , on: { userId: '$users.id$' }
+    }
+    
+    // Join on the users books ids with the books table
+    // Do a sub-select to export the row as JSON
+  , {
+      type: 'left'
+    , alias: 'ubooks'
+      // Sub-query in join
+    , target: {
+        type: 'select'
+      , table: 'books'
+      , alias: 'b'
+      , columns: [ { type: 'row_to_json', expression: 'b', as: 'book' } ]
+      }
+    , on: { id: '$usersBooks.bookId$' }
+    }
+  ]
+}
+```
