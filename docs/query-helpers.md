@@ -752,6 +752,8 @@ select "users".* from "users" where "users"."id" not in (
 )
 ```
 
+[Playground](http://mosql.j0.hn/#/snippets/1f)
+
 __Array Syntax:__
 
 ```javascript
