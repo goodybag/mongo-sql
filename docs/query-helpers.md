@@ -243,7 +243,7 @@ Used in the [update](./query-types.md#type-update) query helper to specify a lis
 {
   type: 'update'
 , table: 'employees'
-, update: {
+, updates: {
     sales_count: { $inc: 1 }
   }
 , from: 'accounts'
@@ -512,3 +512,46 @@ Specifies what to return an [insert](./query-types.md#type-insert) or [update](.
 , returning: ['id']
 }
 ```
+
+### Helper: 'table'
+
+Specify which table to use in most all query types. May be a string, an array of strings, a MoSQL query object.
+
+```javascipt
+{
+  type: 'select'
+//, table: 'users'
+//, table: ['users', 'consumers']
+, table: {
+    type: 'select'
+  , table: 'users'
+  , alias: 'u'
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/1d)
+
+### Helper: 'updates'
+
+Specifies the updates for an update statement.
+
+```javascript
+{
+  type: 'update'
+, table: 'employees'
+, updates: {
+    sales_count: { $inc: 1 }
+  }
+, from: 'accounts'
+, where: {
+    'accounts.name': 'Acme Corporation'
+  , id: '$accounts.sales_person$'
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/17)
+
+___Note:___ _The [updates helper](./update-helpers.md) was sufficiently complex to warrant its own helper system._
+
