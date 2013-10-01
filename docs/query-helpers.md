@@ -725,9 +725,7 @@ Add WITH sub-queries before any query type. Valid input is either an array of Mo
     otherUsers: {
       type: 'select'
     , table: 'users'
-    , where: {
-        columnA: 'other'
-      }
+    , where: { columnA: 'other' }
     }
   }
 , where: {
@@ -765,25 +763,19 @@ __Array Syntax:__
       type: 'select'
     , table: 'users'
     , name: 'otherUsers'
-    , where: {
-        columnA: 'other'
-      }
+    , where: { columnA: 'other' }
     }
   , {
       type: 'select'
     , table: 'users'
     , name: 'otherUsers2'
-    , where: {
-        columnA: 'other2'
-      }
+    , where: { columnA: 'other2' }
     }
   , {
       type: 'select'
     , table: 'users'
     , name: 'otherUsers3'
-    , where: {
-        columnA: 'other3'
-      }
+    , where: { columnA: 'other3' }
     }
   ]
 , where: {
