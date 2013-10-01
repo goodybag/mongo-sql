@@ -592,3 +592,22 @@ __Batch Inserts:__
   ]
 }
 ```
+
+### Helper: 'view'
+
+Used in the [create-view](./query-types.md#type-create-view) query type. Simply returns the string passed in to name the view:
+
+```javascript
+// create view "jobs_gt_10" as 
+//  select "jobs".* from "jobs" 
+//  where "jobs"."id" > $1
+{
+  type: 'create-view'
+, view: 'jobs_gt_10'
+, expression: {
+    type: 'select'
+  , table: 'jobs'
+  , where: { id: { $gt: 10 } }
+  }
+}
+```
