@@ -167,6 +167,8 @@ __Example__:
 }
 ```
 
+[Playground](http://mosql.j0.hn/#/snippets/18)
+
 ## Adding Your Own Query Types
 
 MoSQL uses the same interface as its API consumers to build functionality.

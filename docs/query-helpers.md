@@ -255,3 +255,22 @@ Used in the [update](./query-types.md#type-update) query helper to specify a lis
 ```
 
 [Playground](http://mosql.j0.hn/#/snippets/17)
+
+### Helper: 'function'
+
+Simply returns the name of the passed function.
+
+```javascript
+// row_to_json(row(1,'foo'))
+{
+  type: 'function'
+, function: 'row_to_json'
+, expression: {
+    type: 'function'
+  , function: 'row'
+  , expression: [1, "'foo'"]
+  }
+}
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/18)
