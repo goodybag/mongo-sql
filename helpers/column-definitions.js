@@ -33,6 +33,9 @@ define(function(require, exports, module){
     if (reference.onUpdate)
       output += ' on update ' + reference.onUpdate;
 
+    if (reference.match)
+      output += ' match ' + reference.match;
+
     return output;
   });
 
