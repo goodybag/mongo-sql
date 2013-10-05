@@ -160,6 +160,20 @@ define(function(require, exports, module){
     return output.join(' ');
   });
 
+  actions.add( 'dropConstraint', function( value, values, query ){
+    if ( !value ) return;
+
+    return 'drop constraint ' + utils.quoteColumn( value );
+  });
+
+  actions.add( 'addConstraint', function( constraint, values, query ){
+    return [
+      'add constraint'
+    , utils.quoteColumn( constraint.name )
+    , queryHelpers.get('columnConstraint').fn( constraint, values, query )
+    ].join(' ');
+  });
+
   // Single Parameter actions
   [
     { name: 'enableReplicaTrigger', text: 'enable replica trigger' }

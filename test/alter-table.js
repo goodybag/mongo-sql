@@ -408,6 +408,30 @@ describe('Built-In Query Types', function(){
         );
       });
 
+      it('should add a new column with a reference with match behavior', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            addColumn: {
+              name: 'groupId'
+            , type: 'int'
+            , references: {
+                table: 'groups'
+              , column: 'id'
+              , match: 'full'
+              }
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" add column "groupId" int references "groups"("id") match full'
+          ].join('')
+        );
+      });
+
       it('should add a new column with all restraints', function(){
         var query = builder.sql({
           type: 'alter-table'
@@ -426,6 +450,7 @@ describe('Built-In Query Types', function(){
             , references: {
                 table: 'groups'
               , column: 'id'
+              , match: 'partial'
               }
             , deferrable: true
             }
@@ -442,6 +467,7 @@ describe('Built-In Query Types', function(){
           , 'unique '
           , 'primary key '
           , 'references "groups"("id") '
+          , 'match partial '
           , 'deferrable'
           ].join('')
         );
@@ -608,5 +634,100 @@ describe('Built-In Query Types', function(){
         );
       });
     });
+
+    describe('add/drop constraint', function(){
+
+      it('should drop a constraint', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'distributors'
+        , action: {
+            dropConstraint: 'zipchk'
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "distributors" '
+          , 'drop constraint "zipchk"'
+          ].join('')
+        );
+      });
+
+      it('should add a check constraint', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'distributors'
+        , action: {
+            addConstraint: {
+              name: 'zipchk'
+            , check: { $custom: ['char_length(zipcode) = $1', 5] }
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "distributors" '
+          , 'add constraint "zipchk" '
+          , 'check (char_length(zipcode) = $1)'
+          ].join('')
+        );
+
+        assert.deepEqual(
+          query.values
+        , [5]
+        );
+      });
+
+      it('should add a foreign key constraint', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'distributors'
+        , action: {
+            addConstraint: {
+              name: 'distfk'
+            , foreignKey: {
+                column: 'address'
+              , references: {
+                  table: 'addresses'
+                , column: 'address'
+                }
+              }
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "distributors" '
+          , 'add constraint "distfk" foreign key ("address") '
+          , 'references "addresses"("address")'
+          ].join('')
+        );
+      });
+
+      it('should add a unique constraint', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'distributors'
+        , action: {
+            addConstraint: {
+              name: 'dist_id_zipcode_key'
+            , unique: ['dist_id', 'zipcode']
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "distributors" '
+          , 'add constraint "dist_id_zipcode_key" '
+          , 'unique ("dist_id", "zipcode")'
+          ].join('')
+        );
+      });
+    });
+
   });
 });

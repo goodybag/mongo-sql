@@ -54,6 +54,19 @@ define(function(require, exports, module){
     if (constraint.references)
       output.push( columnDefs.get('references').fn(constraint.references, values, query) );
 
+    // Foreign Key
+    if (constraint.foreignKey){
+      output.push(
+        'foreign key (' + utils.quoteColumn( constraint.foreignKey.column ) + ')'
+      );
+
+      output.push(
+        columnDefs.get('references').fn(
+          constraint.foreignKey.references, values, query
+        )
+      );
+    }
+
     // Single word booleans
     [
       { name: 'deferrable',         text: 'deferrable' }
