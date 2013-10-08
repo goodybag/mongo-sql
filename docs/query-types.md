@@ -212,4 +212,4 @@ Returns a boolean denoting whether or not a query type exists.
 
 ### mosql.queryTypes.get( name )
 
-Returns the query helper definition string.
+Returns the query type definition string.

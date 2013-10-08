@@ -616,7 +616,7 @@ Used in the [create-view](./query-types.md#type-create-view) query type. Simply 
 
 Used to build conditional clauses in the select, update, and delete query types. The conditional builder has its own [helper system](./conditional-helpers.md).
 
-The where helper is probably the most complex helper in all of MoSQL. It's helpers can have the option of cascading, which means its actions propagate through object levels. You'll find that mostly any combination of helpers-to-values will work because of this.
+The where helper is probably the most complex helper in all of MoSQL. Its helpers can have the option of cascading, which means its actions propagate through object levels. You'll find that mostly any combination of helpers-to-values will work because of this.
 
 ```javascript
 // select "users".* from "users"
@@ -808,3 +808,110 @@ where "users"."id" not in (
   select "otherUsers"."id" from "otherUsers"
 )
 ```
+
+## Registering your own helpers
+
+When a MoSQL query object is parsed, it first looks at the `type` field on the object. It finds the matching query type:
+
+```javascript
+mosql.registerQueryType(
+  'select-one-user'
+, 'select {columns} from users {joins} {where} limit 1'
+);
+```
+
+It then goes through the rest of the properties in the object and sees if the key is declared as a query helper in the query type definition. If it is, and the helper is currently registered in MoSQL, then it will replace the ```{helper_name}``` with the result of the query helper function called 'helper_name'. Probably best to just show an example.
+
+```javascript
+mosql.registerQueryType(
+  'select-one-user'
+, 'select {customColumns} from users {joins} {where} limit 1'
+);
+
+// Want to do some custom column behavior
+mosql.registerQueryHelper( 'customColumns', function( cols, values, query ){
+  var i = cols.indexOf('names');
+
+  // Do some funky JSON formatting
+  if ( id > -1 ){
+    cols[ i ] = {
+      column: "'{\"firstName\":' || users.first_name || ',\"lastName\":' || users.last_name || '}'"
+    , as: 'names'
+    };
+  }
+
+  return mosql.queryHelpers.get('columns').fn( cols, values, query );
+});
+
+// select "id", ('{\"firstName\":' || users.first_name || ',\"lastName\":' || users.last_name || '}') as names from users limit 1
+mosql.query({
+  type: 'select-one-user'
+, customColumns: [ 'id', 'names' ]
+});
+```
+
+That's sort of just extending the columns helper. How about I just make a simple implemetation of an existing helper:
+
+```javascript
+mosql.registerQueryType(
+  'select-one-user'
+, 'select {columns} from users {joins} {where} {offset} limit 1'
+);
+
+mosql.registerQueryHelper( 'offset', function( offset, values, query ){
+  return 'offset $' + values.push( offset );
+});
+```
+
+Notice the ```$```. That's used to parameterize your queries. It's up to the helpers to do that.  You could have just as easily concatenated the offset value to the string, but you wouldn't get paramaterization. Also, the values array is the second parameter. Just push your value to that array and concatenate the result.
+
+### mosql.registerQueryHelper( name, [options], callback )
+
+Alias for ```mosql.queryHelpers.add```
+
+```javascript
+var mosql = require('mongo-sql');
+
+mosql.registerQueryHelper( 'offset', function( offset, values, query ){
+  return 'offset $' + values.push( offset );
+});
+```
+
+### mosql.queryHelpers.add( name, [options], callback )
+
+Registers a new query helper.
+
+Callbacks arguments are: ```callback( value, values, query )```
+
+__Arguments:__
+
+__Value__ - The value from the passed in MoSQL query object for this particular helper.
+__Values__ - The values array. All values no escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
+__Query__ - This is the whole MoSQL query object passed in by the user.
+
+```javascript
+var mosql = require('mongo-sql');
+
+// Updates query helper for query-type: 'update'
+mosql.registerQueryHelper( 'updates', function($updates, values, query){
+  var output = "set ";
+
+  var result = Object.keys( $updates ).map( function( key ){
+    if (updateHelpers.has(key))
+      return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
+    if ($updates[key] === null)
+      return utils.quoteColumn(key) + ' = null';
+    return utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
+  });
+
+  return result.length > 0 ? ('set ' + result.join(', ')) : '';
+});
+```
+
+### mosql.queryHelpers.has( name )
+
+Returns a boolean denoting whether or not a query helper exists.
+
+### mosql.queryHelpers.get( name )
+
+Returns the query helper interface: ```{ fn, options }```. While this helper interface doesn't usually
