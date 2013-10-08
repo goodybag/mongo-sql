@@ -33,6 +33,9 @@ define(function(require, exports, module){
     if (reference.onUpdate)
       output += ' on update ' + reference.onUpdate;
 
+    if (reference.match)
+      output += ' match ' + reference.match;
+
     return output;
   });
 
@@ -50,7 +53,7 @@ define(function(require, exports, module){
     if (unique == true) return 'unique';
 
     if (Array.isArray(unique))
-      return '(' + unique.map(function(column){
+      return 'unique (' + unique.map(function(column){
         return utils.quoteColumn(column)
       }).join(', ') + ')';
 
