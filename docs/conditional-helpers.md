@@ -190,3 +190,49 @@ __Example:__
 ```sql
 select "users".* from "users" where "users"."id" is not null
 ```
+
+### Helper: '$like'
+
+___Cascades:___ _true_
+
+__Format:__ ```col like value```
+
+Value likeness
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { name: { $like: 'Bob' } }
+, where: { $like: { name: 'Bob' } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."name" like 'Bob'
+```
+
+### Helper: '$ilike'
+
+___Cascades:___ _true_
+
+__Format:__ ```col ilike value```
+
+Value likeness case insensitive.
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { name: { $ilike: 'Bob' } }
+, where: { $ilike: { name: 'Bob' } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."name" ilike 'Bob'
+```
