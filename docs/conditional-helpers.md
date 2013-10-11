@@ -4,9 +4,39 @@ Conditional helpers are used within the [where](./query-helpers.md#helper-where)
 
 Checkout the [Conditional Playground](http://mosql.j0.hn/#/snippets/1j).
 
+## Helper Cascading
+
+Often times, a helper will be used, and its value will be an object. If a hepler is said to cascade, then whatever operation that it represents will persist through sub-objects and arrays until another operator takes over. Take a look at this example:
+
+```javascript
+{
+  type: "select",
+  table: "users",
+  where: {
+    $gt: [
+      { name: 'Bob', id: 7 },
+      { $or: { last_name: 'Bob', first_name: { $equals: 'Bob' } } },
+    ]
+  }
+}
+```
+
+```sql
+select "users".*
+from "users"
+where ("users"."name" > $1
+       and "users"."id" > $2)
+  and ("users"."last_name" > $3
+       or "users"."first_name" = $4)
+```
+
+Since the [$gt helper](#helper-$or) is set to ```cascade: true``` in its helper definition, its operation carries throughout all of those object structures except when explicitly told otherwise, like through the use of the [$equals helper](#helper-$eqauls). In that ``` first_name: { $equals: 'Bob' }``` object, if the value of ```$equals``` was another object, then its operator would cascade in that scope.
+
 ### Helper: '$or'
 
-Strictly speaking, ```$or``` is not a conditional helper, but it is used in building conditions. Or multiple conditions together
+___Cascades:___ _false_
+
+Strictly speaking, ```$or``` is not a conditional helper, but it is used in building conditions. Use it to "Or" multiple conditions together
 
 ```javascript
 {
