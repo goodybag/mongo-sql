@@ -411,7 +411,21 @@ var mosql = require('mongo-sql');
 mosql.condtionalHelpers.add('$years_ago', function(column, value, values, table){
   return column + " >= now() - interval " + value + " year";
 });
+
+mosql.sql({
+  type: 'delete'
+, table: 'users'
+, where: {
+    created_at: { $years_ago: 5 }
+  }
+});
 ```
+
+```sql
+delete from "users" where "users"."created_at" >= now() - interval $1 year
+```
+
+[Playground](http://mosql.j0.hn/#/snippets/1l)
 
 ### mosql.conditionalHelpers.has( name )
 
