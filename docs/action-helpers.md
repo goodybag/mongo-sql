@@ -212,3 +212,43 @@ __Example:__
 ```sql
 alter table "users" drop column if exists "groupId" restrict cascade
 ```
+
+### Helper: 'alterColumn'
+
+___Format:___
+
+```
+alter column
+  [type value.type]
+  [collate value.collation]
+  [using (value.using)]
+  [set default value.default]
+  [drop default]
+  [set not null]
+  [drop not null]
+  [set statistics value.statistics]
+  [set storage value.storage]
+```
+
+__Expects:__ ```object```
+
+Alter a column.
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    alterColumn: {
+      name: 'createdAt'
+    , notNull: false
+    }
+  }
+}
+```
+
+```sql
+alter table "users" alter column "createdAt" drop not null
+```
