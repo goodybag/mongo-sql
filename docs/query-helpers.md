@@ -914,4 +914,4 @@ Returns a boolean denoting whether or not a query helper exists.
 
 ### mosql.queryHelpers.get( name )
 
-Returns the query helper interface: ```{ fn, options }```. While this helper interface doesn't usually
+Returns the query helper interface: ```{ fn, options }```.
