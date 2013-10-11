@@ -405,7 +405,7 @@ __Query__ - This is the whole MoSQL query object passed in by the user.
 
 __Example:__
 
-```javscript
+```javascript
 var mosql = require('mongo-sql');
 
 mosql.condtionalHelpers.add('$years_ago', function(column, value, values, table){
