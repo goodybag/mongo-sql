@@ -32,7 +32,7 @@ where ("users"."name" > $1
 
 [Playground](http://mosql.j0.hn/#/snippets/1m)
 
-Since the [$gt helper](#helper-or) is set to ```cascade: true``` in its helper definition, its operation carries throughout all of those object structures except when explicitly told otherwise, like through the use of the [$equals helper](#helper-eqauls). In that ``` first_name: { $equals: 'Bob' }``` object, if the value of ```$equals``` was another object, then its operator would cascade in that scope.
+Since the [$gt helper](#helper-gt) is set to ```cascade: true``` in its helper definition, its operation carries throughout all of those object structures except when explicitly told otherwise, like through the use of the [$equals helper](#helper-eqauls). In that ``` first_name: { $equals: 'Bob' }``` object, if the value of ```$equals``` was another object, then its operator would cascade in that scope.
 
 ### Helper: '$or'
 
