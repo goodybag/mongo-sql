@@ -326,3 +326,33 @@ select "users".* from "users" where "users"."id" not in (
   where "consumers"."name" = 'Bob'
 )
 ```
+
+### Helper: '$custom'
+
+___Cascades:___ _false_
+
+Define your own custom format on the fly. 
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    id: { $notNull: true }
+  , $custom: ['coalesce(something::json, $1) or $2', 'Bob', 'Alice']
+  }
+, where: {
+    value: 'coalesce(something::json, $1) or $2'
+  , values: ['Bob', 'Alice']
+  }
+}
+```
+
+```sql
+select "users".*
+from "users"
+where "users"."id" is not null
+  and coalesce(something::json, 'Bob') or 'Alice'
+```
