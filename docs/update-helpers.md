@@ -102,3 +102,11 @@ helpers.add('$inc', function(value, values, collection){
   }).join(' ');
 });
 ```
+
+### mosql.updateHelpers.has( name )
+
+Returns a boolean denoting whether or not a update helper exists.
+
+### mosql.updateHelpers.get( name )
+
+Returns the update helper interface: ```{ fn, options }```.
