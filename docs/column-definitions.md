@@ -162,3 +162,32 @@ create table "jobs" (
   "createdAt" timestamp default now()
 )
 ```
+
+### Helper: 'check'
+
+___Format:___ ```check( {where} )```
+
+__Expects:__ ```object```
+
+Checks whether some condition is true. Expects a valid MoSQL conditional object. See [conditional helpers](./conditional-helpers.md) for full capabilities.
+
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    addColumn: {
+      name: 'groupId'
+    , type: 'int'
+    , check: { groupId: { $gt: 7 } }
+    }
+  }
+}
+```
+
+```sql
+alter table "users" add column "groupId" int check ("users"."groupId" > $1)
+```
