@@ -114,3 +114,30 @@ __Example:__
 ```sql
 alter table "users" rename constraint "id_idx" to "uid_idx"
 ```
+
+### Helper: 'renameColumn'
+
+___Format:___ ```rename column column.from to column.to```
+
+__Expects:__ ```object```
+
+Rename a column.
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    renameColumn: {
+      from: 'firstName'
+    , to:   'name'
+    }
+  }
+}
+```
+
+```sql
+alter table "users" rename column "firstName" to "name"
+```
