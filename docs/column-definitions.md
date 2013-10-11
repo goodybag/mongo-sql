@@ -64,4 +64,62 @@ ___Format:___ ```not null | null```
 
 __Expects:__ 'boolean'
 
-Inverse of ```null```. If true, returns not null. Otherwisee, returns null.
+Inverse of ```null```. If true, returns not null. Otherwise, returns null.
+
+### Helper: 'unique'
+
+___Format:___ ``` unique ( col1, col2, ... )```
+
+__Expects:__ 'boolean|string[]'
+
+Specifies which columns to be unique. If the value passed in is a boolean, it will assume you mean to use the column in the current context to be unique and simply return the text 'unique' if the value is true. Otherwise, if it's an array, then it will do unique on all the strings in the array.
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'distributors'
+, action: {
+    addConstraint: {
+      name: 'dist_id_zipcode_key'
+    , unique: ['dist_id', 'zipcode']
+    }
+  }
+}
+```
+
+```sql
+alter table "distributors" add constraint "dist_id_zipcode_key" unique (
+  "dist_id", "zipcode"
+)
+```
+
+```javascript
+{
+  type: 'create-table'
+, table: 'jobs'
+, definition: {
+    id: {
+      type: 'serial'
+    }
+
+  , name: {
+      type: 'text'
+    , unique: true
+    }
+
+  , createdAt: {
+      type: 'timestamp'
+    }
+  }
+}
+```
+
+```sql
+create table "jobs" (
+  "id" serial,
+  "name" text unique,
+  "createdAt" timestamp
+)
+```
