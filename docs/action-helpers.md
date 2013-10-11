@@ -84,3 +84,33 @@ __Example:__
 alter table "consumers" rename table to "stupid_heads"
 ```
 
+### Helper: 'rename'
+
+Alias for 'renameTable'.
+
+### Helper: 'renameConstraint'
+
+___Format:___ ```rename constraint constraint.from to constraint.to```
+
+__Expects:__ ```object```
+
+Rename a column constraint.
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    renameConstraint: {
+      from: 'id_idx'
+    , to:   'uid_idx'
+    }
+  }
+}
+```
+
+```sql
+alter table "users" rename constraint "id_idx" to "uid_idx"
+```
