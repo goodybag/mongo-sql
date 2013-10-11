@@ -885,9 +885,9 @@ Callbacks arguments are: ```callback( value, values, query )```
 
 __Arguments:__
 
-__Value__ - The value from the passed in MoSQL query object for this particular helper.
-__Values__ - The values array. All values no escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
-__Query__ - This is the whole MoSQL query object passed in by the user.
+* __Value__ - The value from the passed in MoSQL query object for this particular helper.
+* __Values__ - The values array. All values no escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
+* __Query__ - This is the whole MoSQL query object passed in by the user.
 
 ```javascript
 var mosql = require('mongo-sql');
