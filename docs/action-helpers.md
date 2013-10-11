@@ -350,3 +350,35 @@ When the key on the left is true, returns the text on the right:
        setWithOids : 'set with oids'
     setWithoutOids : 'set without oids'
 ```
+
+## Adding your own actions
+
+Same as the other helper interfaces in MoSQL.
+
+### mosql.actionHelpers.add( name, callback )
+
+Add an action helper.
+
+Callbacks arguments are: ```callback( value, values, query )```
+
+__Arguments:__
+
+* __Value__ - The value to be used for update.
+* __Values__ - The values array. All values not escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
+* __Query__ - This is the whole MoSQL query object passed in by the user.
+
+__Example:__
+
+```javascript
+mosql.actionHelpers.add('renameTable', function(value, values, query){
+    return 'rename to "' + value + '"';
+  });
+```
+
+### mosql.actoinHelpers.has( name )
+
+Returns a boolean denoting whether or not a actoin helper exists.
+
+### mosql.actoinHelpers.get( name )
+
+Returns the actoin helper interface: ```{ fn, options }```.
