@@ -305,3 +305,38 @@ alter table "distributors"
   add constraint "zipchk"
   check (char_length(zipcode) = $1)
 ```
+
+### Single Parameter Actions
+
+When passed the key on the left, returns the value on the right in the following format: ```text "value"```
+
+```
+ enableAlwaysTrigger : 'enable always trigger'
+         disableRule : 'disable rule'
+          enableRule : 'enable rule'
+   enableReplicaRule : 'enable replica rule'
+    enableAlwaysRule : 'enable always rule'
+           clusterOn : 'cluster on'
+             inherit : 'inherit'
+           noInherit : 'no inherit'
+                  of : 'of'
+               notOf : 'not of'
+             ownerTo : 'owner to'
+       setTableSpace : 'set tablespace'
+```
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'distributors'
+, action: {
+    enableRule: 'some_rule'
+  }
+}
+```
+
+```sql
+alter table "distributors" enable rule "some_rule"
+```
