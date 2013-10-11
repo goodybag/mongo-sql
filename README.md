@@ -28,6 +28,10 @@ Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a par
 
 Looking for a sandbox? Check out http://mosql.j0.hn
 
+## Docs
+
+I'm in the process of writing _a lot_ of documentation. You can find my WIP here [https://github.com/goodybag/mongo-sql/tree/39-imprv-docs/docs](https://github.com/goodybag/mongo-sql/tree/39-imprv-docs/docs). For now though, if you want to know how to implement something, the test coverage is very high, so that's the best place to look.
+
 ## Why JSON?
 
 This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.
