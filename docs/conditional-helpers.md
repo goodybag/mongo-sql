@@ -144,3 +144,49 @@ __Example:__
 ```sql
 select "users".* from "users" where "users"."id" <= 7
 ```
+
+### Helper: '$null'
+
+___Cascades:___ _true_
+
+__Format:__ ```col is null```
+
+Is Null
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $null: true } }
+, where: { $null: { id: true } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" is null
+```
+
+### Helper: '$notNull'
+
+___Cascades:___ _true_
+
+__Format:__ ```col is not null```
+
+Is not null
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $notNull: true } }
+, where: { $notNull: { id: true } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" is not null
+```
