@@ -183,3 +183,32 @@ alter table "users" add column "groupId" int
   references "groups"("id")
   on update set null
 ```
+
+### Helper: 'dropColumn'
+
+___Format:___ ```DROP [ COLUMN ] [ IF EXISTS ] column_name [ RESTRICT | CASCADE ]```
+
+__Expects:__ ```object```
+
+Drop a column.
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    dropColumn: {
+      name: 'groupId'
+    , ifExists: true
+    , restrict: true
+    , cascade: true
+    }
+  }
+}
+```
+
+```sql
+alter table "users" drop column if exists "groupId" restrict cascade
+```
