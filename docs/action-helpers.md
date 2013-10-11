@@ -224,15 +224,15 @@ alter column
   [using (value.using)]
   [set default value.default]
   [drop default]
-  [set not null]
-  [drop not null]
+  [notNull: set not null]
+  [!notNull: drop not null]
   [set statistics value.statistics]
   [set storage value.storage]
 ```
 
 __Expects:__ ```object```
 
-Alter a column.
+Alter a column. Passing ```notNull: true``` will return set not null, but ```notNull: false``` return drop not null, everything else follows the format above.
 
 __Example:__
 
@@ -251,4 +251,28 @@ __Example:__
 
 ```sql
 alter table "users" alter column "createdAt" drop not null
+```
+
+### Helper: 'dropConstraint'
+
+___Format:___ ```drop constraint "value"```
+
+__Expects:__ ```string```
+
+Drops a constraint
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'stupid_heads'
+, action: {
+    dropConstraint: 'stupid_heads_idx'
+  }
+}
+```
+
+```sql
+alter table "stupid_heads" drop constraint "stupid_heads_idx"
 ```
