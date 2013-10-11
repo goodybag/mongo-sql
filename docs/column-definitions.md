@@ -171,7 +171,6 @@ __Expects:__ ```object```
 
 Checks whether some condition is true. Expects a valid MoSQL conditional object. See [conditional helpers](./conditional-helpers.md) for full capabilities.
 
-
 __Example:__
 
 ```javascript
@@ -191,3 +190,29 @@ __Example:__
 ```sql
 alter table "users" add column "groupId" int check ("users"."groupId" > $1)
 ```
+
+### Helper: 'noInherit'
+
+If true, returns the string 'no inherit'.
+
+
+## Registering your own Column Definitions
+
+Column definitions uses the standard MoSQL Helper Interface, so it's very similar to the other helpers.
+
+### mosql.columnDefinitions.add( name, callback )
+
+Add a new column definition. Name is the name of the column definition helper, callback is the function to be called when a match is made to the helper name. Callback's arguments are:
+
+* __Value__ - The value to be used for update.
+* __Values__ - The values array. All values not escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
+* __Table__ - The table associated to the column
+* __Query__ - This is the whole MoSQL query object passed in by the user.
+
+### mosql.updateHelpers.has( name )
+
+Returns a boolean denoting whether or not a update helper exists.
+
+### mosql.updateHelpers.get( name )
+
+Returns the update helper interface: ```{ fn, options }```.

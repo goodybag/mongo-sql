@@ -68,7 +68,7 @@ Update helpers use the standard MoSQL helper interface, so it's just like adding
 
 Registers a new update helper.
 
-Callbacks arguments are: ```callback( column, value, values, table, query )```
+Callbacks arguments are: ```callback( value, values, table, query )```
 
 __Arguments:__
 
