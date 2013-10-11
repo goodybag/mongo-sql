@@ -141,3 +141,45 @@ __Example:__
 ```sql
 alter table "users" rename column "firstName" to "name"
 ```
+
+### Helper: 'setSchema'
+
+___Format:___ ```set schema "val"```
+
+__Expects:__ ```string```
+
+Set the schema
+
+### Helper: 'addColumn'
+
+___Format:___ ``` ADD [ COLUMN ] column_name data_type [ column_constraint [ ... ] ]```
+
+__Expects:__ ```object```
+
+Add a new column. Column constraints defined by the [column-constraint](./query-helpers.md#helper-column-constraint) query helper, which are in turn defined by [column-definition helpers](./column-definitions.md).
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    addColumn: {
+      name: 'groupId'
+    , type: 'int'
+    , references: {
+        table: 'groups'
+      , column: 'id'
+      , onUpdate: 'set null'
+      }
+    }
+  }
+}
+```
+
+```sql
+alter table "users" add column "groupId" int
+  references "groups"("id")
+  on update set null
+```
