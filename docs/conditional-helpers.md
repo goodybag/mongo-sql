@@ -48,3 +48,99 @@ __Example:__
 ```sql
 select "users".* from "users" where "users"."id" != 7
 ```
+
+### Helper: '$gt'
+
+___Cascades:___ _true_
+
+__Format:__ ```col > val```
+
+Greater than
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $gt: 7 } }
+, where: { $gt: { id: 7 } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" > 7
+```
+
+### Helper: '$gte'
+
+___Cascades:___ _true_
+
+__Format:__ ```col >= val```
+
+Greater than equal to
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $gte: 7 } }
+, where: { $gte: { id: 7 } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" >= 7
+```
+
+```sql
+select "users".* from "users" where "users"."id" > 7
+```
+
+### Helper: '$lt'
+
+___Cascades:___ _true_
+
+__Format:__ ```col < val```
+
+Less than
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $lt: 7 } }
+, where: { $lt: { id: 7 } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" < 7
+```
+
+### Helper: '$lte'
+
+___Cascades:___ _true_
+
+__Format:__ ```col <= val```
+
+Less than
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $lte: 7 } }
+, where: { $lte: { id: 7 } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" <= 7
+```
