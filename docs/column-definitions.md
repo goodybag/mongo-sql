@@ -49,3 +49,19 @@ __Example:__
 alter table "users" add column "groupId" int references "groups"
   on delete cascade on update set null match full
 ```
+
+### Helper: 'null'
+
+___Format:___ ```null | not null```
+
+__Expects:__ 'boolean'
+
+If true, returns null. Otherwisee, return not null.
+
+### Helper: 'notNull'
+
+___Format:___ ```not null | null```
+
+__Expects:__ 'boolean'
+
+Inverse of ```null```. If true, returns not null. Otherwisee, returns null.
