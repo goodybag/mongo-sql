@@ -429,8 +429,7 @@ Callbacks arguments are: ```callback( column, value, values, table, query )```
 
 __Arguments:__
 
-__Column__ - The column associated to the operation (already quoted and assocated to table).
-
+* __Column__ - The column associated to the operation (already quoted and assocated to table).
 * __Value__ - The value being operated on (already parameterized).
 * __Values__ - The values array. All values not escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
 * __Table__ - The table associated to the column

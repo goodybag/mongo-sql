@@ -59,3 +59,46 @@ update "users"
   set "hp" = "users"."hp" - $1
 where "users"."id" = $2
 ```
+
+## Registering your own Update Helpers
+
+Update helpers use the standard MoSQL helper interface, so it's just like adding other helpers.
+
+### mosql.conditionalHelpers.add( name, [options], callback )
+
+Registers a new update helper.
+
+Callbacks arguments are: ```callback( column, value, values, table, query )```
+
+__Arguments:__
+
+* __Value__ - The value to be used for update.
+* __Values__ - The values array. All values not escaped by surrounding '$' signs are pushed to the values array for parameterized queries.
+* __Table__ - The table associated to the column
+* __Query__ - This is the whole MoSQL query object passed in by the user.
+
+__Example:__
+
+```javascript
+var mosql = require('mongo-sql');
+
+/**
+ * Increment column
+ * Example:
+ *  { $inc: { clicks: 1 } }
+ * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
+ */
+helpers.add('$inc', function(value, values, collection){
+  return Object.keys( value ).map( function( key ){
+    return [
+      // Quote the column without the table
+      mosql.utils.quoteColumn( key )
+    , '='
+      // Quote column with the table
+    , mosql.utils.quoteColumn( key, table )
+      // Push the value into the values array
+    , '+ $' + values.push( value[ key ] )
+    ].join(' ');
+  }).join(' ');
+});
+```
