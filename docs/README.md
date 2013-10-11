@@ -7,4 +7,4 @@ MoSQL is largely based on helper registration. Most functionality is achieved th
 * [Conditional Helpers](./conditional-helpers.md)
 * [Update Helpers](./update-helpers.md)
 * [Column Definitions](./column-definitions.md)
-* [Actions](./actions.md)
+* [Actions](./actions-helpers.md)
