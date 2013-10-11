@@ -340,3 +340,13 @@ __Example:__
 ```sql
 alter table "distributors" enable rule "some_rule"
 ```
+
+### Boolean Actions
+
+When the key on the left is true, returns the text on the right:
+
+```
+ setWithoutCluster : 'set without cluster'
+       setWithOids : 'set with oids'
+    setWithoutOids : 'set without oids'
+```
