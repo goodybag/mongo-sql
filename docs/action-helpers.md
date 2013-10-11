@@ -276,3 +276,32 @@ __Example:__
 ```sql
 alter table "stupid_heads" drop constraint "stupid_heads_idx"
 ```
+
+### Helper: 'addConstraint'
+
+___Format:___ ```add constraint "constraint.name" ...```
+
+__Expects:__ ```object```
+
+Uses the [column-constraint](./query-helpers.md#helper-column-constraint) query helper to add a column constraint.
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'distributors'
+, action: {
+    addConstraint: {
+      name: 'zipchk'
+    , check: { $custom: ['char_length(zipcode) = $1', 5] }
+    }
+  }
+}
+```
+
+```sql
+alter table "distributors"
+  add constraint "zipchk"
+  check (char_length(zipcode) = $1)
+```
