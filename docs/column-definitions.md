@@ -123,3 +123,42 @@ create table "jobs" (
   "createdAt" timestamp
 )
 ```
+
+### Helper: 'default'
+
+___Format:___ ```default val```
+
+__Expects:__ 'string'
+
+Set a default value. Purposefully does not parameterize values because it is too often the case that a value is used that does not need to be parameterized. Something like ```now()```.
+
+__Example:__
+
+```javascript
+{
+  type: 'create-table'
+, table: 'jobs'
+, definition: {
+    id: {
+      type: 'serial'
+    }
+
+  , name: {
+      type: 'text'
+    }
+
+  , createdAt: {
+      type: 'timestamp'
+    , default: 'now()'
+    }
+  }
+}
+```
+
+```sql
+create table "jobs" (
+  "id" serial, 
+  "name" text, 
+  "createdAt" timestamp default now()
+)
+```
