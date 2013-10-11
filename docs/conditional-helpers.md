@@ -1,6 +1,8 @@
 # Conditional Helpers
 
-Conditional helpers are used within the [where](./query-helpers.md#helper-where) query helper. They allow the use of operators like ```>, <=, in, not in, etc.```. Helpers can be arranged pretty much anyway you want to and it will work. I'll try and show all the different ways you can do it
+Conditional helpers are used within the [where](./query-helpers.md#helper-where) query helper. They allow the use of operators like ```>, <=, in, not in, etc.```. Helpers can be arranged pretty much anyway you want to and it will work. I'll try and show all the different ways you can do it.
+
+Note that if ordering matters in your query, you can always use an array syntax:
 
 ### Helper: '$equals'
 
@@ -235,4 +237,92 @@ __Example:__
 
 ```sql
 select "users".* from "users" where "users"."name" ilike 'Bob'
+```
+
+### Helper: '$in'
+
+___Cascades:___ _false_
+
+__Format:__ ```col in set|expression```
+
+Value in a set or recordset.
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $in: [ 1, 2, 3 ] } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" in (1, 2, 3)
+```
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    id: { $in: {
+      type: 'select'
+    , columns: ['id']
+    , table: 'consumers'
+    , where: { name: 'Bob' }
+    } }
+  }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" in (
+  select "consumers"."id" from "consumers"
+  where "consumers"."name" = 'Bob'
+)
+```
+
+### Helper: '$nin'
+
+___Cascades:___ _false_
+
+__Format:__ ```col in set|expression```
+
+Value not in a set or recordset.
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $nin: [ 1, 2, 3 ] } }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" not in (1, 2, 3)
+```
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    id: { $nin: {
+      type: 'select'
+    , columns: ['id']
+    , table: 'consumers'
+    , where: { name: 'Bob' }
+    } }
+  }
+}
+```
+
+```sql
+select "users".* from "users" where "users"."id" not in (
+  select "consumers"."id" from "consumers"
+  where "consumers"."name" = 'Bob'
+)
 ```
