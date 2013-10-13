@@ -551,5 +551,20 @@ describe('Built-In Query Types', function(){
         ].join('')
       );
     });
+
+    it ('select expression', function(){
+      var query = builder.sql({
+        type: 'select'
+      , expression: {
+          type: 'unnest'
+        , expression: 'users.jobs'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select unnest(users.jobs)'
+      );
+    });
   });
 });
