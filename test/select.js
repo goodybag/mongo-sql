@@ -563,7 +563,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'select unnest(users.jobs)'
+      , 'select unnest( users.jobs )'
       );
     });
   });
