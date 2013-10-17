@@ -57,7 +57,7 @@ The query should be represented in a manner that makes sense to developer and ma
 
 ## Examples
 
-Sorry, these are no particular order.
+Sorry, these are in no particular order.
 
 * [Simple select](http://mosql.j0.hn/#/snippets/1)
 * [Simple insert](http://mosql.j0.hn/#/snippets/2)
