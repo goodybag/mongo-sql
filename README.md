@@ -1,4 +1,4 @@
-# MongoSQL - To be renamed
+# MoSQL - JSON to SQL
 
 Put value and _semantic meaning_ back into your queries by writing your SQL as JSON:
 
@@ -10,7 +10,6 @@ var usersQuery = {
 , table: 'users'
 , where: { $or: { id: 5, name: 'Bob' } }
 };
-
 
 var result = builder.sql(usersQuery);
 
@@ -24,204 +23,69 @@ ___Result:___
 select "users".* from "users" where "users.id" = $1 or "users"."name" = $2
 ```
 
-Notice the ```$1``` and ```$2```. The outputted SQL is meant to be used in a parameterized query, like [node-pg]() performs by default.
+Want to play around with the syntax? Check out the [playground](http://mosql.j0.hn), [documentation](./docs), and [examples](#examples).
 
-Looking for a sandbox? Check out http://mosql.j0.hn
+__Installation:__
 
-## Docs
+Node.js:
 
-I'm in the process of writing _a lot_ of documentation. You can find my WIP here [https://github.com/goodybag/mongo-sql/tree/39-imprv-docs/docs](https://github.com/goodybag/mongo-sql/tree/39-imprv-docs/docs). For now though, if you want to know how to implement something, the test coverage is very high, so that's the best place to look.
+```
+npm install mongo-sql
+```
+
+Require.js:
+
+```
+jam install mongo-sql
+```
 
 ## Why JSON?
 
-This library strives to make query composition more native to JavaScript. Using a first-class language construct means that you can easily compose and combine queries and syntax highlighting is much more meaningful than imperative counterparts.
+There are plenty of SQL building libraries that use a very imperative style of building SQL queries. The approach is linear and typically requires a bunch of function chaining. It removes your ability to use the query as a value and requires the library consumer to build their queries in large clumps or all at once. It's sometimes impossible with some of these libraries to reflect on the current state of the query programmatically. What columns have I added? Have I already joined against my groups table? MoSQL uses standard data structures to accomplish its query building, so you can figure out the state of the query at all times.
 
-```javascript
-var builder = require('mongo-sql');
+JSON is also a prime candidate for becoming a universally understand data representation. By using Javascript objects, we do not rule out the possibility of interoping with and porting to other languages.
 
-var someGroup = {
-  type:     'select'
-, table:    'groups'
-, columns:  ['userId']
-, where:    { "groupId": 5 }
-}
+It may not be as pretty as other libraries, but prettiness is not a design principle of this library. The design principles are:
 
-var query = {
-  type:   'select'
-, table:  'users'
-, where:  { id: { $nin: someGroup } }
-};
+__Extensibility__
 
-builder.sql(query);
-```
+If a feature is not supported, you should be able to add your own functionality to _make_ it supported.
 
-___Result:___
+__Semantic Value__
 
-```sql
-select "users".* from "users" where "users"."id" not in (
-  select "groups"."userId" from "groups" where  "groups"."groupId" = $1
-)
-```
+The query should be represented in a manner that makes sense to developer and machine. The use of standard data structures allows the developer to use standard APIs to manipulate the query.
 
-How about something crazier?
+## Examples
 
-```javascript
-{
-  type: 'select'
+Sorry, these are no particular order.
 
-, columns: [ '*', 'extension.field1', 'extension.field2' ]
+* [Simple select](http://mosql.j0.hn/#/snippets/1)
+* [Simple insert](http://mosql.j0.hn/#/snippets/2)
+* [Insert with values from a select](http://mosql.j0.hn/#/snippets/16)
+* [Simple select with conditions](http://mosql.j0.hn/#/snippets/3)
+* [Joins](http://mosql.j0.hn/#/snippets/1b)
+* [Various conditional stuff](http://mosql.j0.hn/#/snippets/1j)
+* [Not in sub-query](http://mosql.j0.hn/#/snippets/4)
+* [Create view](http://mosql.j0.hn/#/snippets/5)
+* [Multi-row inserts](http://mosql.j0.hn/#/snippets/6)
+* [Ridiculous 'with' query with selecting JSON literal](http://mosql.j0.hn/#/snippets/e)
+* [Various column selection methods](http://mosql.j0.hn/#/snippets/w)
+* [Two different ways to specify a function](http://mosql.j0.hn/#/snippets/z)
+* [Rename column](http://mosql.j0.hn/#/snippets/11)
+* [Alias a table in select](http://mosql.j0.hn/#/snippets/12)
+* [Drop table](http://mosql.j0.hn/#/snippets/13)
+* [Create table](http://mosql.j0.hn/#/snippets/14)
+* [Select distinc](http://mosql.j0.hn/#/snippets/15)
+* [Update with increment](http://mosql.j0.hn/#/snippets/17)
+* [Group by](http://mosql.j0.hn/#/snippets/19)
+* [Various table specification methods](http://mosql.j0.hn/#/snippets/1d)
+* [Insert with sub-query as second value](http://mosql.j0.hn/#/snippets/1e)
+* [With sub-queries](http://mosql.j0.hn/#/snippets/1f)
+* [Adding a constraint with alter table](http://mosql.j0.hn/#/snippets/1h)
+* [Registering a conditional helper](http://mosql.j0.hn/#/snippets/1p)
+* [Updates increment decrement](http://mosql.j0.hn/#/snippets/1n)
+* [Expand foreign key array of integers to an array of JSON results](http://mosql.j0.hn/#/snippets/1t)
 
-, table: [ 'users', 'extension' ]
+## Contributing
 
-, leftJoin: { 
-    extension: { id: 'extension.id' }
-  }
-
-, where: {
-    name: { $ilike: { $or: ['bob', 'alice'] } }
-  , id: {
-      $nin: {
-        type: 'select'
-      , columns: ['id']
-      , table: 'otherUsers'
-      , where: { someCondition: true }
-      }
-    }
-  }
-
-, limit: 100
-
-, order: { id: 'desc' }
-
-, groupBy: ['id', 'name']
-}
-```
-
-___Result:___
-
-```sql
-select
-  "users".*
-, "extension"."field1"
-, "extension"."field2"
-from "users", "extension"
-  left join "extension" on "extension"."id" = $1
-where (
-  "users"."name" ilike $2 or "users"."name" ilike $3
-) and "users"."id" not in (
-  select "otherUsers"."id" from "otherUsers"
-  where "otherUsers"."someCondition" is true
-)
-limit $4
-order by "users"."id" desc
-group by "users"."id", "users"."name"
-```
-
-## Declarative Style and Extensibility
-
-This library spawned from my frustrations in using popular string-building libraries for node. Other approaches require an imperative approach to string building which is just as ugly if not uglier than string concatenation and array joining.
-
-```javascript
-users.select(users.id, users.name).where(
-  users.name.equals('Bob').and(
-    users.createdAt.greaterThan('2013-05-05')
-  )
-);
-```
-
-At first this stuff seems great. But then as your queries get more complex you realize that it only solves the easy problems. It only solves the queries that you actually wouldn't mind just writing the string for. Swapping logic and overriding previously declared parts of your query become difficult because of the imperative style. Sub-queries and joins are awkward if supported at all and the general verbosity doesn't help either.
-
-Using existing query builders, I found myself wanting to extend the behavior of the builder, but found no outlet to do so. I could fork the repo, implement the behavior myself, but that's no good. There needs to be a clear interface that allows anyone to add any behavior they want.
-
-### Helpers
-
-This library is completely built on top of helpers. They're registered exactly the same way as a consumer of the library would register.
-
-#### Query Types
-
-Query types are the base structure of a query. They provide ordering for the different components of a query. Here's a built-in query type:
-
-```javascript
-mongoSql.registerQueryType(
-  // Type identifier
-  'select'
-
-  // Type specification
-, 'select {columns} from {table} {tables} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {limit} {offset} {order} {groupBy}'
-);
-```
-
-When you run a query object through the evaluator, it first checks to ensure you have specified a type. So if you used ```type: 'select'```, then the evaluator will start off with the above registered query type. Each variable enclosed in ```{``` brackets ````}``` is called a query helper. If you want to utilize a query helper, then specify a key on your query object with the appropriate value for that helper. If the query object does not specify values for a query helper, then those helpers are ignored.
-
-#### Query Helpers
-
-Query helpers provide the strings replacements for the query helper variables in query types. In the above example, anything in ```{``` brackets ```}``` are query helpers. For example, look at the columns query helper:
-
-```javascript
-// helpers/query/columns.js
-
-var helpers = require('../../lib/query-helpers');
-var utils   = require('../../lib/utils');
-
-helpers.register('columns', function(columns, values, query){
-  if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');
-
-  var output = "";
-
-  if (Array.isArray(columns)){
-    for (var i = 0, l = columns.length; i < l; ++i)
-      output += utils.quoteColumn(columns[i], query.__defaultTable) + ', ';
-  } else {
-    for (var key in columns)
-      output += utils.quoteColumn(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
-  }
-
-  if (output.length > 0) output = output.substring(0, output.length - 2);
-
-  return output;
-});
-```
-
-The first parameter to a query helper definition is the value to the corresponding key in the query object. For a query like the one below, the columns array is passed as the first parameter.
-
-```javascript
-{
-  type: 'select'
-, table: 'groups'
-, columns: ['id', 'name']
-}
-```
-
-The second parameter passed to query helpers is the values array for the whole sql query. This is for parameterized output.
-
-#### Conditional Helpers
-
-Some query helpers, like ```{where}``` and ```{joins}```, got so complex, I had to write a helper system just for theme. These helpers are called conditional helpers. The where and join helpers allow arbitrarily compex objects:
-
-```javascript
-{
-  type: 'select'
-, table: 'users'
-, where: {
-    id: {
-      $gt: 100, $lte: 200
-    , $nin: {
-        type: 'select'
-      , table: 'dumbUsers'
-      }
-    }
-    // Immediate children of $or are OR'd
-  , $or: {
-      $gt: { name: 'Bob' }
-      // But the sub-sequent children are AND'd
-    , $ilike: {
-        name: 'Pam'
-      , lastName: 'Sue'
-      }
-    , name: { $ilike: 'Steve' }
-    }
-  }
-}
-```
-
-Things like ```$or```, ```$lte```, ```$nin``` are all conditional helpers. 
+I will happily accept pull requests. Just please write a test for whatever functionality you're providing. Coding style is an evolving thing here. I'll be JSHinting this repo soon and will make the coding style consistent when I do.
