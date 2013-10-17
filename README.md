@@ -41,7 +41,7 @@ jam install mongo-sql
 
 ## Why JSON?
 
-There are plenty of SQL building libraries that use a very imperative style of building SQL queries. The approach is very linear and typically requires a bunch of function chaining. This method removes your ability to use the query as a value and requires the library consumer to build their queries in large clumps or all at once. It's sometimes impossible with some of these libraries to reflect on the current state of the query. What columns have I added? Have I already joined against my groups table? MoSQL uses standard data structures to accomplish its query building, so you can figure out the state of the query at all times.
+There are plenty of SQL building libraries that use a very imperative style of building SQL queries. The approach is linear and typically requires a bunch of function chaining. It removes your ability to use the query as a value and requires the library consumer to build their queries in large clumps or all at once. It's sometimes impossible with some of these libraries to reflect on the current state of the query programmatically. What columns have I added? Have I already joined against my groups table? MoSQL uses standard data structures to accomplish its query building, so you can figure out the state of the query at all times.
 
 JSON is also a prime candidate for becoming a universally understand data representation. By using Javascript objects, we do not rule out the possibility of interoping with and porting to other languages.
 
