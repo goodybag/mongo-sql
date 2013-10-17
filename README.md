@@ -88,4 +88,4 @@ Sorry, these are no particular order.
 
 ## Contributing
 
-I will happily accept pull requests. Just please write a test for whatever functionality you're providing. Coding style is an evolving thing here. I'll be JSHinting this repo soon and will make the coding style consistent when I do.
+I will happily accept pull requests. Just write a test for whatever functionality you're providing. Coding style is an evolving thing here. I'll be JSHinting this repo soon and will make the coding style consistent when I do.
