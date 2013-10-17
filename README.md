@@ -86,6 +86,26 @@ Sorry, these are in no particular order.
 * [Updates increment decrement](http://mosql.j0.hn/#/snippets/1n)
 * [Expand foreign key array of integers to an array of JSON results](http://mosql.j0.hn/#/snippets/1t)
 
+## How does it work?
+
+Every MoSQL query has a [query type](./docs/query-types.md) specified that maps to a SQL string template. Query types are composed of various strings and [query helpers](./docs/query-helpers.md) whose output maps to functions.
+
+So ```type: 'select'``` uses the query type defined as 'select'. Every other property in the query object maps to a query helper. The 'select' query type starts off like this:
+
+```
+{with} select {columns} {table}...
+```
+
+When you have the following query:
+
+```javascript
+{ type: 'select', table: 'users' }
+```
+
+The ```table``` property is mapped to the [table query helper](./docs/query-helpers.md#helper-table).
+
+98% of the functionality in MoSQL is defined through various helper interfaces. If the functionality you need doesn't exist, you can easily register your own behavior and keep on moving along. To see how all of the functionality was implemented, just check out the [helpers folder](./helpers). It uses the same API as library consumers to add its functionality.
+
 ## Contributing
 
 I will happily accept pull requests. Just write a test for whatever functionality you're providing. Coding style is an evolving thing here. I'll be JSHinting this repo soon and will make the coding style consistent when I do.
