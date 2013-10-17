@@ -70,7 +70,7 @@ Sorry, these are no particular order.
 * [Multi-row inserts](http://mosql.j0.hn/#/snippets/6)
 * [Ridiculous 'with' query with selecting JSON literal](http://mosql.j0.hn/#/snippets/e)
 * [Various column selection methods](http://mosql.j0.hn/#/snippets/w)
-* [Two different wants to specify a function](http://mosql.j0.hn/#/snippets/z)
+* [Two different ways to specify a function](http://mosql.j0.hn/#/snippets/z)
 * [Rename column](http://mosql.j0.hn/#/snippets/11)
 * [Alias a table in select](http://mosql.j0.hn/#/snippets/12)
 * [Drop table](http://mosql.j0.hn/#/snippets/13)
