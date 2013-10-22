@@ -36,6 +36,38 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('it should create a table with schema', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: '"private"."jobs"'
+      , schema: 'private'
+      , definition: {
+          id: {
+            type: 'serial'
+          , primaryKey: true
+          }
+
+        , name: {
+            type: 'text'
+          }
+
+        , createdAt: {
+            type: 'timestamp'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'create table "private"."jobs" ('
+        , '"id" serial primary key, '
+        , '"name" text, '
+        , '"createdAt" timestamp'
+        , ')'
+        ].join('')
+      );
+    });
+
     it('it should create a table if it does not exist', function(){
       var query = builder.sql({
         type: 'create-table'

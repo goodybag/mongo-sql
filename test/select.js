@@ -30,6 +30,19 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('should specify columns with schema', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: '"private"."users"'
+      , columns: ['id', 'name']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "private"."users"."id", "private"."users"."name" from "private"."users"'
+      );
+    });
+
     it ('should specify columns that are objects', function(){
       var query = builder.sql({
         type: 'select'
