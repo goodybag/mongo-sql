@@ -126,6 +126,12 @@ define(function(require, exports, module){
   });
 
   actions.add('alterColumn', function(value, values, query){
+    if ( Array.isArray(value) ){
+      return value.map( function( v ){
+        return actions.get('alterColumn').fn( v, values, query );
+      }).join(', ');
+    }
+
     var output = ["alter column"];
 
     output.push( utils.quoteColumn(value.name) );
