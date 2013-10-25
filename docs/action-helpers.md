@@ -230,7 +230,7 @@ alter column
   [set storage value.storage]
 ```
 
-__Expects:__ ```object```
+__Expects:__ ```object|array```
 
 Alter a column. Passing ```notNull: true``` will return set not null, but ```notNull: false``` return drop not null, everything else follows the format above.
 
@@ -251,6 +251,29 @@ __Example:__
 
 ```sql
 alter table "users" alter column "createdAt" drop not null
+```
+
+If you need to do multiple alter column statements, you can just pass an array of alterColumn objects:
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    alterColumn: [
+      { name: 'createdAt', storage: 'external' }
+    , { name: 'createdAt', notNull: true }
+    , { name: 'createdAt', default: 'now()' }
+    ]
+  }
+}
+```
+
+```sql
+alter table "users"
+  alter column "createdAt" set storage external,
+  alter column "createdAt" set not null,
+  alter column "createdAt" set default now();
 ```
 
 ### Helper: 'dropConstraint'

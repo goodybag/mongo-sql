@@ -633,6 +633,29 @@ describe('Built-In Query Types', function(){
           ].join('')
         );
       });
+
+      it('should perform multiple alter columns', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            alterColumn: [
+              { name: 'createdAt', storage: 'external' }
+            , { name: 'createdAt', notNull: true }
+            , { name: 'createdAt', default: 'now()' }
+            ]
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" '
+          , 'alter column "createdAt" set storage external, '
+          , 'alter column "createdAt" set not null, '
+          , 'alter column "createdAt" set default now()'
+          ].join('')
+        );
+      });
     });
 
     describe('add/drop constraint', function(){
