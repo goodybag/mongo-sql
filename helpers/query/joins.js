@@ -37,7 +37,11 @@ define(function(require, exports, module){
   };
 
   helpers.register('joins', function(joins, values, query){
-    if ( Array.isArray( joins ) ) return joins.map( buildJoin ).join(' ');
+    if ( Array.isArray( joins ) ){
+      return joins.map( function( join ){
+        return buildJoin( join, values, query );
+      }).join(' ');
+    }
 
     if ( typeof joins === 'object' ) {
       return Object.keys( joins ).map(function( val ){

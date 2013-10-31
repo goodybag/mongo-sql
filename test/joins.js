@@ -265,6 +265,51 @@ describe('Joins', function(){
     );
   });
 
+  it ('should build joins using array syntax with conditionals in a sub-select', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: "books"
+        , on: {
+            userId: '$users.id$'
+          }
+        }
+      , {
+          type: 'left'
+        , alias: 'addresses'
+        , on: { 'userId': '$users.id$' }
+        , target: {
+            type: 'select'
+          , table: 'addresses'
+          , columns: ['userId']
+          , where: {
+              id: { $gt: 7 }
+            }
+          }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "books" on "books"."userId" = "users"."id" '
+      , 'left join ('
+      ,   'select "addresses"."userId" from "addresses" where "addresses"."id" > $1'
+      , ') "addresses" on "addresses"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , [7]
+    );
+  });
+
   it ('should build multiple joins from single joins query helper', function(){
     var query = builder.sql({
       type: 'select'
