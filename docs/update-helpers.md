@@ -64,7 +64,11 @@ where "users"."id" = $2
 
 Update helpers use the standard MoSQL helper interface, so it's just like adding other helpers.
 
-### mosql.conditionalHelpers.add( name, [options], callback )
+### mosql.registerUpdateHelper( name, [options], callback )
+
+Alias for ```mosql.updateHelpers.add```.
+
+### mosql.updateHelpers.add( name, [options], callback )
 
 Registers a new update helper.
 
@@ -88,7 +92,7 @@ var mosql = require('mongo-sql');
  *  { $inc: { clicks: 1 } }
  * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
  */
-helpers.add('$inc', function(value, values, collection){
+mosql.registerUpdateHelper('$inc', function(value, values, collection){
   return Object.keys( value ).map( function( key ){
     return [
       // Quote the column without the table
