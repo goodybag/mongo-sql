@@ -378,6 +378,10 @@ When the key on the left is true, returns the text on the right:
 
 Same as the other helper interfaces in MoSQL.
 
+### mosql.registerActionHelper( name, callback )
+
+Alias for ```mosql.actionHelpers.add```
+
 ### mosql.actionHelpers.add( name, callback )
 
 Add an action helper.
@@ -398,10 +402,10 @@ mosql.actionHelpers.add('renameTable', function(value, values, query){
   });
 ```
 
-### mosql.actoinHelpers.has( name )
+### mosql.actionHelpers.has( name )
 
 Returns a boolean denoting whether or not a actoin helper exists.
 
-### mosql.actoinHelpers.get( name )
+### mosql.actionHelpers.get( name )
 
 Returns the actoin helper interface: ```{ fn, options }```.
