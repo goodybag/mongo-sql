@@ -28,12 +28,12 @@ Performs a select query.
 __Definition:__
 
 ```
-{with} select {expression} {distinct} {columns} {table} {alias}
+{with} select {expression} {distinct} {columns} {over} {table} {alias}
 {joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin}
 {where} {groupBy} {order} {limit} {offset}
 ```
 
-__Helpers Used__: [with](./query-helpers.md#helper-with), [expression](./query-helpers.md#helper-expression), [distinct](./query-helpers.md#helper-distinct), [columns](./query-helpers.md#helper-columns), [table](./query-helpers.md#helper-table), [alias](./query-helpers.md#helper-alias), [joins](./query-helpers.md#helper-joins), [join](./query-helpers.md#helper-join), [innerJoin](./query-helpers.md#helper-innerjoin), [leftJoin](./query-helpers.md#helper-leftjoin), [leftOuterJoin](./query-helpers.md#helper-leftouterjoin), [fullOuterJoin](./query-helpers.md#helper-fullouterjoin), [crossOuterJoin](./query-helpers.md#helper-crossouterjoin), [where](./query-helpers.md#helper-where), [groupBy](./query-helpers.md#helper-groupby), [order](./query-helpers.md#helper-order), [limit](./query-helpers.md#helper-limit), [offset](./query-helpers.md#helper-offset)
+__Helpers Used__: [with](./query-helpers.md#helper-with), [expression](./query-helpers.md#helper-expression), [distinct](./query-helpers.md#helper-distinct), [columns](./query-helpers.md#helper-columns), [over](./query-helpers.md#helper-over), [table](./query-helpers.md#helper-table), [alias](./query-helpers.md#helper-alias), [joins](./query-helpers.md#helper-joins), [join](./query-helpers.md#helper-join), [innerJoin](./query-helpers.md#helper-innerjoin), [leftJoin](./query-helpers.md#helper-leftjoin), [leftOuterJoin](./query-helpers.md#helper-leftouterjoin), [fullOuterJoin](./query-helpers.md#helper-fullouterjoin), [crossOuterJoin](./query-helpers.md#helper-crossouterjoin), [where](./query-helpers.md#helper-where), [groupBy](./query-helpers.md#helper-groupby), [order](./query-helpers.md#helper-order), [limit](./query-helpers.md#helper-limit), [offset](./query-helpers.md#helper-offset)
 
 ___Note:___ _The [where helper](./conditional-helpers.md) was sufficiently complex to warrant its own helper system._
 
