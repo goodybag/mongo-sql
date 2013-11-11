@@ -46,6 +46,8 @@ define(function(require, exports, module){
   require('./helpers/query/boolean-helpers');
   require('./helpers/query/view');
   require('./helpers/query/function');
+  require('./helpers/query/partition');
+  require('./helpers/query/over');
 
   // Register conditional helpers
   require('./helpers/conditional');
