@@ -516,7 +516,7 @@ Add an OVER clause.  Can take either a string or an object with [partition](#hel
 
 ### Helper: 'partition'
 
-Add an PARTITION BY clause.  Can take either a string or an array of strings.  For use with (over)[#helper-over].
+Add an PARTITION BY clause.  Can take either a string or an array of strings.  For use with [over](#helper-over).
 
 ```javascript
 // select depname, empno, salary, avg(salary) over (partition by depname) from empsalary;
