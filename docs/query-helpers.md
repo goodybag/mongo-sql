@@ -502,7 +502,7 @@ Add an ORDER BY clause. There are many different acceptable inputs here best des
 Add an OVER clause.  Can take either a string or an object with [partition](#helper-partition) and [order](#helper-order).
 
 ```javascript
-// select depname, empno, salary, avg(salary) over (partition by depname order by salary asc) from empsalary;
+// select depname, empno, salary, avg(salary) over (partition by "empsalary"."depname" order by salary asc) from empsalary;
 {
   type: 'select'
 , table: 'empsalary'
@@ -519,8 +519,8 @@ Add an OVER clause.  Can take either a string or an object with [partition](#hel
 Add an PARTITION BY clause.  Can take either a string or an array of strings.  For use with [over](#helper-over).
 
 ```javascript
-// select depname, empno, salary, avg(salary) over (partition by depname) from empsalary;
-// select depname, empno, salary, avg(salary) over (partition by depname, empno) from empsalary;
+// select depname, empno, salary, avg(salary) over (partition by "empsalary"."depname") from empsalary;
+// select depname, empno, salary, avg(salary) over (partition by "empsalary"."depname", "empsalary"."empno") from empsalary;
 {
   type: 'select'
 , table: 'empsalary'

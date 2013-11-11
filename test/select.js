@@ -633,7 +633,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (partition by bar) from "foo"'
+      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar") from "foo"'
       );
     });
 
@@ -664,7 +664,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (partition by bar order by bar asc) from "foo"'
+      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar" order by bar asc) from "foo"'
       );
     });
 
@@ -680,7 +680,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (partition by bar, another) from "foo"'
+      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar", "foo"."another") from "foo"'
       );
     });
   });
