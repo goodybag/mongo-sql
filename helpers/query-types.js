@@ -9,7 +9,7 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'select'
-  , '{with} select {expression} {distinct} {columns} {table} {alias} {joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {groupBy} {order} {limit} {offset}'
+  , '{with} select {expression} {distinct} {columns} {over} {table} {alias} {joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {groupBy} {order} {limit} {offset}'
   );
 
   queryTypes.add(

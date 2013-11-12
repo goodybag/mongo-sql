@@ -579,5 +579,109 @@ describe('Built-In Query Types', function(){
       , 'select unnest( users.jobs )'
       );
     });
+
+    // TODO: make this test pass
+    // it ('should allow an empty over clause with string', function() {
+    //   var query = builder.sql({
+    //     type: 'select'
+    //   , table: 'foo'
+    //   , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+    //   , over: ''
+    //   });
+
+    //   assert.equal(
+    //     query.toString()
+    //   , 'select "foo"."bar", avg( baz ) over () from "foo"'
+    //   );
+    // });
+
+    it ('should allow an over clause with arbitrary string', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+      , over: 'completely arbitrary'
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo"."bar", avg( baz ) over (completely arbitrary) from "foo"'
+      );
+    });
+
+    it ('should allow an empty over clause with object', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+      , over: {}
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo"."bar", avg( baz ) over () from "foo"'
+      );
+    });
+
+    it ('should allow over clause with partition', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+      , over: {partition: 'bar'}
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar") from "foo"'
+      );
+    });
+
+    it ('should allow over clause with order', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+      , over: {order: 'bar'}
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo"."bar", avg( baz ) over (order by bar) from "foo"'
+      );
+    });
+
+    it ('should allow over clause with partition and order', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+      , over: {
+          partition: 'bar'
+        , order: 'bar asc'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar" order by bar asc) from "foo"'
+      );
+    });
+
+    it ('should allow over clause with array partition', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
+      , over: {
+          partition: ['bar', 'another']
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar", "foo"."another") from "foo"'
+      );
+    });
   });
 });

@@ -406,7 +406,7 @@ Like in a lot of places, joins have a property that will accept sub-queries. The
     , expression: 'ubooks.book'
     }
   ]
-  
+
   // Where the joining magic happens!
 , joins: [
     // Join on the junction table to get all users books ids
@@ -415,7 +415,7 @@ Like in a lot of places, joins have a property that will accept sub-queries. The
     , target: "usersBooks"
     , on: { userId: '$users.id$' }
     }
-    
+
     // Join on the users books ids with the books table
     // Do a sub-select to export the row as JSON
   , {
@@ -494,6 +494,42 @@ Add an ORDER BY clause. There are many different acceptable inputs here best des
 , order:    { id: 'desc', name: 'asc' }
 , order:    ['id desc', 'name asc']
 , order:    'id desc'
+}
+```
+
+### Helper: 'over'
+
+Add an OVER clause.  Can take either a string or an object with [partition](#helper-partition) and [order](#helper-order).
+
+```javascript
+// select depname, empno, salary, avg(salary) over (partition by "empsalary"."depname" order by salary asc) from empsalary;
+{
+  type: 'select'
+, table: 'empsalary'
+, columns: ['depname', 'empno', 'salary', {type: function, function: 'avg', expression: 'salary'}]
+, over: {
+    partition: 'depname'
+  , order: {salary: 'asc'}
+  }
+}
+```
+
+### Helper: 'partition'
+
+Add an PARTITION BY clause.  Can take either a string or an array of strings.  For use with [over](#helper-over).
+
+```javascript
+// select depname, empno, salary, avg(salary) over (partition by "empsalary"."depname") from empsalary;
+// select depname, empno, salary, avg(salary) over (partition by "empsalary"."depname", "empsalary"."empno") from empsalary;
+{
+  type: 'select'
+, table: 'empsalary'
+, columns: ['depname', 'empno', 'salary', {type: function, function: 'avg', expression: 'salary'}]
+, over: {
+    partition: 'depname'  // string syntax
+    partition: ['depname', 'empno'] // array syntax
+  , order: {salary: 'asc'}
+  }
 }
 ```
 
@@ -598,8 +634,8 @@ __Batch Inserts:__
 Used in the [create-view](./query-types.md#type-create-view) query type. Simply returns the string passed in to name the view:
 
 ```javascript
-// create view "jobs_gt_10" as 
-//  select "jobs".* from "jobs" 
+// create view "jobs_gt_10" as
+//  select "jobs".* from "jobs"
 //  where "jobs"."id" > $1
 {
   type: 'create-view'
@@ -742,9 +778,9 @@ Add WITH sub-queries before any query type. Valid input is either an array of Mo
 
 ```sql
 with "otherUsers" as (
-  select "users".* from "users" 
+  select "users".* from "users"
   where "users"."columnA" = $1
-) 
+)
 select "users".* from "users" where "users"."id" not in (
   select "otherUsers"."id" from "otherUsers"
 )
