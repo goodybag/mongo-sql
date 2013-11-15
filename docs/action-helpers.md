@@ -280,7 +280,7 @@ alter table "users"
 
 ___Format:___ ```drop constraint "value"```
 
-__Expects:__ ```string```
+__Expects:__ ```string|object```
 
 Drops a constraint
 
@@ -298,6 +298,29 @@ __Example:__
 
 ```sql
 alter table "stupid_heads" drop constraint "stupid_heads_idx"
+```
+
+Or with more options
+
+__Example:__
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'stupid_heads'
+, action: {
+    dropConstraint: {
+      name: 'stupid_heads_idx'
+    , ifExists: true
+    , cascade: true
+ // , restrict: true
+    }
+  }
+}
+```
+
+```sql
+alter table "stupid_heads" drop constraint if exists "stupid_heads_idx" cascade
 ```
 
 ### Helper: 'addConstraint'

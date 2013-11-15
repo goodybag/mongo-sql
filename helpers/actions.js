@@ -169,13 +169,18 @@ define(function(require, exports, module){
   actions.add( 'dropConstraint', function( value, values, query ){
     if ( !value ) return;
 
-    var name = value;
+    var out = ['drop constraint'];
 
     if ( typeof value === 'object' ){
-      name = value.name;
-    }
+      if ( value.ifExists ) out.push('if exists');
+      if ( value.name )     out.push('"' + value.name + '"');
+      if ( value.cascade )  out.push('cascade');
+      if ( value.restrict ) out.push('restrict');
+    } else if ( typeof value === 'string' ){
+      out.push('"' + value + '"');
+    } else return;
 
-    return 'drop constraint ' + utils.quoteColumn( name );
+    return out.join(' ');
   });
 
   actions.add( 'addConstraint', function( constraint, values, query ){
