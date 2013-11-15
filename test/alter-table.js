@@ -700,6 +700,27 @@ describe('Built-In Query Types', function(){
         );
       });
 
+      it('should drop a constraint with all options', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'distributors'
+        , action: {
+            dropConstraint: {
+              name: "zipchk"
+            , ifExists: true
+            , cascade: true
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "distributors" '
+          , 'drop constraint if exists "zipchk" cascade'
+          ].join('')
+        );
+      });
+
       it('should add a check constraint', function(){
         var query = builder.sql({
           type: 'alter-table'
