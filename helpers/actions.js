@@ -169,7 +169,13 @@ define(function(require, exports, module){
   actions.add( 'dropConstraint', function( value, values, query ){
     if ( !value ) return;
 
-    return 'drop constraint ' + utils.quoteColumn( value );
+    var name = value;
+
+    if ( typeof value === 'object' ){
+      name = value.name;
+    }
+
+    return 'drop constraint ' + utils.quoteColumn( name );
   });
 
   actions.add( 'addConstraint', function( constraint, values, query ){
@@ -177,6 +183,7 @@ define(function(require, exports, module){
       'add constraint'
     , utils.quoteColumn( constraint.name )
     , queryHelpers.get('columnConstraint').fn( constraint, values, query )
+    , 
     ].join(' ');
   });
 

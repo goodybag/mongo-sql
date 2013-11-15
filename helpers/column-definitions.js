@@ -14,7 +14,17 @@ define(function(require, exports, module){
   });
 
   defs.add('primaryKey', function(primaryKey, values, query){
-    return primaryKey ?  'primary key' : '';
+    if ( !primaryKey ) return '';
+
+    var out = 'primary key';
+
+    if ( typeof primaryKey === 'string' ){
+      out += ' ("' + primaryKey + '")';
+    } else if ( Array.isArray( primaryKey ) ){
+      out += ' ("' + primaryKey.join('", "') + '")';
+    }
+
+    return out;
   });
 
   defs.add('references', function(reference, values, query){
@@ -51,6 +61,8 @@ define(function(require, exports, module){
 
   defs.add('unique', function(unique, values, query){
     if (unique == true) return 'unique';
+
+    if ( typeof unique === 'string' ) return 'unique ("' + unique + '")';
 
     if (Array.isArray(unique))
       return 'unique (' + unique.map(function(column){
