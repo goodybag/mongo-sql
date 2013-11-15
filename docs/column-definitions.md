@@ -14,9 +14,22 @@ Simply returns the value passed into the helper. Used for defining column types.
 
 ___Format:___ ```primary key```
 
-__Expects:__ 'boolean'
+__Expects:__ 'boolean|string|array'
 
-Just returns the string 'primary key' if the value passed in to the helper is truthy.
+Returns ```primary key ...``` depending on the input:
+
+```javascript
+{
+  // primary key
+  primaryKey: true
+
+  // primary key ("name")
+, primaryKey: 'name'
+
+  // primary key ("fname", "lname")
+, priamryKey: ['fname', 'lname']
+}
+```
 
 ### Helper: 'references'
 
