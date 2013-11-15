@@ -171,6 +171,29 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should perform multiple actions', function(){
+      var query = builder.sql({
+        type: 'alter-table'
+      , table: 'users'
+      , action: [
+          { dropConstraint: { name: 'users_pkey' } }
+        , { addConstraint: { name: 'users_pkey', primaryKey: [ 'id', 'name' ] } }
+        , { addConstraint: { name: 'users_stuff_key', unique: 'name' } }
+        , { alterColumn: { name: 'createdAt', default: 'now()' } }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'alter table "users" '
+        , 'drop constraint "users_pkey", '
+        , 'add constraint "users_pkey" primary key ("id", "name"), '
+        , 'add constraint "users_stuff_key" unique ("name"), '
+        , 'alter column "createdAt" set default now()'
+        ].join('')
+      );
+    });
+
     /**
      * Add Column
      ******************

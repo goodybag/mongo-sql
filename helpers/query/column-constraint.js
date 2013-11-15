@@ -47,8 +47,8 @@ define(function(require, exports, module){
       output.push( columnDefs.get('unique').fn(constraint.unique, values, query) )
 
     // Primary key
-    if (constraint.primaryKey == true)
-      output.push( columnDefs.get('primaryKey').fn(true, values, query) )
+    if (constraint.primaryKey)
+      output.push( columnDefs.get('primaryKey').fn(constraint.primaryKey, values, query) )
 
     // Reference
     if (constraint.references)
