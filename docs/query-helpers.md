@@ -25,6 +25,29 @@ __Example:__
 alter table "users" rename column "id" to "uid"
 ```
 
+If you need to perform multiple actions, use an array of actions:
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: [
+    { dropConstraint: { name: 'users_pkey' } }
+  , { addConstraint: { name: 'users_pkey', primaryKey: [ 'id', 'name' ] } }
+  , { addConstraint: { name: 'users_stuff_key', unique: 'name' } }
+  , { alterColumn: { name: 'createdAt', default: 'now()' } }
+  ]
+}
+```
+
+```sql
+alter table "users"
+  drop constraint "users_pkey",
+  add constraint "users_pkey" primary key ("id", "name"),
+  add constraint "users_stuff_key" unique ("name"),
+  alter column "createdAt" set default now()
+```
+
 [Playground](http://mosql.j0.hn/#/snippets/11)
 
 ### Helper: 'alias'
