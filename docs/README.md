@@ -57,9 +57,10 @@ Returns sql quoted column string
 **Examples:**
 
 ```javascript
-mosql.quoteColumn('name', 'users');   // returns '"users"."name"'
-mosql.quoteColumn('users.name');      // returns '"users"."name"'
-mosql.quoteColumn('*', 'users');      // returns '"users".*'
-mosql.quoteColumn('users.*');         // returns '"users".*'
+mosql.quoteColumn('name')             // => '"users"'
+mosql.quoteColumn('name', 'users')    // => '"users"."name"'
+mosql.quoteColumn('users.name')       // => '"users"."name"'
+mosql.quoteColumn('*', 'users')       // => '"users".*'
+mosql.quoteColumn('users.*')          // => '"users".*'
 ```
 
