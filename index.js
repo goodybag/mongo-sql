@@ -13,6 +13,7 @@ define(function(require, exports, module){
   , updateHelpers       = require('./lib/update-helpers')
   , actionHelpers       = require('./lib/action-helpers')
   , columnDefHelpers    = require('./lib/column-def-helpers')
+  , quoteColumn         = require('./lib/utils').quoteColumn
   ;
 
   // Register query types
@@ -93,6 +94,8 @@ define(function(require, exports, module){
   module.exports.registerColumnDefHelper = function(name, options, fn){
     return columnDefHelpers.add(name, options, fn);
   };
+
+  module.exports.quoteColumn = quoteColumn;
 
   return module.exports;
 });
