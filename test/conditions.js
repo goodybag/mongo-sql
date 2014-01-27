@@ -340,7 +340,7 @@ describe('Conditions', function(){
     );
   });
 
-  it ('$in', function(){
+  it ('$in array', function(){
     var query = builder.sql({
       type: 'select'
     , table: 'users'
@@ -390,6 +390,29 @@ describe('Conditions', function(){
     assert.deepEqual(
       query.values
     , [5]
+    );
+  });
+
+  it ('$nin array', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $nin: [1, 2, 3]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where '
+      + '"users"."id" not in ($1, $2, $3)'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [1, 2, 3]
     );
   });
 

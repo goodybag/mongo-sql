@@ -138,13 +138,19 @@ define(function(require, exports, module){
    * @param value  {Mixed}   - String|Array|Function
    */
   conditionals.add('$nin', { cascade: false }, function(column, set, values, collection){
+    if (Array.isArray(set)) {
+      return column + ' not in (' + set.map( function(val){
+        return '$' + values.push( val );
+      }).join(', ') + ')';
+    }
+
     return column + ' not in (' + queryBuilder(set, values).toString() + ')';
   });
 
   conditionals.add('$custom', { cascade: false }, function(column, value, values, collection){
     if (Array.isArray(value))
       return conditionals.get('$custom_array').fn( column, value, values, collection );
-    
+
     if (typeof value == 'object')
       return conditionals.get('$custom_object').fn( column, value, values, collection );
 
