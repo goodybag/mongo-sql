@@ -715,7 +715,7 @@ describe('Conditions', function(){
 
   describe('JSON Operators', function(){
 
-    it ('Should operate on JSON text', function(){
+    it ('Should Get JSON object field', function(){
       var query = builder.sql({
         type: 'select'
       , table: 'users'
@@ -735,7 +735,7 @@ describe('Conditions', function(){
       )
     });
 
-    it ('Should operate on JSON int', function(){
+    it ('Should Get JSON array element', function(){
       var query = builder.sql({
         type: 'select'
       , table: 'users'
@@ -755,7 +755,7 @@ describe('Conditions', function(){
       )
     });
 
-    it ('Should be able to acccess an array', function(){
+    it ('Should Get JSON array element as text', function(){
       var query = builder.sql({
         type: 'select'
       , table: 'users'
@@ -767,6 +767,26 @@ describe('Conditions', function(){
       assert.equal(
         query.toString()
       , 'select "users".* from "users" where "users"."data"->>5 = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should Get JSON object field as text', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->>name': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "users"."data"->>\'name\' = $1'
       );
 
       assert.deepEqual(
@@ -850,6 +870,29 @@ describe('Conditions', function(){
         type: 'select'
       , table: 'users'
       , where: {
+          'data->3->records->4->id': 27
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "users".* from "users" where '
+        , '"users"."data"->3->\'records\'->4->\'id\' = $1'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , [27]
+      )
+    });
+
+    it ('Should be able to go deep with array syntax', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
           'data#>{3,records,4,id}': 27
         }
       });
@@ -859,6 +902,29 @@ describe('Conditions', function(){
       , [
           'select "users".* from "users" where '
         , '"users"."data"#>\'{3,records,4,id}\' = $1'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , [27]
+      )
+    });
+
+    it ('Should not double quote things already quoted', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->\'3\'': 27
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "users".* from "users" where '
+        , '"users"."data"->\'3\' = $1'
         ].join('')
       );
 

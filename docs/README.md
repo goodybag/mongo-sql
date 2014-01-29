@@ -70,6 +70,10 @@ If you need to cast a column to some other type, that is also possible:
 }
 ```
 
+### Access JSON and HStore fields
+
+See [this document](./access-hstore-and-json-fields.md).
+
 ## Root API
 
 ### mosql.sql( query, [values] )
