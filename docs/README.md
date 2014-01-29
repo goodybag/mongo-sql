@@ -23,7 +23,7 @@ There are two main components to building a query:
 }
 ```
 
-Our query type is [insert](./query-types.md#type-insert). Looking at the type definition we the available helpers:
+Our query type is [insert](./query-types.md#type-insert). Looking at the type definition we see the following available helpers denoted by brackets:
 
 ```
 {with} insert into {table} {columns} {values} {expression} {returning}
