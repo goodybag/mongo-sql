@@ -45,6 +45,8 @@ jam install mongo-sql
 
 There are plenty of SQL building libraries that use a very imperative style of building SQL queries. The approach is linear and typically requires a bunch of function chaining. It removes your ability to use the query as a value and requires the library consumer to build their queries in large clumps or all at once. It's sometimes impossible with some of these libraries to reflect on the current state of the query programmatically. What columns have I added? Have I already joined against my groups table? MoSQL uses standard data structures to accomplish its query building, so you can figure out the state of the query at all times.
 
+The reason we use standard JavaScript data structures is so everything is easily manipulated. Arrays are arrays and objects are objects. Everyone knows how to interface with them.
+
 JSON is also a prime candidate for becoming a universally understand data representation. By using Javascript objects, we do not rule out the possibility of interoping with and porting to other languages.
 
 It may not be as pretty as other libraries, but prettiness is not a design principle of this library. The design principles are:
@@ -58,6 +60,19 @@ __Semantic Value__
 The query should be represented in a manner that makes sense to developer and machine. The use of standard data structures allows the developer to use standard APIs to manipulate the query.
 
 ## Examples
+
+```javascript
+{
+  type: 'create-table'
+, table: 'jobs'
+, definition: {
+    id:         { type: 'serial', primaryKey: true }
+  , user_id:    { type: 'int', references: { table: 'users', column: 'id' } }
+  , name:       { type: 'text' }
+  , createdAt:  { type: 'timestamp', default: 'now()' }
+  }
+}
+```
 
 Sorry, these are in no particular order.
 
@@ -87,6 +102,9 @@ Sorry, these are in no particular order.
 * [Registering a conditional helper](http://mosql.j0.hn/#/snippets/1p)
 * [Updates increment decrement](http://mosql.j0.hn/#/snippets/1n)
 * [Expand foreign key array of integers to an array of JSON results](http://mosql.j0.hn/#/snippets/1t)
+* [Access Fields on HStore and JSON and casting](http://mosql.j0.hn/#/snippets/2y)
+
+For even more examples, take a look at the `./tests` directory.
 
 ## How does it work?
 

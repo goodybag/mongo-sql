@@ -9,6 +9,71 @@ MoSQL is largely based on helper registration. Most functionality is achieved th
 * [Column Definitions](./column-definitions.md)
 * [Actions](./action-helpers.md)
 
+## Making a Query
+
+There are two main components to building a query:
+
+* Selecting a [query type](./query-types.md)
+* Filling in the details with [query helpers](./query-helpers.md)
+
+```javascript
+{
+  type: 'insert' // <- Your query type
+  /* ... */
+}
+```
+
+Our query type is [insert](./query-types.md#type-insert). Looking at the type definition we see the following available helpers denoted by brackets:
+
+```
+{with} insert into {table} {columns} {values} {expression} {returning}
+```
+
+Specifying a helper in your query will run the corresponding helper function and replace the `{helper}` with the result of the function.
+
+```javascript
+// => insert into "users" ("name", "hobbies") values ($1, $2)
+{
+  type: 'insert'
+, table: 'users'
+, values: {
+    name: 'Bob'
+  , hobbies: ['Baking', 'Skiiing', 'LARPing']
+  }
+}
+```
+
+Some helpers will accept sub-queries. In this way, queries can easily be composed:
+
+```javascript
+// Insert with values from a select
+{
+  type: 'insert'
+, table: 'users'
+, columns: [ 'name', 'email' ]
+, expression: {
+    type: 'select'
+  , table: 'other_users'
+  , columns: [ 'name', 'email' ]
+  , where: { id: 7 }
+  }
+}
+```
+
+If you need to cast a column to some other type, that is also possible:
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { 'some_id::int': 7 }
+}
+```
+
+### Access JSON and HStore fields
+
+See [this document](./access-hstore-and-json-fields.md).
+
 ## Root API
 
 ### mosql.sql( query, [values] )

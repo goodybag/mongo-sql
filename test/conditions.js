@@ -712,4 +712,250 @@ describe('Conditions', function(){
     , 'select "users".* from "users"'
     );
   });
+
+  describe('JSON Operators', function(){
+
+    it ('Should Get JSON object field', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->name': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "users"."data"->\'name\' = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should Get JSON array element', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->1': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "users"."data"->1 = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should Get JSON array element as text', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->>5': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "users"."data"->>5 = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should Get JSON object field as text', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->>name': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "users"."data"->>\'name\' = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should operate on JSON text and cast the column', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data::json->name': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "users"."data"::json->\'name\' = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should operate on JSON text and cast the column and specify table', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'other_table.data::json->name': 'Bob'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" where "other_table"."data"::json->\'name\' = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      )
+    });
+
+    it ('Should operate on JSON and play nicely with other helpers', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->name': 'Bob'
+        , $or: {
+            id: 7
+          , 'data->other_id': 'blah'
+          , 'data::hstore->other_thing': { $gt: 'bill' }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "users".* from "users" where '
+        , '"users"."data"->\'name\' = $1 and '
+        , '("users"."id" = $2 or "users"."data"->\'other_id\' = $3 or '
+        , '"users"."data"::hstore->\'other_thing\' > $4)'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob', 7, 'blah', 'bill']
+      )
+    });
+
+    it ('Should be able to go deep', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->3->records->4->id': 27
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "users".* from "users" where '
+        , '"users"."data"->3->\'records\'->4->\'id\' = $1'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , [27]
+      )
+    });
+
+    it ('Should be able to go deep with array syntax', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data#>{3,records,4,id}': 27
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "users".* from "users" where '
+        , '"users"."data"#>\'{3,records,4,id}\' = $1'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , [27]
+      )
+    });
+
+    it ('Should not double quote things already quoted', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'users'
+      , where: {
+          'data->\'3\'': 27
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [
+          'select "users".* from "users" where '
+        , '"users"."data"->\'3\' = $1'
+        ].join('')
+      );
+
+      assert.deepEqual(
+        query.values
+      , [27]
+      )
+    });
+  });
+
+  it ('should cast', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        'my_column::some_type': 27
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" where '
+      , '"users"."my_column"::some_type = $1'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , [27]
+    );
+  });
+
 });
