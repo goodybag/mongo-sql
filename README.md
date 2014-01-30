@@ -47,7 +47,7 @@ There are plenty of SQL building libraries that use a very imperative style of b
 
 The reason we use standard JavaScript data structures is so everything is easily manipulated. Arrays are arrays and objects are objects. Everyone knows how to interface with them.
 
-JSON is also a prime candidate for becoming a universally understand data representation. By using Javascript objects, we do not rule out the possibility of interoping with and porting to other languages.
+JSON is also a prime candidate for becoming a universally understood data representation. By using Javascript objects, we do not rule out the possibility of interoping with and porting to other languages.
 
 It may not be as pretty as other libraries, but prettiness is not a design principle of this library. The design principles are:
 
