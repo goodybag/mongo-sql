@@ -35,6 +35,26 @@ describe('Regression Tests', function(){
       );
     });
 
+    it ('should not improperly quote cast', function(){
+      var query = builder.sql({
+        type: 'select',
+        table: 'blah',
+        where: {
+          'data->id::integer': 7
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "blah".* from "blah" where "blah"."data"->\'id\'::integer = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [7]
+      );
+    });
+
   });
 
 });
