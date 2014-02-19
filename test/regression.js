@@ -35,6 +35,30 @@ describe('Regression Tests', function(){
       );
     });
 
+    it('should treat buffers as a value', function() {
+      var query = builder.sql({
+        type: 'update',
+        table: 'blah',
+        values: {name: 'brian'},
+        where: {
+          id: new Buffer('f494f262c7f843e4a50e92219a175b2a', 'hex')
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "blah" set "name" = $1 where "blah"."id" = $2'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [
+          query.original.values.name
+        , query.original.where.id
+        ]
+      );
+    });
+
     it ('should not improperly quote cast', function(){
       var query = builder.sql({
         type: 'select',
