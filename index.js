@@ -5,6 +5,8 @@ if (typeof module === 'object' && typeof define !== 'function') {
 }
 
 define(function(require, exports, module){
+  require('./lib/normalize');
+
   var
     build               = require('./lib/query-builder')
   , queryTypes          = require('./lib/query-types')
