@@ -266,6 +266,30 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('limit all', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , limit:    'all'
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" limit all'
+      );
+    });
+
+
+    it ('invalid limit throws error', function(){
+      assert.throws(function() {
+        builder.sql({
+          type:     'select'
+        , table:    'users'
+        , limit:    'qwerty'
+        });
+      }, Error );
+    });
+
     it ('offset', function(){
       var query = builder.sql({
         type:     'select'
