@@ -213,6 +213,38 @@ __Example:__
 alter table "users" drop column if exists "groupId" restrict cascade
 ```
 
+If you need to do multiple drop column statements, you can just pass an array of dropColumn objects:
+
+```javascript
+{
+  type: 'alter-table'
+, table: 'users'
+, action: {
+    dropColumn: [
+      {
+        name: 'groupId'
+      , ifExists: true
+      , restrict: true
+      }
+    , {
+        name: 'email'
+      }
+    , {
+        name: 'description'
+      , cascade: true
+      }
+    ]
+  }
+}
+```
+
+```sql
+alter table "users"
+  drop column if exists "groupId" restrict,
+  drop column "email",
+  drop column "description" cascade;
+```
+
 ### Helper: 'alterColumn'
 
 ___Format:___
