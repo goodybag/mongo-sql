@@ -99,7 +99,7 @@ define(function(require, exports, module){
 
   module.exports.quoteObject = quoteObject;
   // Legacy support
-  module.exports.quoteColumn = quoteColumn;
+  module.exports.quoteColumn = quoteObject;
 
   return module.exports;
 });
