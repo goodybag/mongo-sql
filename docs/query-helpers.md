@@ -412,6 +412,27 @@ Object syntax will automatically alias tables for you and can be a little more t
 }
 ```
 
+__Optional way to specify schema and database:__
+
+As with all object selection in MoSQL, the library consumer can simply pass a string of the following format:
+
+```
+{database}.{schema}.{table}.{column}::{type}{JSON/HStore Operators}
+```
+
+However, parsing that can be a pain. The join helper offers a more semantic approach to building the target object:
+
+```javascript
+// left join "my_database"."my_schema"."books" on "books"."userId" = "users"."id"
+{
+  type: 'left'
+, target: 'books'
+, schema: 'my_schema'
+, database: 'my_database'
+, on: { userId: '$users.id$' }
+}
+````
+
 __Sub-queries in joins:__
 
 Like in a lot of places, joins have a property that will accept sub-queries. The ```target``` directive can either specify a string table name or it can be a sub-query like in the Playground example:
