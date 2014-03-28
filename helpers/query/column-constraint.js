@@ -57,7 +57,7 @@ define(function(require, exports, module){
     // Foreign Key
     if (constraint.foreignKey){
       output.push(
-        'foreign key (' + utils.quoteColumn( constraint.foreignKey.column ) + ')'
+        'foreign key (' + utils.quoteObject( constraint.foreignKey.column ) + ')'
       );
 
       output.push(

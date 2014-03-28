@@ -33,8 +33,8 @@ describe('Built-In Query Types', function(){
     it ('should specify columns with schema', function(){
       var query = builder.sql({
         type: 'select'
-      , table: '"private"."users"'
-      , columns: ['id', 'name']
+      , table: 'private.users'
+      , columns: ['private.users.id', 'private.users.name']
       });
 
       assert.equal(

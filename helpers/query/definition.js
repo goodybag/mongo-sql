@@ -13,9 +13,9 @@ define(function(require, exports, module){
     if (typeof definition == 'string') return definition;
 
     var output = "";
-    
+
     for (var k in definition){
-      output += utils.quoteColumn(k);
+      output += utils.quoteObject(k);
 
       for (var j in definition[k])
         if (defs.has(j))
