@@ -465,4 +465,119 @@ describe('Joins', function(){
     );
   });
 
+  it ('should join with schema specified in target', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: 'my_schema.books'
+        , alias: 'books'
+        , on: { userId: '$users.id$' }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "my_schema"."books" "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should join with schema specified as a separate field', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: 'books'
+        , schema: 'my_schema'
+        , alias: 'books'
+        , on: { userId: '$users.id$' }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "my_schema"."books" "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should join with schema and database specified in target', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: 'my_database.my_schema.books'
+        , alias: 'books'
+        , on: { userId: '$users.id$' }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "my_database"."my_schema"."books" "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
+  it ('should join with schema and database specified in separate fields', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , joins: [
+        {
+          type: 'left'
+        , target: 'books'
+        , schema: 'my_schema'
+        , database: 'my_database'
+        , alias: 'books'
+        , on: { userId: '$users.id$' }
+        }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'select "users".* from "users" '
+      , 'left join "my_database"."my_schema"."books" "books" on "books"."userId" = "users"."id"'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
 });
