@@ -796,5 +796,98 @@ describe('Built-In Query Types', function(){
       });
     });
 
+    describe('drop column', function(){
+      it('should drop a column', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            dropColumn: {
+              name: 'groupId'
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" '
+          , 'drop column "groupId"'
+          ].join('')
+        );
+      });
+
+      it('should if exists drop a column restrict', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            dropColumn: {
+              name: 'groupId'
+            , ifExists: true
+            , restrict: true
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" '
+          , 'drop column if exists "groupId" '
+          , 'restrict'
+          ].join('')
+        );
+      });
+
+      it('should drop a column cascade', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            dropColumn: {
+              name: 'groupId'
+            , cascade: true
+            }
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" '
+          , 'drop column "groupId" '
+          , 'cascade'
+          ].join('')
+        );
+      });
+
+      it('should drop multiple columns', function(){
+        var query = builder.sql({
+          type: 'alter-table'
+        , table: 'users'
+        , action: {
+            dropColumn: [
+              { name: 'groupId'
+              , ifExists: true
+              , restrict: true
+              }
+            , { name: 'itemId'
+              , cascade: true
+              }
+            , { name: 'horseId' }
+            ]
+          }
+        });
+
+        assert.equal(
+          query.toString()
+        , [ 'alter table "users" '
+          , 'drop column if exists "groupId" restrict, '
+          , 'drop column "itemId" cascade, '
+          , 'drop column "horseId"'
+          ].join('')
+        );
+      });
+
+    });
+
   });
 });

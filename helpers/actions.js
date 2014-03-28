@@ -109,6 +109,12 @@ define(function(require, exports, module){
   });
 
   actions.add('dropColumn', function(value, values, query){
+    if ( Array.isArray(value) ){
+      return value.map( function( v ){
+        return actions.get('dropColumn').fn( v, values, query );
+      }).join(', ');
+    }
+
     var output = ["drop column"];
 
     if (value.ifExists)
@@ -188,7 +194,7 @@ define(function(require, exports, module){
       'add constraint'
     , utils.quoteColumn( constraint.name )
     , queryHelpers.get('columnConstraint').fn( constraint, values, query )
-    , 
+    ,
     ].join(' ');
   });
 
