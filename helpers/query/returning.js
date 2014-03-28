@@ -12,7 +12,7 @@ define(function(require, exports, module){
     var output = "returning ";
 
     for (var i = 0, l = returning.length, period; i < l; ++i){
-      output += utils.quoteColumn(returning[i], query.__defaultTable);
+      output += utils.quoteObject(returning[i], query.__defaultTable);
 
       if (i != l - 1) output += ", ";
     }

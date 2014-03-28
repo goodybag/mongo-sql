@@ -78,18 +78,18 @@ define(function(require, exports, module){
   actions.add('renameConstraint', function(value, values, query){
     return (
       "rename constraint "
-    + utils.quoteColumn(value.from)
+    + utils.quoteObject(value.from)
     + " to "
-    + utils.quoteColumn(value.to)
+    + utils.quoteObject(value.to)
     );
   });
 
   actions.add('renameColumn', function(value, values, query){
     return (
       "rename column "
-    + utils.quoteColumn(value.from)
+    + utils.quoteObject(value.from)
     + " to "
-    + utils.quoteColumn(value.to)
+    + utils.quoteObject(value.to)
     );
   });
 
@@ -100,7 +100,7 @@ define(function(require, exports, module){
   actions.add('addColumn', function(value, values, query){
     var output = ["add column"];
 
-    output.push( utils.quoteColumn(value.name) );
+    output.push( utils.quoteObject(value.name) );
     output.push( value.type );
 
     output.push( queryHelpers.get('columnConstraint').fn(value, values, query) );
@@ -120,7 +120,7 @@ define(function(require, exports, module){
     if (value.ifExists)
       output.push( 'if exists' );
 
-    output.push( utils.quoteColumn(value.name) );
+    output.push( utils.quoteObject(value.name) );
 
     if (value.restrict)
       output.push( 'restrict' );
@@ -140,7 +140,7 @@ define(function(require, exports, module){
 
     var output = ["alter column"];
 
-    output.push( utils.quoteColumn(value.name) );
+    output.push( utils.quoteObject(value.name) );
 
     if (value.type)
       output.push( 'type ' + value.type );
@@ -192,7 +192,7 @@ define(function(require, exports, module){
   actions.add( 'addConstraint', function( constraint, values, query ){
     return [
       'add constraint'
-    , utils.quoteColumn( constraint.name )
+    , utils.quoteObject( constraint.name )
     , queryHelpers.get('columnConstraint').fn( constraint, values, query )
     ,
     ].join(' ');
@@ -215,7 +215,7 @@ define(function(require, exports, module){
   , { name: 'setTableSpace',        text: 'set tablespace' }
   ].forEach(function(action){
     actions.add( action.name, function(value, values, query){
-      return action.text + " " + utils.quoteColumn(value);
+      return action.text + " " + utils.quoteObject(value);
     });
   });
 

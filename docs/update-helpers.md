@@ -96,10 +96,10 @@ mosql.registerUpdateHelper('$inc', function(value, values, collection){
   return Object.keys( value ).map( function( key ){
     return [
       // Quote the column without the table
-      mosql.utils.quoteColumn( key )
+      mosql.utils.quoteObject( key )
     , '='
       // Quote column with the table
-    , mosql.utils.quoteColumn( key, table )
+    , mosql.utils.quoteObject( key, table )
       // Push the value into the values array
     , '+ $' + values.push( value[ key ] )
     ].join(' ');

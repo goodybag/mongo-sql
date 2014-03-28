@@ -27,7 +27,7 @@ define(function(require, exports, module){
     if (!Array.isArray(table)) table = [table];
 
     for (var i = 0, l = table.length; i < l; ++i)
-      if (table[i].indexOf('"') == -1) table[i] = '"' + table[i] + '"';
+      if (table[i].indexOf('"') == -1) table[i] = utils.quoteObject( table[i] );
 
     return (query.type === 'select' ? 'from ' : '') + table.join(', ');
   });

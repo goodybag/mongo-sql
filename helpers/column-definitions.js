@@ -66,7 +66,7 @@ define(function(require, exports, module){
 
     if (Array.isArray(unique))
       return 'unique (' + unique.map(function(column){
-        return utils.quoteColumn(column)
+        return utils.quoteObject(column)
       }).join(', ') + ')';
 
     return '';

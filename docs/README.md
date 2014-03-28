@@ -115,17 +115,17 @@ The two functions ```toString``` and ```toQuery``` are convenience methods for o
 
 [See update helpers docs](https://github.com/goodybag/mongo-sql/blob/master/docs/update-helpers.md#mosqlregisterupdatehelper-name-options-callback-)
 
-### mosql.quoteColumn( field, collection )
+### mosql.quoteObject( field, collection )
 
 Returns sql quoted column string
 
 **Examples:**
 
 ```javascript
-mosql.quoteColumn('name')             // => '"users"'
-mosql.quoteColumn('name', 'users')    // => '"users"."name"'
-mosql.quoteColumn('users.name')       // => '"users"."name"'
-mosql.quoteColumn('*', 'users')       // => '"users".*'
-mosql.quoteColumn('users.*')          // => '"users".*'
+mosql.quoteObject('name')             // => '"users"'
+mosql.quoteObject('name', 'users')    // => '"users"."name"'
+mosql.quoteObject('users.name')       // => '"users"."name"'
+mosql.quoteObject('*', 'users')       // => '"users".*'
+mosql.quoteObject('users.*')          // => '"users".*'
 ```
 

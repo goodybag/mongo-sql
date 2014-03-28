@@ -15,7 +15,7 @@ define(function(require, exports, module) {
     }
 
     var clause = partition.map(function(col) {
-      return utils.quoteColumn(col, query.__defaultTable);
+      return utils.quoteObject(col, query.__defaultTable);
     }).join(', ')
 
     return clause ? 'partition by ' + clause : '';

@@ -15,7 +15,7 @@ define(function(require, exports, module){
   , updateHelpers       = require('./lib/update-helpers')
   , actionHelpers       = require('./lib/action-helpers')
   , columnDefHelpers    = require('./lib/column-def-helpers')
-  , quoteColumn         = require('./lib/utils').quoteColumn
+  , quoteObject         = require('./lib/utils').quoteObject
   ;
 
   // Register query types
@@ -97,6 +97,8 @@ define(function(require, exports, module){
     return columnDefHelpers.add(name, options, fn);
   };
 
+  module.exports.quoteObject = quoteObject;
+  // Legacy support
   module.exports.quoteColumn = quoteColumn;
 
   return module.exports;
