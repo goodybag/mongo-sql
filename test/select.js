@@ -707,5 +707,60 @@ describe('Built-In Query Types', function(){
       , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar", "foo"."another") from "foo"'
       );
     });
+
+    it ('should declare a window as an existing window', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , window: {
+          name: 'f'
+        , as: {
+            existing: 'b'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" window "f" as ( "b" )'
+      );
+    });
+
+    it ('should declare a window as a partition by expression', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , window: {
+          name: 'f'
+        , as: {
+            partition: 'b'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" )'
+      );
+    });
+
+    it ('should declare a window as a partition by expression and order', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , window: {
+          name: 'f'
+        , as: {
+            partition: 'b'
+          , order: { id: 'desc' }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" order by "foo"."id" desc )'
+      );
+    });
   });
 });
