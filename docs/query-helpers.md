@@ -793,6 +793,65 @@ Notice how ```id``` and ```name``` are grouped and the groups are joined by an O
 
 This covers the bulk of the where helper. Just try out anything with the where helper, it will probably figure out what you meant. For a list of all conditional helpers, take a look at the [conditional helper docs](./conditional-helpers.md)
 
+### Helper: 'window'
+
+Add a window clause:
+
+```
+WINDOW window_name AS ( window_definition ) [, ...]
+```
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'foo'
+, window: {
+    name: 'f'
+  , as: {
+      partition: 'b'
+    , order: { id: 'desc' }
+    }
+  }
+}
+```
+
+__Result:__
+
+```sql
+select * from "foo"
+window "f" as (
+  partition by "b" order by "foo"."id" desc
+)
+```
+
+The `as` object accepts the following query helpers as keys:
+
+* [partition](#helper-partition)
+* [order](#helper-order)
+* [groupBy](#helper-groupBy)
+
+__From an existing window:__
+
+```javascript
+{
+  type: 'select'
+, table: 'foo'
+, window: {
+    name: 'f'
+  , as: { existing: 'b' }
+  }
+}
+```
+
+__Result:__
+
+```sql
+select * from "foo"
+window "f" as ("b")
+```
+
 ### Helper: 'with'
 
 Add WITH sub-queries before any query type. Valid input is either an array of MoSQL query objects or an object whose keys represent the alias of the WITH sub-query, and the value is a MoSQL query object. If ordering matters for WITH queries, then you should use the array syntax.

@@ -51,6 +51,7 @@ define(function(require, exports, module){
   require('./helpers/query/function');
   require('./helpers/query/partition');
   require('./helpers/query/over');
+  require('./helpers/query/window');
 
   // Register conditional helpers
   require('./helpers/conditional');
