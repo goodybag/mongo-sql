@@ -795,7 +795,7 @@ This covers the bulk of the where helper. Just try out anything with the where h
 
 ### Helper: 'window'
 
-Add a window cluase:
+Add a window clause:
 
 ```
 WINDOW window_name AS ( window_definition ) [, ...]
@@ -825,6 +825,12 @@ window "f" as (
   partition by "b" order by "foo"."id" desc
 )
 ```
+
+The `as` object accepts the following query helpers as keys:
+
+* [partition](#helper-partition)
+* [order](#helper-order)
+* [groupBy](#helper-groupBy)
 
 __From an existing window:__
 
