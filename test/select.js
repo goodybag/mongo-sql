@@ -762,5 +762,27 @@ describe('Built-In Query Types', function(){
       , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" order by "foo"."id" desc )'
       );
     });
+
+    it ('should let parenthesis in expressions be explicit', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , columns: [
+          { expression: 'bar' }
+        , {
+            expression: {
+              expression: 'bar - baz'
+            , parenthesis: true
+            }
+          , alias: 'blah'
+          }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select bar, ( bar - baz ) as "blah" from "foo"'
+      );
+    });
   });
 });

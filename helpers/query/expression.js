@@ -12,7 +12,13 @@ define(function(require, exports, module){
     if (Array.isArray(exp)) return exp.join(', ');
     if (query.type == 'insert' && typeof exp == 'object')
       return '(' + queryBuilder(exp, values) + ')';
-    if (typeof exp == 'object') return queryBuilder(exp, values);
+    if (typeof exp == 'object'){
+      return [
+        exp.parenthesis === true ? '( ' : ''
+      , queryBuilder(exp, values)
+      , exp.parenthesis === true ? ' )' : ''
+      ].join('');
+    }
     return exp;
   });
 

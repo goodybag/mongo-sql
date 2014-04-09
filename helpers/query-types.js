@@ -55,4 +55,5 @@ define(function(require, exports, module){
   );
 
   queryTypes.add('function', '{function}( {expression} )');
+  queryTypes.add('expression', '{expression}');
 });
