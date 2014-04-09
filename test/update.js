@@ -75,6 +75,30 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should allow sub-expressions in returning', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , updates: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , returning: [
+          'id'
+        , { expression: '("orders"."datetime"::text) as datetime' }
+        ]
+      });
+
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id", ("orders"."datetime"::text) as datetime'
+      );
+    });
+
     it('$inc', function(){
       var query = builder.sql({
         type: 'update'
