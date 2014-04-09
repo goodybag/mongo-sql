@@ -123,6 +123,26 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should throw error with invalid returning input', function(){
+      assert.throws(
+        function(){
+          builder.sql({
+            type: 'update'
+          , table: 'users'
+          , where: {
+              id: 7
+            }
+          , updates: {
+              name: 'Bob'
+            , email: 'bob@bob.com'
+            }
+          , returning: 'id'
+          });
+        }
+      , Error
+      );
+    });
+
     it('$inc', function(){
       var query = builder.sql({
         type: 'update'
