@@ -254,6 +254,17 @@ Insert values returned by a sub-query
 }
 ```
 
+In certain situations, you may want to surround your expression in parenthesis. Use sub-expressions to pass in options to your original expression:
+
+```javascript
+{
+  expression: {
+    parenthesis: true
+  , expression: 'avg( something - another_thing )'
+  }
+}
+```
+
 [Playground](http://mosql.j0.hn/#/snippets/16)
 
 See the [columns helper examples](#helper-columns) for more uses of expression.
