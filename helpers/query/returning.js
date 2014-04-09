@@ -7,17 +7,8 @@ if (typeof module === 'object' && typeof define !== 'function') {
 define(function(require, exports, module){
   var helpers = require('../../lib/query-helpers');
   var utils = require('../../lib/utils');
-  //
+
   helpers.register('returning', function(returning, values, query){
-    // var output = "returning ";
-    // helpers
-    // for (var i = 0, l = returning.length, period; i < l; ++i){
-    //   output += utils.quoteColumn(returning[i], query.__defaultTable);
-    //
-    //   if (i != l - 1) output += ", ";
-    // }
-    //
-    // return output;
     var oldType = query.type;
     query.type = 'select';
     var output = "returning " + helpers.get('columns').fn(returning, values, query);

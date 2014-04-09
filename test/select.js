@@ -33,8 +33,8 @@ describe('Built-In Query Types', function(){
     it ('should specify columns with schema', function(){
       var query = builder.sql({
         type: 'select'
-      , table: '"private"."users"'
-      , columns: ['id', 'name']
+      , table: 'private.users'
+      , columns: ['private.users.id', 'private.users.name']
       });
 
       assert.equal(
@@ -264,6 +264,30 @@ describe('Built-In Query Types', function(){
         query.values
       , [10]
       );
+    });
+
+    it ('limit all', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , limit:    'all'
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" limit all'
+      );
+    });
+
+
+    it ('invalid limit throws error', function(){
+      assert.throws(function() {
+        builder.sql({
+          type:     'select'
+        , table:    'users'
+        , limit:    'qwerty'
+        });
+      }, Error );
     });
 
     it ('offset', function(){
@@ -681,6 +705,61 @@ describe('Built-In Query Types', function(){
       assert.equal(
         query.toString()
       , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar", "foo"."another") from "foo"'
+      );
+    });
+
+    it ('should declare a window as an existing window', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , window: {
+          name: 'f'
+        , as: {
+            existing: 'b'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" window "f" as ( "b" )'
+      );
+    });
+
+    it ('should declare a window as a partition by expression', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , window: {
+          name: 'f'
+        , as: {
+            partition: 'b'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" )'
+      );
+    });
+
+    it ('should declare a window as a partition by expression and order', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , window: {
+          name: 'f'
+        , as: {
+            partition: 'b'
+          , order: { id: 'desc' }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" order by "foo"."id" desc )'
       );
     });
   });

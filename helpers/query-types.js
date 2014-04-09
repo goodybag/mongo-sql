@@ -7,10 +7,12 @@ if (typeof module === 'object' && typeof define !== 'function') {
 define(function(require, exports, module){
   var queryTypes = require('../lib/query-types');
 
-  queryTypes.add(
-    'select'
-  , '{with} select {expression} {distinct} {columns} {over} {table} {alias} {joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin} {where} {groupBy} {order} {limit} {offset}'
-  );
+  queryTypes.add( 'select', [
+    '{with} select {expression} {distinct}'
+  , '{columns} {over} {table} {alias}'
+  , '{joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin}'
+  , '{where} {groupBy} {window} {order} {limit} {offset}'
+  ].join(' '));
 
   queryTypes.add(
     'insert'

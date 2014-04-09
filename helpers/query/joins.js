@@ -26,7 +26,13 @@ define(function(require, exports, module){
     var output = ( join.type ? ( join.type + ' ' ) : '' ) + "join ";
 
     if ( typeof join.target === 'object' ) output += '(' + queryBuilder( join.target, values ) + ') ';
-    else output += '"' + join.target + '" ';
+    else {
+      output += utils.quoteObject.apply( null, [
+        join.target
+      , join.schema
+      , join.database
+      ].filter( function( a ){ return !!a; }) ) + ' ';
+    }
 
     if ( join.alias ) output += '"' + join.alias + '" ';
 

@@ -17,7 +17,7 @@ define(function(require, exports, module){
        if(distinct.length == 0) return '';
 
       return 'distinct on (' + distinct.map(function(col){
-        return utils.quoteColumn( col );
+        return utils.quoteObject( col );
       }).join(', ') + ')';
     }
 

@@ -22,7 +22,7 @@ define(function(require, exports, module){
     var output = "";
 
     for (var key in value){
-      output += utils.quoteColumn(key) + ' = ' + utils.quoteColumn(key, collection) + ' + $' + values.push(value[key]);
+      output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' + $' + values.push(value[key]);
     }
 
     return output;
@@ -38,7 +38,7 @@ define(function(require, exports, module){
     var output = "";
 
     for (var key in value){
-      output += utils.quoteColumn(key) + ' = ' + utils.quoteColumn(key, collection) + ' - $' + values.push(value[key]);
+      output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' - $' + values.push(value[key]);
     }
 
     return output;

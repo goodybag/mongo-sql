@@ -17,7 +17,7 @@ define(function(require, exports, module){
     if (!Array.isArray(groupBy)) groupBy = [groupBy];
 
     for (var i = 0, l = groupBy.length; i < l; ++i){
-      output += utils.quoteColumn(groupBy[i], query.__defaultTable) + ', ';
+      output += utils.quoteObject(groupBy[i], query.__defaultTable) + ', ';
     }
 
     if (output.indexOf(', ') > -1) output = output.substring(0, output.length - 2);

@@ -412,6 +412,27 @@ Object syntax will automatically alias tables for you and can be a little more t
 }
 ```
 
+__Optional way to specify schema and database:__
+
+As with all object selection in MoSQL, the library consumer can simply pass a string of the following format:
+
+```
+{database}.{schema}.{table}.{column}::{type}{JSON/HStore Operators}
+```
+
+However, parsing that can be a pain. The join helper offers a more semantic approach to building the target object:
+
+```javascript
+// left join "my_database"."my_schema"."books" on "books"."userId" = "users"."id"
+{
+  type: 'left'
+, target: 'books'
+, schema: 'my_schema'
+, database: 'my_database'
+, on: { userId: '$users.id$' }
+}
+````
+
 __Sub-queries in joins:__
 
 Like in a lot of places, joins have a property that will accept sub-queries. The ```target``` directive can either specify a string table name or it can be a sub-query like in the Playground example:
@@ -772,6 +793,65 @@ Notice how ```id``` and ```name``` are grouped and the groups are joined by an O
 
 This covers the bulk of the where helper. Just try out anything with the where helper, it will probably figure out what you meant. For a list of all conditional helpers, take a look at the [conditional helper docs](./conditional-helpers.md)
 
+### Helper: 'window'
+
+Add a window clause:
+
+```
+WINDOW window_name AS ( window_definition ) [, ...]
+```
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'foo'
+, window: {
+    name: 'f'
+  , as: {
+      partition: 'b'
+    , order: { id: 'desc' }
+    }
+  }
+}
+```
+
+__Result:__
+
+```sql
+select * from "foo"
+window "f" as (
+  partition by "b" order by "foo"."id" desc
+)
+```
+
+The `as` object accepts the following query helpers as keys:
+
+* [partition](#helper-partition)
+* [order](#helper-order)
+* [groupBy](#helper-groupBy)
+
+__From an existing window:__
+
+```javascript
+{
+  type: 'select'
+, table: 'foo'
+, window: {
+    name: 'f'
+  , as: { existing: 'b' }
+  }
+}
+```
+
+__Result:__
+
+```sql
+select * from "foo"
+window "f" as ("b")
+```
+
 ### Helper: 'with'
 
 Add WITH sub-queries before any query type. Valid input is either an array of MoSQL query objects or an object whose keys represent the alias of the WITH sub-query, and the value is a MoSQL query object. If ordering matters for WITH queries, then you should use the array syntax.
@@ -959,8 +1039,8 @@ mosql.registerQueryHelper( 'updates', function($updates, values, query){
     if (updateHelpers.has(key))
       return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
     if ($updates[key] === null)
-      return utils.quoteColumn(key) + ' = null';
-    return utils.quoteColumn(key) + ' = $' + values.push($updates[key]);
+      return utils.quoteObject(key) + ' = null';
+    return utils.quoteObject(key) + ' = $' + values.push($updates[key]);
   });
 
   return result.length > 0 ? ('set ' + result.join(', ')) : '';

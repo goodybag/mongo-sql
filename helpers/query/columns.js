@@ -14,7 +14,7 @@ define(function(require, exports, module){
 
     if (['insert', 'create-view'].indexOf(query.type) > -1){
       return '(' + columns.map(function(col){
-        return utils.quoteColumn( col );
+        return utils.quoteObject( col );
       }).join(', ') + ')';
     }
 
@@ -27,11 +27,11 @@ define(function(require, exports, module){
         else if (typeof columns[i] == 'object' && 'expression' in columns[i])
           output += queryBuilder( columns[i], values ).toString();
         else if (typeof columns[i] == 'object')
-          output += utils.quoteColumn(columns[i].name, columns[i].table || query.__defaultTable);
+          output += utils.quoteObject(columns[i].name, columns[i].table || query.__defaultTable);
         else if (columns[i].indexOf('(') > -1)
           output += columns[i];
         else
-          output += utils.quoteColumn(columns[i], query.__defaultTable);
+          output += utils.quoteObject(columns[i], query.__defaultTable);
 
         if ( typeof columns[i] == 'object' && ('as' in columns[i] || 'alias' in columns[i]))
           output += ' as "' + (columns[i].as || columns[i].alias) + '"';
@@ -48,7 +48,7 @@ define(function(require, exports, module){
           ) ? '(' + queryBuilder( columns[key], values ).toString() + ') as "' + key + '", '
             : typeof columns[key] == 'object' && ('type' in columns[key])
             ? queryBuilder( columns[key], values ).toString() + ' as "' + key + '", '
-            : utils.quoteColumn(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
+            : utils.quoteObject(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
       }
     }
 
