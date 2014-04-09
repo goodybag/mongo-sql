@@ -171,6 +171,35 @@ __Example__:
 
 [Playground](http://mosql.j0.hn/#/snippets/18)
 
+### Type: 'expression'
+
+Simply returns the result of the expression helper.
+
+__Definition:__
+
+```
+{expression}
+```
+
+__Helpers Used:__ [expression](./query-helpers.md#helper-expression)
+
+__Example__:
+
+```javascript
+// select 1
+{
+  expression: 'select 1'
+}
+
+// ( hello world )
+{
+  expression: {
+    parenthesis: true
+  , expression: 'hello world'
+  }
+}
+```
+
 ## Adding Your Own Query Types
 
 MoSQL uses the same interface as its API consumers to build functionality.

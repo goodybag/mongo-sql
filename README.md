@@ -129,3 +129,22 @@ The ```table``` property is mapped to the [table query helper](./docs/query-help
 ## Contributing
 
 I will happily accept pull requests. Just write a test for whatever functionality you're providing. Coding style is an evolving thing here. I'll be JSHinting this repo soon and will make the coding style consistent when I do.
+
+## Upgrading from 2.4.x to 2.5.x
+
+There are two things you need to look out for:
+
+Do not rely on adding parenthesis to strings (like in columns or returning helpers) in order to prevent MoSQL from attempting to quote the input. Instead use the expression query type:
+
+```javascript
+// select something_custom - another_custom as "custom_result" from "users"
+{
+  type: 'select'
+, table: 'users'
+, columns: [
+    { expression: 'something_custom - another_custom', alias: 'custom_result' }
+  ]
+}
+```
+
+If you were relying on expression objects without a type specified to be converted into a `function` type, this will no longer happen. Queries without types with `expression` specified in them will get converted to the new [expression type](./docs/query-types.md#type-expression).
