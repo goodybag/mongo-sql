@@ -9,14 +9,10 @@ define(function(require, exports, module){
   var utils = require('../../lib/utils');
 
   helpers.register('returning', function(returning, values, query){
-    var output = "returning ";
-
-    for (var i = 0, l = returning.length, period; i < l; ++i){
-      output += utils.quoteObject(returning[i], query.__defaultTable);
-
-      if (i != l - 1) output += ", ";
-    }
-
+    var oldType = query.type;
+    query.type = 'select';
+    var output = "returning " + helpers.get('columns').fn(returning, values, query);
+    query.type = oldType;
     return output;
   });
 
