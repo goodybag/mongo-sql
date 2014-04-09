@@ -590,7 +590,7 @@ Add an PARTITION BY clause.  Can take either a string or an array of strings.  F
 
 ### Helper: 'returning'
 
-Specifies what to return an [insert](./query-types.md#type-insert) or [update](./query-types.md#type-update) query type. Valid input is an array of string column names:
+Specifies what to return an [insert](./query-types.md#type-insert) or [update](./query-types.md#type-update) query type. Valid input is the same as the [columns](#helper-columns) helper:
 
 ```javascript
 {
@@ -600,8 +600,16 @@ Specifies what to return an [insert](./query-types.md#type-insert) or [update](.
     name: 'Bob'
   , email: 'bob@bob.com'
   }
-, returning: ['id']
+, returning: [
+    'id'
+  , { expression: 'anything goes', alias: 'nose' }
+  ]
 }
+```
+
+```sql
+insert into "users" ("name", "email") values ('Bob', 'bob@bob.com')
+returning "users"."id", anything goes as "nose";
 ```
 
 ### Helper: 'table'
