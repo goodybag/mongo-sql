@@ -181,5 +181,46 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should allow sub-expressions in returning', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , returning: [
+          'id'
+        , { expression: '("orders"."datetime"::text) as datetime' }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name", "email") values ($1, $2) returning "users"."id", ("orders"."datetime"::text) as datetime'
+      );
+    });
+
+    it('should allow sub-expressions with alias in returning', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , returning: [
+          'id'
+        , { expression: '("orders"."datetime"::text)'
+          , alias: 'datetime'
+          }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name", "email") values ($1, $2) returning "users"."id", ("orders"."datetime"::text) as "datetime"'
+      );
+    });
   });
 });
