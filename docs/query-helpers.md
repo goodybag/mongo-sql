@@ -588,6 +588,29 @@ Add an PARTITION BY clause.  Can take either a string or an array of strings.  F
 }
 ```
 
+### Helper: 'queries'
+
+Specifies a list of queries to joined together specified by `query.joiner`. Defaults to a single space. If the query type is [union](./query-types.md#type-union), [intersect](./query-types.md#type-intersect), or [except](./query-types.md#type-except), the joiner will be the corresponding combination operation.
+
+__Example__:
+
+```javascript
+{
+  type: 'union'
+, all: true
+, queries: [
+    { type: 'select', table: 'users' }
+  , { type: 'select', table: 'other_users' }
+  ]
+};
+```
+
+__Result:__
+
+```sql
+select "users".* from "users" union all select "other_users".* from "other_users"
+```
+
 ### Helper: 'returning'
 
 Specifies what to return an [insert](./query-types.md#type-insert) or [update](./query-types.md#type-update) query type. Valid input is the same as the [columns](#helper-columns) helper:
