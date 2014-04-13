@@ -54,6 +54,21 @@ define(function(require, exports, module){
   , 'create {orReplace} {temporary} view {view} {columns} as {expression}'
   );
 
+  queryTypes.add(
+    'union'
+  , '{queries}'
+  );
+
+  queryTypes.add(
+    'intersect'
+  , '{queries}'
+  );
+
+  queryTypes.add(
+    'except'
+  , '{queries}'
+  );
+
   queryTypes.add('function', '{function}( {expression} )');
   queryTypes.add('expression', '{expression}');
 });

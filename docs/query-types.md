@@ -200,6 +200,99 @@ __Example__:
 }
 ```
 
+### Type: 'union'
+
+Combines multiple queries via the `union` operation. See [queries helper](./query-helpers.md#helper-queries) for more information. Works the same as the [intersect](#type-intersect) and [except](#type-except) types.
+
+__Definition:__
+
+```
+{queries}
+```
+
+__Helpers Used:__ [queries](./query-helpers.md#helper-queries)
+
+__Example__:
+
+```javascript
+{
+  type: 'union'
+, all: true
+, queries: [
+    { type: 'select', table: 'users' }
+  , { type: 'select', table: 'other_users' }
+  ]
+};
+```
+
+__Result:__
+
+```sql
+select "users".* from "users" union all select "other_users".* from "other_users"
+```
+
+### Type: 'intersect'
+
+Combines multiple queries via the `intersect` operation. See [queries helper](./query-helpers.md#helper-queries) for more information. Works the same as the [union](#type-union) and [except](#type-except) types.
+
+__Definition:__
+
+```
+{queries}
+```
+
+__Helpers Used:__ [queries](./query-helpers.md#helper-queries)
+
+__Example__:
+
+```javascript
+{
+  type: 'intersect'
+, all: true
+, queries: [
+    { type: 'select', table: 'users' }
+  , { type: 'select', table: 'other_users' }
+  ]
+};
+```
+
+__Result:__
+
+```sql
+select "users".* from "users" intersect all select "other_users".* from "other_users"
+```
+
+### Type: 'except'
+
+Combines multiple queries via the `except` operation. See [queries helper](./query-helpers.md#helper-queries) for more information. Works the same as the [intersect](#type-intersect) and [union](#type-union) types.
+
+__Definition:__
+
+```
+{queries}
+```
+
+__Helpers Used:__ [queries](./query-helpers.md#helper-queries)
+
+__Example__:
+
+```javascript
+{
+  type: 'except'
+, all: true
+, queries: [
+    { type: 'select', table: 'users' }
+  , { type: 'select', table: 'other_users' }
+  ]
+};
+```
+
+__Result:__
+
+```sql
+select "users".* from "users" except all select "other_users".* from "other_users"
+```
+
 ## Adding Your Own Query Types
 
 MoSQL uses the same interface as its API consumers to build functionality.
