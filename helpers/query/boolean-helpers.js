@@ -7,8 +7,9 @@ if (typeof module === 'object' && typeof define !== 'function') {
 define(function(require, exports, module){
   var helpers = require('../../lib/query-helpers');
   var bools = {
-    orReplace: 'or replace'
-  , temporary: 'temporary'
+    orReplace:  'or replace'
+  , temporary:  'temporary'
+  , all:        'all'
   };
 
   Object.keys( bools ).forEach( function( key ){
@@ -16,8 +17,6 @@ define(function(require, exports, module){
       return bool ? bools[ key ] : '';
     });
   });
-
-
 
   return module.exports;
 });
