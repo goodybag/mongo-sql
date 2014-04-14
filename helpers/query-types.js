@@ -56,17 +56,17 @@ define(function(require, exports, module){
 
   queryTypes.add(
     'union'
-  , '{queries}'
+  , '{with} {queries}'
   );
 
   queryTypes.add(
     'intersect'
-  , '{queries}'
+  , '{with} {queries}'
   );
 
   queryTypes.add(
     'except'
-  , '{queries}'
+  , '{with} {queries}'
   );
 
   queryTypes.add('function', '{function}( {expression} )');
