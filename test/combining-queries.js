@@ -76,4 +76,28 @@ describe ('Combining Queries', function(){
       ].join(' except ')
     );
   });
+
+  it ('should union with a CTE', function(){
+    var query = builder.sql({
+      type: 'union'
+    , with: [
+        { type: 'select', table: 'users', name: 'other_users2' }
+      ]
+    , queries: [
+        { type: 'select', table: 'users' }
+      , { type: 'select', table: 'other_users' }
+      , { type: 'select', table: 'other_users2' }
+      ]
+    });
+
+    assert.equal(
+      query.toString()
+    , [
+        'with "other_users2" as (select "users".* from "users") '
+      + 'select "users".* from "users"'
+      , 'select "other_users".* from "other_users"'
+      , 'select "other_users2".* from "other_users2"'
+      ].join(' union ')
+    );
+  });
 });

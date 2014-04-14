@@ -210,7 +210,7 @@ __Definition:__
 {queries}
 ```
 
-__Helpers Used:__ [queries](./query-helpers.md#helper-queries)
+__Helpers Used:__ [with](./query-helpers.md#helper-with), [queries](./query-helpers.md#helper-queries)
 
 __Example__:
 
@@ -241,7 +241,7 @@ __Definition:__
 {queries}
 ```
 
-__Helpers Used:__ [queries](./query-helpers.md#helper-queries)
+__Helpers Used:__ [with](./query-helpers.md#helper-with), [queries](./query-helpers.md#helper-queries)
 
 __Example__:
 
@@ -272,7 +272,7 @@ __Definition:__
 {queries}
 ```
 
-__Helpers Used:__ [queries](./query-helpers.md#helper-queries)
+__Helpers Used:__ [with](./query-helpers.md#helper-with), [queries](./query-helpers.md#helper-queries)
 
 __Example__:
 
