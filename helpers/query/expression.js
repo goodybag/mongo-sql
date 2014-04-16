@@ -13,11 +13,22 @@ define(function(require, exports, module){
     if (query.type == 'insert' && typeof exp == 'object')
       return '(' + queryBuilder(exp, values) + ')';
     if (typeof exp == 'object'){
-      return [
+      var val = [
         exp.parenthesis === true ? '( ' : ''
       , queryBuilder(exp, values)
       , exp.parenthesis === true ? ' )' : ''
       ].join('');
+
+      if (Array.isArray(exp.values)){
+        for (var i = 0, l = exp.values.length; i < l; ++i){
+          val = val.replace(
+            RegExp('(\\$)' + (i+1) + '(\\W|$)','g')
+          , '$1' + values.push(exp.values[i]) + '$2'
+          );
+        }
+      }
+
+      return val;
     }
     return exp;
   });

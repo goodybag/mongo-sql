@@ -604,6 +604,27 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('select expression with parameters', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'tbl'
+      , columns: [
+          { expression: { expression: '$1, $2', values: [ 3, 4 ] } }
+        ]
+      , where: { col: 'bob' }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select $1, $2 from "tbl" where "tbl"."col" = $3'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [ 3, 4, 'bob' ]
+      );
+    });
+
     // TODO: make this test pass
     // it ('should allow an empty over clause with string', function() {
     //   var query = builder.sql({

@@ -265,6 +265,20 @@ In certain situations, you may want to surround your expression in parenthesis. 
 }
 ```
 
+Expressions can also be parameterized within the grander query:
+
+```javascript
+// => select $1, $2 from "tbl" where "tbl"."col" = $3
+{
+  type: 'select'
+, table: 'tbl'
+, columns: [
+    { expression: { expression: '$1, $2', values: [ 3, 4 ] } }
+  ]
+, where: { col: 'bob' }
+}
+```
+
 [Playground](http://mosql.j0.hn/#/snippets/16)
 
 See the [columns helper examples](#helper-columns) for more uses of expression.
