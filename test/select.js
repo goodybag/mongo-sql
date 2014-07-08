@@ -43,7 +43,7 @@ describe('Built-In Query Types', function(){
       );
     });
 
-    xit ('should specify columns with schema even for simple column names', function(){
+    it ('should specify columns with schema even for simple column names', function(){
       var query = builder.sql({
         type: 'select'
       , table: 'private.users'
