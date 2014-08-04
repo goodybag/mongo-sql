@@ -1,25 +1,23 @@
-<DOCTYPE HTML>
+<!doctype html>
 <html>
   <head>
-    <script src="/jam/require.js"></script>
-    <script>
-      require(['../index'], function(builder){
-        console.log(builder);
-        console.log(
-          builder.sql({
-            type: 'select'
-          , table: 'users'
-          , leftJoin: {
-              groups: {
-                'groups.id': '$users.id$'
-              }
-            }
-          })
-        );
-      });
-    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocha Test Runner</title>
   </head>
   <body>
-    
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="../build/mosql.js"></script>
+    <script src="../build/mosql.spec.js"></script>
+    <script>
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
+    </script>
   </body>
 </html>

@@ -130,6 +130,25 @@ The ```table``` property is mapped to the [table query helper](./docs/query-help
 
 I will happily accept pull requests. Just write a test for whatever functionality you're providing. Coding style is an evolving thing here. I'll be JSHinting this repo soon and will make the coding style consistent when I do.
 
+## Developing
+
+Mongo-sql development is done using [Gulp](http://gulpjs.com/). If you dont have gulp installed globally, install using ```npm install -g gulp```. Then,
+
+1. Install all development dependencies
+  ```
+  npm install
+  ```
+
+2. Watch for source/spec files & run jshint/unit-test cases for changed files
+  ```
+  gulp watch
+  ```
+
+3. Before committing changes, run full jshinting & unit-test cases for browserified version using default gulp target
+  ```
+  gulp
+  ```
+
 ## Upgrading from 2.4.x to 2.5.x
 
 There are two things you need to look out for:
