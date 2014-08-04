@@ -25,8 +25,8 @@ describe('Helpers', function(){
     });
 
     it('should return all registerd types', function(){
-      var keys = builder.queryTypes.keys;
-      assert.ok(Array.isArray(keys));
+      var list = builder.queryTypes.list;
+      assert.ok(Array.isArray(list));
     });
   });
 

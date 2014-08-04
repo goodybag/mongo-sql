@@ -336,6 +336,6 @@ Returns a boolean denoting whether or not a query type exists.
 
 Returns the query type definition string.
 
-### mosql.queryTypes.keys
+### mosql.queryTypes.list
 
 Returns queryType names as a string array.
