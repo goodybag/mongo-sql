@@ -23,6 +23,11 @@ describe('Helpers', function(){
       , [7]
       );
     });
+
+    it('should return all registerd types', function(){
+      var list = builder.queryTypes.list;
+      assert.ok(Array.isArray(list));
+    });
   });
 
   describe('Query Helpers', function(){
