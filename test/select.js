@@ -117,10 +117,10 @@ describe('Built-In Query Types', function(){
       );
     });
 
-    it ('should specify multiple tables and columns '
-      + 'from both tables assuming that if a table '
-      + 'name is not specified in the column definition, '
-      + 'then the first table is default', function(){
+    it ('should specify multiple tables and columns ' +
+        'from both tables assuming that if a table ' +
+        'name is not specified in the column definition, ' +
+        'then the first table is default', function(){
 
       var query = builder.sql({
         type: 'select'
@@ -134,11 +134,11 @@ describe('Built-In Query Types', function(){
       );
     });
 
-    it ('should specify multiple tables and columns '
-      + 'from both tables assuming that if a table '
-      + 'name is not specified in the column definition, '
-      + 'then the first table is default, using an object'
-      + 'as the column definition', function(){
+    it ('should specify multiple tables and columns ' +
+        'from both tables assuming that if a table ' +
+        'name is not specified in the column definition, ' +
+        'then the first table is default, using an object' +
+        'as the column definition', function(){
 
       var query = builder.sql({
         type: 'select'

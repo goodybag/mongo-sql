@@ -1,27 +1,18 @@
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var queryTypes = require('../../lib/query-helpers');
-  var updateHelpers = require('../../lib/update-helpers');
-  var utils = require('../../lib/utils');
+var queryTypes = require('../../lib/query-helpers');
+var updateHelpers = require('../../lib/update-helpers');
+var utils = require('../../lib/utils');
 
-  queryTypes.register('updates', function($updates, values, query){
-    var output = "set ";
+queryTypes.register('updates', function($updates, values, query){
+  var output = "set ";
 
-    var result = Object.keys( $updates ).map( function( key ){
-      if (updateHelpers.has(key))
-        return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
-      if ($updates[key] === null)
-        return utils.quoteObject(key) + ' = null';
-      return utils.quoteObject(key) + ' = $' + values.push($updates[key]);
-    });
-
-    return result.length > 0 ? ('set ' + result.join(', ')) : '';
+  var result = Object.keys( $updates ).map( function( key ){
+    if (updateHelpers.has(key))
+      return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
+    if ($updates[key] === null)
+      return utils.quoteObject(key) + ' = null';
+    return utils.quoteObject(key) + ' = $' + values.push($updates[key]);
   });
 
-  return module.exports;
+  return result.length > 0 ? ('set ' + result.join(', ')) : '';
 });

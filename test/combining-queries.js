@@ -93,8 +93,8 @@ describe ('Combining Queries', function(){
     assert.equal(
       query.toString()
     , [
-        'with "other_users2" as (select "users".* from "users") '
-      + 'select "users".* from "users"'
+        'with "other_users2" as (select "users".* from "users") ' +
+        'select "users".* from "users"'
       , 'select "other_users".* from "other_users"'
       , 'select "other_users2".* from "other_users2"'
       ].join(' union ')

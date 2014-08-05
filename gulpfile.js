@@ -28,8 +28,9 @@ gulp.task('clean', function() {
 });
 
 
-gulp.task('watch', ['clean', 'jshint', 'unit-tests'], function() {
-  reporter = 'min';
+gulp.task('watch', function() {
+  reporter = 'dot';
+  runSequence(['clean', 'jshint'], 'unit-tests');
   gulp.watch(allFiles, ['jshint', 'unit-tests']);
 });
 
@@ -78,5 +79,5 @@ gulp.task('browserify-testFiles', function() {
 gulp.task('browser-tests', function() {
   return gulp
     .src('test/index.html')
-    .pipe(mochaPhantomJS({ reporter: 'min' }));
+    .pipe(mochaPhantomJS({ reporter: 'dot' }));
 });

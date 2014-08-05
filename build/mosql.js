@@ -1,111 +1,102 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  require('./lib/normalize');
+require('./lib/normalize');
 
-  var
-    build               = require('./lib/query-builder')
-  , queryTypes          = require('./lib/query-types')
-  , queryHelpers        = require('./lib/query-helpers')
-  , conditionalHelpers  = require('./lib/conditional-helpers')
-  , updateHelpers       = require('./lib/update-helpers')
-  , actionHelpers       = require('./lib/action-helpers')
-  , columnDefHelpers    = require('./lib/column-def-helpers')
-  , quoteObject         = require('./lib/utils').quoteObject
-  ;
+var
+  build               = require('./lib/query-builder')
+, queryTypes          = require('./lib/query-types')
+, queryHelpers        = require('./lib/query-helpers')
+, conditionalHelpers  = require('./lib/conditional-helpers')
+, updateHelpers       = require('./lib/update-helpers')
+, actionHelpers       = require('./lib/action-helpers')
+, columnDefHelpers    = require('./lib/column-def-helpers')
+, quoteObject         = require('./lib/utils').quoteObject
+;
 
-  // Register query types
-  require('./helpers/query-types');
+// Register query types
+require('./helpers/query-types');
 
-  // Register query helpers
-  require('./helpers/query/columns');
-  require('./helpers/query/group-by');
-  require('./helpers/query/joins');
-  require('./helpers/query/joins-dep');
-  require('./helpers/query/order');
-  require('./helpers/query/updates');
-  require('./helpers/query/where');
-  require('./helpers/query/limit');
-  require('./helpers/query/offset');
-  require('./helpers/query/returning');
-  require('./helpers/query/values');
-  require('./helpers/query/table');
-  require('./helpers/query/if-not-exists');
-  require('./helpers/query/if-exists');
-  require('./helpers/query/definition');
-  require('./helpers/query/cascade');
-  require('./helpers/query/with');
-  require('./helpers/query/only');
-  require('./helpers/query/action');
-  require('./helpers/query/column-constraint');
-  require('./helpers/query/alias');
-  require('./helpers/query/expression');
-  require('./helpers/query/from');
-  require('./helpers/query/distinct');
-  require('./helpers/query/boolean-helpers');
-  require('./helpers/query/view');
-  require('./helpers/query/function');
-  require('./helpers/query/partition');
-  require('./helpers/query/over');
-  require('./helpers/query/window');
-  require('./helpers/query/queries');
+// Register query helpers
+require('./helpers/query/columns');
+require('./helpers/query/group-by');
+require('./helpers/query/joins');
+require('./helpers/query/joins-dep');
+require('./helpers/query/order');
+require('./helpers/query/updates');
+require('./helpers/query/where');
+require('./helpers/query/limit');
+require('./helpers/query/offset');
+require('./helpers/query/returning');
+require('./helpers/query/values');
+require('./helpers/query/table');
+require('./helpers/query/if-not-exists');
+require('./helpers/query/if-exists');
+require('./helpers/query/definition');
+require('./helpers/query/cascade');
+require('./helpers/query/with');
+require('./helpers/query/only');
+require('./helpers/query/action');
+require('./helpers/query/column-constraint');
+require('./helpers/query/alias');
+require('./helpers/query/expression');
+require('./helpers/query/from');
+require('./helpers/query/distinct');
+require('./helpers/query/boolean-helpers');
+require('./helpers/query/view');
+require('./helpers/query/function');
+require('./helpers/query/partition');
+require('./helpers/query/over');
+require('./helpers/query/window');
+require('./helpers/query/queries');
 
-  // Register conditional helpers
-  require('./helpers/conditional');
+// Register conditional helpers
+require('./helpers/conditional');
 
-  // Register update helpers
-  require('./helpers/update');
+// Register update helpers
+require('./helpers/update');
 
-  // Register column definition helpers
-  require('./helpers/column-definitions')
+// Register column definition helpers
+require('./helpers/column-definitions');
 
-  // Register column action helpers
-  require('./helpers/actions')
+// Register column action helpers
+require('./helpers/actions');
 
-  module.exports.sql = build;
-  module.exports.toQuery = function() {
-    return build.apply(build, arguments).toQuery();
-  };
+module.exports.sql = build;
+module.exports.toQuery = function() {
+  return build.apply(build, arguments).toQuery();
+};
 
-  module.exports.queryTypes = queryTypes;
-  module.exports.registerQueryType = queryTypes.add;
+module.exports.queryTypes = queryTypes;
+module.exports.registerQueryType = queryTypes.add;
 
-  module.exports.queryHelpers = queryHelpers;
-  module.exports.registerQueryHelper = function(name, options, fn){
-    return queryHelpers.add(name, options, fn);
-  };
+module.exports.queryHelpers = queryHelpers;
+module.exports.registerQueryHelper = function(name, options, fn){
+  return queryHelpers.add(name, options, fn);
+};
 
-  module.exports.conditionalHelpers = conditionalHelpers;
-  module.exports.registerConditionalHelper = function(name, options, fn){
-    return conditionalHelpers.add(name, options, fn);
-  };
+module.exports.conditionalHelpers = conditionalHelpers;
+module.exports.registerConditionalHelper = function(name, options, fn){
+  return conditionalHelpers.add(name, options, fn);
+};
 
-  module.exports.actionHelpers = actionHelpers;
-  module.exports.registerActionHelper = function(name, options, fn){
-    return actionHelpers.add(name, options, fn);
-  };
+module.exports.actionHelpers = actionHelpers;
+module.exports.registerActionHelper = function(name, options, fn){
+  return actionHelpers.add(name, options, fn);
+};
 
-  module.exports.updateHelpers = updateHelpers;
-  module.exports.registerUpdateHelper = function(name, options, fn){
-    return updateHelpers.add(name, options, fn);
-  };
+module.exports.updateHelpers = updateHelpers;
+module.exports.registerUpdateHelper = function(name, options, fn){
+  return updateHelpers.add(name, options, fn);
+};
 
-  module.exports.columnDefHelpers = columnDefHelpers;
-  module.exports.registerColumnDefHelper = function(name, options, fn){
-    return columnDefHelpers.add(name, options, fn);
-  };
+module.exports.columnDefHelpers = columnDefHelpers;
+module.exports.registerColumnDefHelper = function(name, options, fn){
+  return columnDefHelpers.add(name, options, fn);
+};
 
-  module.exports.quoteObject = quoteObject;
-  // Legacy support
-  module.exports.quoteColumn = quoteObject;
-
-  return module.exports;
-});
+module.exports.quoteObject = quoteObject;
+// Legacy support
+module.exports.quoteColumn = quoteObject;
 
 },{"./helpers/actions":2,"./helpers/column-definitions":3,"./helpers/conditional":4,"./helpers/query-types":5,"./helpers/query/action":6,"./helpers/query/alias":7,"./helpers/query/boolean-helpers":8,"./helpers/query/cascade":9,"./helpers/query/column-constraint":10,"./helpers/query/columns":11,"./helpers/query/definition":12,"./helpers/query/distinct":13,"./helpers/query/expression":14,"./helpers/query/from":15,"./helpers/query/function":16,"./helpers/query/group-by":17,"./helpers/query/if-exists":18,"./helpers/query/if-not-exists":19,"./helpers/query/joins":21,"./helpers/query/joins-dep":20,"./helpers/query/limit":22,"./helpers/query/offset":23,"./helpers/query/only":24,"./helpers/query/order":25,"./helpers/query/over":26,"./helpers/query/partition":27,"./helpers/query/queries":28,"./helpers/query/returning":29,"./helpers/query/table":30,"./helpers/query/updates":31,"./helpers/query/values":32,"./helpers/query/view":33,"./helpers/query/where":34,"./helpers/query/window":35,"./helpers/query/with":36,"./helpers/update":37,"./lib/action-helpers":38,"./lib/column-def-helpers":39,"./lib/conditional-helpers":41,"./lib/normalize":43,"./lib/query-builder":44,"./lib/query-helpers":45,"./lib/query-types":46,"./lib/update-helpers":47,"./lib/utils":48}],2:[function(require,module,exports){
 /**
@@ -166,647 +157,587 @@ define(function(require, exports, module){
 //     { UNIQUE | PRIMARY KEY } USING INDEX index_name
 //     [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var actions = require('../lib/action-helpers');
+var queryHelpers = require('../lib/query-helpers');
+var utils = require('../lib/utils');
 
-define(function(require, exports, module){
-  var actions = require('../lib/action-helpers');
-  var queryHelpers = require('../lib/query-helpers');
-  var utils = require('../lib/utils');
+actions.add('renameTable', function(value, values, query){
+  return 'rename to "' + value + '"';
+});
 
-  actions.add('renameTable', function(value, values, query){
-    return 'rename to "' + value + '"';
+actions.add('rename', function(value, values, query){
+  return actions.get('renameTable').fn(value, values, query);
+});
+
+actions.add('renameConstraint', function(value, values, query){
+  return (
+    "rename constraint " +
+    utils.quoteObject(value.from) +
+    " to " +
+    utils.quoteObject(value.to)
+  );
+});
+
+actions.add('renameColumn', function(value, values, query){
+  return (
+    "rename column " +
+    utils.quoteObject(value.from) +
+    " to " +
+    utils.quoteObject(value.to)
+  );
+});
+
+actions.add('setSchema', function(value, values, query){
+  return 'set schema "' + value + '"';
+});
+
+actions.add('addColumn', function(value, values, query){
+  var output = ["add column"];
+
+  output.push( utils.quoteObject(value.name) );
+  output.push( value.type );
+
+  output.push( queryHelpers.get('columnConstraint').fn(value, values, query) );
+
+  return output.join(' ');
+});
+
+actions.add('dropColumn', function(value, values, query){
+  if ( Array.isArray(value) ){
+    return value.map( function( v ){
+      return actions.get('dropColumn').fn( v, values, query );
+    }).join(', ');
+  }
+
+  var output = ["drop column"];
+
+  if (value.ifExists)
+    output.push( 'if exists' );
+
+  output.push( utils.quoteObject(value.name) );
+
+  if (value.restrict)
+    output.push( 'restrict' );
+
+  else if (value.cascade)
+    output.push( 'cascade' );
+
+  return output.join(' ');
+});
+
+actions.add('alterColumn', function(value, values, query){
+  if ( Array.isArray(value) ){
+    return value.map( function( v ){
+      return actions.get('alterColumn').fn( v, values, query );
+    }).join(', ');
+  }
+
+  var output = ["alter column"];
+
+  output.push( utils.quoteObject(value.name) );
+
+  if (value.type)
+    output.push( 'type ' + value.type );
+
+  if (value.collation)
+    output.push( 'collate ' + value.collation );
+
+  if (value.using)
+    output.push( 'using (' + value.using + ')' );
+
+  if (value.default)
+    output.push( 'set default ' + value.default );
+
+  if (value.dropDefault)
+    output.push( 'drop default' );
+
+  if (value.notNull === true)
+    output.push( 'set not null' );
+
+  if (value.notNull === false)
+    output.push( 'drop not null' );
+
+  if (value.statistics)
+    output.push( 'set statistics $' + values.push(value.statistics) );
+
+  if (value.storage)
+    output.push( 'set storage ' + value.storage );
+
+  return output.join(' ');
+});
+
+actions.add( 'dropConstraint', function( value, values, query ){
+  if ( !value ) return;
+
+  var out = ['drop constraint'];
+
+  if ( typeof value === 'object' ){
+    if ( value.ifExists ) out.push('if exists');
+    if ( value.name )     out.push('"' + value.name + '"');
+    if ( value.cascade )  out.push('cascade');
+    if ( value.restrict ) out.push('restrict');
+  } else if ( typeof value === 'string' ){
+    out.push('"' + value + '"');
+  } else return;
+
+  return out.join(' ');
+});
+
+actions.add( 'addConstraint', function( constraint, values, query ){
+  return [
+    'add constraint'
+  , utils.quoteObject( constraint.name )
+  , queryHelpers.get('columnConstraint').fn( constraint, values, query )
+  ,
+  ].join(' ');
+});
+
+// Single Parameter actions
+[
+  { name: 'enableReplicaTrigger', text: 'enable replica trigger' }
+, { name: 'enableAlwaysTrigger',  text: 'enable always trigger' }
+, { name: 'disableRule',          text: 'disable rule' }
+, { name: 'enableRule',           text: 'enable rule' }
+, { name: 'enableReplicaRule',    text: 'enable replica rule' }
+, { name: 'enableAlwaysRule',     text: 'enable always rule' }
+, { name: 'clusterOn',            text: 'cluster on' }
+, { name: 'inherit',              text: 'inherit' }
+, { name: 'noInherit',            text: 'no inherit' }
+, { name: 'of',                   text: 'of' }
+, { name: 'notOf',                text: 'not of' }
+, { name: 'ownerTo',              text: 'owner to' }
+, { name: 'setTableSpace',        text: 'set tablespace' }
+].forEach(function(action){
+  actions.add( action.name, function(value, values, query){
+    return action.text + " " + utils.quoteObject(value);
   });
+});
 
-  actions.add('rename', function(value, values, query){
-    return actions.get('renameTable').fn(value, values, query);
-  });
-
-  actions.add('renameConstraint', function(value, values, query){
-    return (
-      "rename constraint "
-    + utils.quoteObject(value.from)
-    + " to "
-    + utils.quoteObject(value.to)
-    );
-  });
-
-  actions.add('renameColumn', function(value, values, query){
-    return (
-      "rename column "
-    + utils.quoteObject(value.from)
-    + " to "
-    + utils.quoteObject(value.to)
-    );
-  });
-
-  actions.add('setSchema', function(value, values, query){
-    return 'set schema "' + value + '"';
-  });
-
-  actions.add('addColumn', function(value, values, query){
-    var output = ["add column"];
-
-    output.push( utils.quoteObject(value.name) );
-    output.push( value.type );
-
-    output.push( queryHelpers.get('columnConstraint').fn(value, values, query) );
-
-    return output.join(' ');
-  });
-
-  actions.add('dropColumn', function(value, values, query){
-    if ( Array.isArray(value) ){
-      return value.map( function( v ){
-        return actions.get('dropColumn').fn( v, values, query );
-      }).join(', ');
-    }
-
-    var output = ["drop column"];
-
-    if (value.ifExists)
-      output.push( 'if exists' );
-
-    output.push( utils.quoteObject(value.name) );
-
-    if (value.restrict)
-      output.push( 'restrict' );
-
-    else if (value.cascade)
-      output.push( 'cascade' );
-
-    return output.join(' ');
-  });
-
-  actions.add('alterColumn', function(value, values, query){
-    if ( Array.isArray(value) ){
-      return value.map( function( v ){
-        return actions.get('alterColumn').fn( v, values, query );
-      }).join(', ');
-    }
-
-    var output = ["alter column"];
-
-    output.push( utils.quoteObject(value.name) );
-
-    if (value.type)
-      output.push( 'type ' + value.type );
-
-    if (value.collation)
-      output.push( 'collate ' + value.collation );
-
-    if (value.using)
-      output.push( 'using (' + value.using + ')' );
-
-    if (value.default)
-      output.push( 'set default ' + value.default );
-
-    if (value.dropDefault)
-      output.push( 'drop default' );
-
-    if (value.notNull == true)
-      output.push( 'set not null' );
-
-    if (value.notNull == false)
-      output.push( 'drop not null' );
-
-    if (value.statistics)
-      output.push( 'set statistics $' + values.push(value.statistics) );
-
-    if (value.storage)
-      output.push( 'set storage ' + value.storage );
-
-    return output.join(' ');
-  });
-
-  actions.add( 'dropConstraint', function( value, values, query ){
-    if ( !value ) return;
-
-    var out = ['drop constraint'];
-
-    if ( typeof value === 'object' ){
-      if ( value.ifExists ) out.push('if exists');
-      if ( value.name )     out.push('"' + value.name + '"');
-      if ( value.cascade )  out.push('cascade');
-      if ( value.restrict ) out.push('restrict');
-    } else if ( typeof value === 'string' ){
-      out.push('"' + value + '"');
-    } else return;
-
-    return out.join(' ');
-  });
-
-  actions.add( 'addConstraint', function( constraint, values, query ){
-    return [
-      'add constraint'
-    , utils.quoteObject( constraint.name )
-    , queryHelpers.get('columnConstraint').fn( constraint, values, query )
-    ,
-    ].join(' ');
-  });
-
-  // Single Parameter actions
-  [
-    { name: 'enableReplicaTrigger', text: 'enable replica trigger' }
-  , { name: 'enableAlwaysTrigger',  text: 'enable always trigger' }
-  , { name: 'disableRule',          text: 'disable rule' }
-  , { name: 'enableRule',           text: 'enable rule' }
-  , { name: 'enableReplicaRule',    text: 'enable replica rule' }
-  , { name: 'enableAlwaysRule',     text: 'enable always rule' }
-  , { name: 'clusterOn',            text: 'cluster on' }
-  , { name: 'inherit',              text: 'inherit' }
-  , { name: 'noInherit',            text: 'no inherit' }
-  , { name: 'of',                   text: 'of' }
-  , { name: 'notOf',                text: 'not of' }
-  , { name: 'ownerTo',              text: 'owner to' }
-  , { name: 'setTableSpace',        text: 'set tablespace' }
-  ].forEach(function(action){
-    actions.add( action.name, function(value, values, query){
-      return action.text + " " + utils.quoteObject(value);
-    });
-  });
-
-  // Same text booleans
-  [
-    { name: 'setWithoutCluster',  text: 'set without cluster' }
-  , { name: 'setWithOids',        text: 'set with oids' }
-  , { name: 'setWithoutOids',     text: 'set without oids' }
-  ].forEach(function(action){
-    actions.add( action.name, function(value, values, query){
-      return value ? action.text : '';
-    });
+// Same text booleans
+[
+  { name: 'setWithoutCluster',  text: 'set without cluster' }
+, { name: 'setWithOids',        text: 'set with oids' }
+, { name: 'setWithoutOids',     text: 'set without oids' }
+].forEach(function(action){
+  actions.add( action.name, function(value, values, query){
+    return value ? action.text : '';
   });
 });
 
 },{"../lib/action-helpers":38,"../lib/query-helpers":45,"../lib/utils":48}],3:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var utils = require('../lib/utils');
-  var defs = require('../lib/column-def-helpers');
-  var conditional = require('../lib/condition-builder');
+var utils = require('../lib/utils');
+var defs = require('../lib/column-def-helpers');
+var conditional = require('../lib/condition-builder');
 
-  defs.add('type', function(type, values, query){
-    return type;
-  });
-
-  defs.add('primaryKey', function(primaryKey, values, query){
-    if ( !primaryKey ) return '';
-
-    var out = 'primary key';
-
-    if ( typeof primaryKey === 'string' ){
-      out += ' ("' + primaryKey + '")';
-    } else if ( Array.isArray( primaryKey ) ){
-      out += ' ("' + primaryKey.join('", "') + '")';
-    }
-
-    return out;
-  });
-
-  defs.add('references', function(reference, values, query){
-    var output = "references ";
-    if (typeof reference == 'string')
-      return output + '"' + reference + '"';
-
-    output += '"' + reference.table + '"';
-
-    if (reference.column)
-      output += '("' + reference.column + '")';
-
-    if (reference.onDelete)
-      output += ' on delete ' + reference.onDelete;
-
-    if (reference.onUpdate)
-      output += ' on update ' + reference.onUpdate;
-
-    if (reference.match)
-      output += ' match ' + reference.match;
-
-    return output;
-  });
-
-  defs.add('notNull', function(notNull, values, query){
-    return notNull ? 'not null' : 'null';
-  });
-
-  defs.add('null', function($null, values, query){
-    if ($null == true) return 'null';
-    if ($null == false) return 'not null';
-    return '';
-  });
-
-  defs.add('unique', function(unique, values, query){
-    if (unique == true) return 'unique';
-
-    if ( typeof unique === 'string' ) return 'unique ("' + unique + '")';
-
-    if (Array.isArray(unique))
-      return 'unique (' + unique.map(function(column){
-        return utils.quoteObject(column)
-      }).join(', ') + ')';
-
-    return '';
-  });
-
-  defs.add('default', function(def, values, query){
-    return def ? ('default ' + def) : '';
-  });
-
-  defs.add('check', function(check, values, query){
-    return 'check (' + conditional(check, query.__defaultTable, values) + ')';
-  });
-
-  defs.add('noInherit', function(noInherit, values, query){
-    if (noInherit) return 'no inherit';
-    return '';
-  });
+defs.add('type', function(type, values, query){
+  return type;
 });
+
+defs.add('primaryKey', function(primaryKey, values, query){
+  if ( !primaryKey ) return '';
+
+  var out = 'primary key';
+
+  if ( typeof primaryKey === 'string' ){
+    out += ' ("' + primaryKey + '")';
+  } else if ( Array.isArray( primaryKey ) ){
+    out += ' ("' + primaryKey.join('", "') + '")';
+  }
+
+  return out;
+});
+
+defs.add('references', function(reference, values, query){
+  var output = "references ";
+  if (typeof reference == 'string')
+    return output + '"' + reference + '"';
+
+  output += '"' + reference.table + '"';
+
+  if (reference.column)
+    output += '("' + reference.column + '")';
+
+  if (reference.onDelete)
+    output += ' on delete ' + reference.onDelete;
+
+  if (reference.onUpdate)
+    output += ' on update ' + reference.onUpdate;
+
+  if (reference.match)
+    output += ' match ' + reference.match;
+
+  return output;
+});
+
+defs.add('notNull', function(notNull, values, query){
+  return notNull ? 'not null' : 'null';
+});
+
+defs.add('null', function($null, values, query){
+  if ($null === true) return 'null';
+  if ($null === false) return 'not null';
+  return '';
+});
+
+defs.add('unique', function(unique, values, query){
+  if (unique === true) return 'unique';
+
+  if ( typeof unique === 'string' ) return 'unique ("' + unique + '")';
+
+  if (Array.isArray(unique))
+    return 'unique (' + unique.map(function(column){
+      return utils.quoteObject(column);
+    }).join(', ') + ')';
+
+  return '';
+});
+
+defs.add('default', function(def, values, query){
+  return def ? ('default ' + def) : '';
+});
+
+defs.add('check', function(check, values, query){
+  return 'check (' + conditional(check, query.__defaultTable, values) + ')';
+});
+
+defs.add('noInherit', function(noInherit, values, query){
+  if (noInherit) return 'no inherit';
+  return '';
+});
+
 },{"../lib/column-def-helpers":39,"../lib/condition-builder":40,"../lib/utils":48}],4:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  /**
-   * Conditionals
-   * TODO: update comments :/
-   */
+/**
+ * Conditionals
+ * TODO: update comments :/
+ */
 
-  var conditionals = require('../lib/conditional-helpers');
-  var queryBuilder = require('../lib/query-builder');
+var conditionals = require('../lib/conditional-helpers');
+var queryBuilder = require('../lib/query-builder');
 
-  /**
-   * Querying where column is equal to a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be equal to
-   */
-  conditionals.add('$equals', function(column, value, values, collection){
-    var equator = '=';
+/**
+ * Querying where column is equal to a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be equal to
+ */
+conditionals.add('$equals', function(column, value, values, collection){
+  var equator = '=';
 
-    return column + ' ' + ((value == 'true' || value == 'false') ? 'is' : '=') + ' ' + value;
-  });
-
-  /**
-   * Querying where column is not equal to a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be equal to
-   */
-  conditionals.add('$ne', function(column, value, values, collection){
-    return column + ' != ' + value;
-  });
-
-  /**
-   * Querying where column is greater than a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be greater than
-   */
-  conditionals.add('$gt', function(column, value, values, collection){
-    return column + ' > ' + value;
-  });
-
-  /**
-   * Querying where column is greater than a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be greater than
-   */
-  conditionals.add('$gte', function(column, value, values, collection){
-    return column + ' >= ' + value;
-  });
-
-  /**
-   * Querying where column is less than a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be less than
-   */
-  conditionals.add('$lt', function(column, value, values, collection){
-    return column + ' < ' + value;
-  });
-
-  /**
-   * Querying where column is less than or equal to a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be lte to
-   */
-  conditionals.add('$lte', function(column, value, values, collection){
-    return column + ' <= ' + value;
-  });
-
-  /**
-   * Querying where value is null
-   * @param column {String}  - Column name either table.column or column
-   */
-  conditionals.add('$null', function(column, value, values, collection){
-    return column + ' is null';
-  });
-
-  /**
-   * Querying where value is null
-   * @param column {String}  - Column name either table.column or column
-   */
-  conditionals.add('$notNull', function(column, value, values, collection){
-    return column + ' is not null';
-  });
-
-  /**
-   * Querying where column is like a value
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be like
-   */
-  conditionals.add('$like', function(column, value, values, collection){
-    return column + ' like ' + value;
-  });
-
-  /**
-   * Querying where column is like a value (case insensitive)
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - What the column should be like
-   */
-  conditionals.add('$ilike', function(column, value, values, collection){
-    return column + ' ilike ' + value;
-  });
-
-  /**
-   * Querying where column is in a set
-   *
-   * Values
-   * - String, no explaination necessary
-   * - Array, joins escaped values with a comma
-   * - Function, executes function, expects string in correct format
-   *  |- Useful for sub-queries
-   *
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - String|Array|Function
-   */
-  conditionals.add('$in', { cascade: false }, function(column, set, values, collection){
-    if (Array.isArray(set)) {
-      return column + ' in (' + set.map( function(val){
-        return '$' + values.push( val );
-      }).join(', ') + ')';
-    }
-
-    return column + ' in (' + queryBuilder(set, values).toString() + ')';
-  });
-
-  /**
-   * Querying where column is not in a set
-   *
-   * Values
-   * - String, no explaination necessary
-   * - Array, joins escaped values with a comma
-   * - Function, executes function, expects string in correct format
-   *  |- Useful for sub-queries
-   *
-   * @param column {String}  - Column name either table.column or column
-   * @param value  {Mixed}   - String|Array|Function
-   */
-  conditionals.add('$nin', { cascade: false }, function(column, set, values, collection){
-    if (Array.isArray(set)) {
-      return column + ' not in (' + set.map( function(val){
-        return '$' + values.push( val );
-      }).join(', ') + ')';
-    }
-
-    return column + ' not in (' + queryBuilder(set, values).toString() + ')';
-  });
-
-  conditionals.add('$custom', { cascade: false }, function(column, value, values, collection){
-    if (Array.isArray(value))
-      return conditionals.get('$custom_array').fn( column, value, values, collection );
-
-    if (typeof value == 'object')
-      return conditionals.get('$custom_object').fn( column, value, values, collection );
-
-    throw new Error('Invalid Custom Value Input');
-  });
-
-  conditionals.add('$custom_array', { cascade: false }, function(column, value, values, collection){
-    var output = value[0];
-
-    for (var i = 1, l = value.length; i < l; ++i){
-      output = output.replace(
-        RegExp('(\\$)' + i + '(\\W|$)','g')
-      , '$1' + values.push(value[i]) + '$2'
-      );
-    }
-
-    return output;
-  });
-
-  conditionals.add('$custom_object', { cascade: false }, function(column, value, values, collection){
-    return conditionals.get('$custom_array').fn(column, [value.value].concat(value.values), values, collection);
-  });
-
-  conditionals.add('$years_ago', function(column, value, values, collection){
-    return column + " >= now() - interval " + value + " year";
-  });
-
-  conditionals.add('$months_ago', function(column, value, values, collection){
-    return column + " >= now() - interval " + value + " month";
-  });
-
-  conditionals.add('$days_ago', function(column, value, values, collection){
-    return column + " >= now() - interval " + value + " day";
-  });
-
-  conditionals.add('$hours_ago', function(column, value, values, collection){
-    return column + " >= now() - interval " + value + " hour";
-  });
-
-  conditionals.add('$minutes_ago', function(column, value, values, collection){
-    return column + " >= now() - interval " + value + " minute";
-  });
-
-  conditionals.add('$seconds_ago', function(column, value, values, collection){
-    return column + " >= now() - interval " + value + " second";
-  });
+  return column + ' ' + ((value == 'true' || value == 'false') ? 'is' : '=') + ' ' + value;
 });
+
+/**
+ * Querying where column is not equal to a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be equal to
+ */
+conditionals.add('$ne', function(column, value, values, collection){
+  return column + ' != ' + value;
+});
+
+/**
+ * Querying where column is greater than a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be greater than
+ */
+conditionals.add('$gt', function(column, value, values, collection){
+  return column + ' > ' + value;
+});
+
+/**
+ * Querying where column is greater than a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be greater than
+ */
+conditionals.add('$gte', function(column, value, values, collection){
+  return column + ' >= ' + value;
+});
+
+/**
+ * Querying where column is less than a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be less than
+ */
+conditionals.add('$lt', function(column, value, values, collection){
+  return column + ' < ' + value;
+});
+
+/**
+ * Querying where column is less than or equal to a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be lte to
+ */
+conditionals.add('$lte', function(column, value, values, collection){
+  return column + ' <= ' + value;
+});
+
+/**
+ * Querying where value is null
+ * @param column {String}  - Column name either table.column or column
+ */
+conditionals.add('$null', function(column, value, values, collection){
+  return column + ' is null';
+});
+
+/**
+ * Querying where value is null
+ * @param column {String}  - Column name either table.column or column
+ */
+conditionals.add('$notNull', function(column, value, values, collection){
+  return column + ' is not null';
+});
+
+/**
+ * Querying where column is like a value
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be like
+ */
+conditionals.add('$like', function(column, value, values, collection){
+  return column + ' like ' + value;
+});
+
+/**
+ * Querying where column is like a value (case insensitive)
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - What the column should be like
+ */
+conditionals.add('$ilike', function(column, value, values, collection){
+  return column + ' ilike ' + value;
+});
+
+/**
+ * Querying where column is in a set
+ *
+ * Values
+ * - String, no explaination necessary
+ * - Array, joins escaped values with a comma
+ * - Function, executes function, expects string in correct format
+ *  |- Useful for sub-queries
+ *
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - String|Array|Function
+ */
+conditionals.add('$in', { cascade: false }, function(column, set, values, collection){
+  if (Array.isArray(set)) {
+    return column + ' in (' + set.map( function(val){
+      return '$' + values.push( val );
+    }).join(', ') + ')';
+  }
+
+  return column + ' in (' + queryBuilder(set, values).toString() + ')';
+});
+
+/**
+ * Querying where column is not in a set
+ *
+ * Values
+ * - String, no explaination necessary
+ * - Array, joins escaped values with a comma
+ * - Function, executes function, expects string in correct format
+ *  |- Useful for sub-queries
+ *
+ * @param column {String}  - Column name either table.column or column
+ * @param value  {Mixed}   - String|Array|Function
+ */
+conditionals.add('$nin', { cascade: false }, function(column, set, values, collection){
+  if (Array.isArray(set)) {
+    return column + ' not in (' + set.map( function(val){
+      return '$' + values.push( val );
+    }).join(', ') + ')';
+  }
+
+  return column + ' not in (' + queryBuilder(set, values).toString() + ')';
+});
+
+conditionals.add('$custom', { cascade: false }, function(column, value, values, collection){
+  if (Array.isArray(value))
+    return conditionals.get('$custom_array').fn( column, value, values, collection );
+
+  if (typeof value == 'object')
+    return conditionals.get('$custom_object').fn( column, value, values, collection );
+
+  throw new Error('Invalid Custom Value Input');
+});
+
+conditionals.add('$custom_array', { cascade: false }, function(column, value, values, collection){
+  var output = value[0];
+
+  for (var i = 1, l = value.length; i < l; ++i){
+    output = output.replace(
+      RegExp('(\\$)' + i + '(\\W|$)','g')
+    , '$1' + values.push(value[i]) + '$2'
+    );
+  }
+
+  return output;
+});
+
+conditionals.add('$custom_object', { cascade: false }, function(column, value, values, collection){
+  return conditionals.get('$custom_array').fn(column, [value.value].concat(value.values), values, collection);
+});
+
+conditionals.add('$years_ago', function(column, value, values, collection){
+  return column + " >= now() - interval " + value + " year";
+});
+
+conditionals.add('$months_ago', function(column, value, values, collection){
+  return column + " >= now() - interval " + value + " month";
+});
+
+conditionals.add('$days_ago', function(column, value, values, collection){
+  return column + " >= now() - interval " + value + " day";
+});
+
+conditionals.add('$hours_ago', function(column, value, values, collection){
+  return column + " >= now() - interval " + value + " hour";
+});
+
+conditionals.add('$minutes_ago', function(column, value, values, collection){
+  return column + " >= now() - interval " + value + " minute";
+});
+
+conditionals.add('$seconds_ago', function(column, value, values, collection){
+  return column + " >= now() - interval " + value + " second";
+});
+
 },{"../lib/conditional-helpers":41,"../lib/query-builder":44}],5:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var queryTypes = require('../lib/query-types');
+var queryTypes = require('../lib/query-types');
 
-  queryTypes.add( 'select', [
-    '{with} select {expression} {distinct}'
-  , '{columns} {over} {table} {alias}'
-  , '{joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin}'
-  , '{where} {groupBy} {window} {order} {limit} {offset}'
-  ].join(' '));
+queryTypes.add( 'select', [
+  '{with} select {expression} {distinct}'
+, '{columns} {over} {table} {alias}'
+, '{joins} {join} {innerJoin} {leftJoin} {leftOuterJoin} {fullOuterJoin} {crossOuterJoin}'
+, '{where} {groupBy} {window} {order} {limit} {offset}'
+].join(' '));
 
-  queryTypes.add(
-    'insert'
-  , '{with} insert into {table} {columns} {values} {expression} {returning}'
-  );
+queryTypes.add(
+  'insert'
+, '{with} insert into {table} {columns} {values} {expression} {returning}'
+);
 
-  queryTypes.add(
-    'update'
-  , '{with} update {table} {values} {updates} {from} {where} {returning}'
-  );
+queryTypes.add(
+  'update'
+, '{with} update {table} {values} {updates} {from} {where} {returning}'
+);
 
-  queryTypes.add(
-    'delete'
-  , '{with} delete from {table} {where} {returning}'
-  );
+queryTypes.add(
+  'delete'
+, '{with} delete from {table} {where} {returning}'
+);
 
-  queryTypes.add(
-    'remove'
-  , '{with} delete from {table} {alias} {where} {returning}'
-  );
+queryTypes.add(
+  'remove'
+, '{with} delete from {table} {alias} {where} {returning}'
+);
 
-  queryTypes.add(
-    'create-table'
-  , '{with} create table {ifNotExists} {table} ({definition})'
-  );
+queryTypes.add(
+  'create-table'
+, '{with} create table {ifNotExists} {table} ({definition})'
+);
 
-  queryTypes.add(
-    'drop-table'
-  , '{with} drop table {ifExists} {table} {cascade}'
-  );
+queryTypes.add(
+  'drop-table'
+, '{with} drop table {ifExists} {table} {cascade}'
+);
 
-  queryTypes.add(
-    'alter-table'
-  , 'alter table {ifExists} {only} {table} {action}'
-  );
+queryTypes.add(
+  'alter-table'
+, 'alter table {ifExists} {only} {table} {action}'
+);
 
-  queryTypes.add(
-    'create-view'
-  , 'create {orReplace} {temporary} view {view} {columns} as {expression}'
-  );
+queryTypes.add(
+  'create-view'
+, 'create {orReplace} {temporary} view {view} {columns} as {expression}'
+);
 
-  queryTypes.add(
-    'union'
-  , '{with} {queries}'
-  );
+queryTypes.add(
+  'union'
+, '{with} {queries}'
+);
 
-  queryTypes.add(
-    'intersect'
-  , '{with} {queries}'
-  );
+queryTypes.add(
+  'intersect'
+, '{with} {queries}'
+);
 
-  queryTypes.add(
-    'except'
-  , '{with} {queries}'
-  );
+queryTypes.add(
+  'except'
+, '{with} {queries}'
+);
 
-  queryTypes.add('function', '{function}( {expression} )');
-  queryTypes.add('expression', '{expression}');
-});
+queryTypes.add('function', '{function}( {expression} )');
+queryTypes.add('expression', '{expression}');
 
 },{"../lib/query-types":46}],6:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var actionsHelpers = require('../../lib/action-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var actionsHelpers = require('../../lib/action-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('action', function(actions, values, query){
+helpers.register('action', function(actions, values, query){
 
-    if ( !Array.isArray(actions) ) actions = [actions];
+  if ( !Array.isArray(actions) ) actions = [actions];
 
-    return actions.map( function( action ){
-      var output = "";
+  return actions.map( function( action ){
+    var output = "";
 
-      for (var key in action){
-        if (actionsHelpers.has(key)){
-          output += actionsHelpers.get(key).fn(action[key], values, query);
-        }
+    for (var key in action){
+      if (actionsHelpers.has(key)){
+        output += actionsHelpers.get(key).fn(action[key], values, query);
       }
+    }
 
-      return output;
-    }).join(', ');
+    return output;
+  }).join(', ');
 
 
-  });
-
-  return module.exports;
 });
+
 },{"../../lib/action-helpers":38,"../../lib/query-helpers":45,"../../lib/utils":48}],7:[function(require,module,exports){
 /**
  * Query Type: Alias
  *
- * NOTE: This reuqired some special behavior inside of the 
+ * NOTE: This reuqired some special behavior inside of the
  *       main query-builder. If you're aliasing an expression
  *       then the alias should become the __defaultTable on
  *       the current query.
  */
 
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var helpers = require('../../lib/query-helpers');
+var actions = require('../../lib/action-helpers');
+var utils = require('../../lib/utils');
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var actions = require('../../lib/action-helpers');
-  var utils = require('../../lib/utils');
-
-  helpers.register('alias', function(alias, values, query){
-    query.__defaultTable = query.alias;
-    return '"' + alias + '"';
-  });
-
-  return module.exports;
+helpers.register('alias', function(alias, values, query){
+  query.__defaultTable = query.alias;
+  return '"' + alias + '"';
 });
+
 },{"../../lib/action-helpers":38,"../../lib/query-helpers":45,"../../lib/utils":48}],8:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var bools = {
-    orReplace:  'or replace'
-  , temporary:  'temporary'
-  , all:        'all'
-  };
+var helpers = require('../../lib/query-helpers');
+var bools = {
+  orReplace:  'or replace'
+, temporary:  'temporary'
+, all:        'all'
+};
 
-  Object.keys( bools ).forEach( function( key ){
-    helpers.register( key, function( bool, values ){
-      return bool ? bools[ key ] : '';
-    });
+Object.keys( bools ).forEach( function( key ){
+  helpers.register( key, function( bool, values ){
+    return bool ? bools[ key ] : '';
   });
-
-  return module.exports;
 });
+
 },{"../../lib/query-helpers":45}],9:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils   = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils   = require('../../lib/utils');
 
-  helpers.register('cascade', function(cascade, values, query){
-    return cascade ? 'cascade' : null;
-  });
-
-  return module.exports;
+helpers.register('cascade', function(cascade, values, query){
+  return cascade ? 'cascade' : null;
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],10:[function(require,module,exports){
 // [ CONSTRAINT constraint_name ]
 // { NOT NULL |
@@ -819,1365 +750,1062 @@ define(function(require, exports, module){
 //     [ ON DELETE action ] [ ON UPDATE action ] }
 // [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var helpers     = require('../../lib/query-helpers');
+var conditional = require('../../lib/condition-builder');
+var columnDefs  = require('../../lib/column-def-helpers');
+var utils       = require('../../lib/utils');
 
-define(function(require, exports, module){
-  var helpers     = require('../../lib/query-helpers');
-  var conditional = require('../../lib/condition-builder');
-  var columnDefs  = require('../../lib/column-def-helpers');
-  var utils       = require('../../lib/utils');
+helpers.register('columnConstraint', function(constraint, values, query){
+  var output = [];
 
-  helpers.register('columnConstraint', function(constraint, values, query){
-    var output = [];
+  // Null/Not Null
+  if (constraint.null)
+    output.push( columnDefs.get('null').fn(constraint.null, values, query) );
+  if (constraint.notNull)
+    output.push( columnDefs.get('notNull').fn(constraint.notNull, values, query) );
 
-    // Null/Not Null
-    if (constraint.null)
-      output.push( columnDefs.get('null').fn(constraint.null, values, query) )
-    if (constraint.notNull)
-      output.push( columnDefs.get('notNull').fn(constraint.notNull, values, query) )
+  // Check
+  if (constraint.check)
+    output.push( columnDefs.get('check').fn(constraint.check, values, query) );
 
-    // Check
-    if (constraint.check)
-      output.push( columnDefs.get('check').fn(constraint.check, values, query) )
+  // No Inherit
+  if (constraint.noInherit)
+    output.push( columnDefs.get('noInherit', true, values, query) );
 
-    // No Inherit
-    if (constraint.noInherit)
-      output.push( columnDefs.get('noInherit', true, values, query) )
+  // Default expression
+  if (constraint.default)
+    output.push( columnDefs.get('default').fn(constraint.default, values, query) );
 
-    // Default expression
-    if (constraint.default)
-      output.push( columnDefs.get('default').fn(constraint.default, values, query) )
+  // Unique
+  if (constraint.unique)
+    output.push( columnDefs.get('unique').fn(constraint.unique, values, query) );
 
-    // Unique
-    if (constraint.unique)
-      output.push( columnDefs.get('unique').fn(constraint.unique, values, query) )
+  // Primary key
+  if (constraint.primaryKey)
+    output.push( columnDefs.get('primaryKey').fn(constraint.primaryKey, values, query) );
 
-    // Primary key
-    if (constraint.primaryKey)
-      output.push( columnDefs.get('primaryKey').fn(constraint.primaryKey, values, query) )
+  // Reference
+  if (constraint.references)
+    output.push( columnDefs.get('references').fn(constraint.references, values, query) );
 
-    // Reference
-    if (constraint.references)
-      output.push( columnDefs.get('references').fn(constraint.references, values, query) );
+  // Foreign Key
+  if (constraint.foreignKey){
+    output.push(
+      'foreign key (' + utils.quoteObject( constraint.foreignKey.column ) + ')'
+    );
 
-    // Foreign Key
-    if (constraint.foreignKey){
-      output.push(
-        'foreign key (' + utils.quoteObject( constraint.foreignKey.column ) + ')'
-      );
+    output.push(
+      columnDefs.get('references').fn(
+        constraint.foreignKey.references, values, query
+      )
+    );
+  }
 
-      output.push(
-        columnDefs.get('references').fn(
-          constraint.foreignKey.references, values, query
-        )
-      );
-    }
-
-    // Single word booleans
-    [
-      { name: 'deferrable',         text: 'deferrable' }
-    , { name: 'notDeferrable',      text: 'not deferrable' }
-    , { name: 'initiallyDeferred',  text: 'initially deferred' }
-    , { name: 'initiallyImmediate', text: 'initially immediate' }
-    ].forEach(function(item){
-      if (constraint[item.name])
-        output.push( item.text )
-    });
-
-    return output.join(' ');
+  // Single word booleans
+  [
+    { name: 'deferrable',         text: 'deferrable' }
+  , { name: 'notDeferrable',      text: 'not deferrable' }
+  , { name: 'initiallyDeferred',  text: 'initially deferred' }
+  , { name: 'initiallyImmediate', text: 'initially immediate' }
+  ].forEach(function(item){
+    if (constraint[item.name])
+      output.push( item.text );
   });
 
-  return module.exports;
+  return output.join(' ');
 });
+
 },{"../../lib/column-def-helpers":39,"../../lib/condition-builder":40,"../../lib/query-helpers":45,"../../lib/utils":48}],11:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var queryBuilder  = require('../../lib/query-builder');
-  var helpers       = require('../../lib/query-helpers');
-  var utils         = require('../../lib/utils');
+var queryBuilder  = require('../../lib/query-builder');
+var helpers       = require('../../lib/query-helpers');
+var utils         = require('../../lib/utils');
 
-  helpers.register('columns', function(columns, values, query){
-    if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');
+helpers.register('columns', function(columns, values, query){
+  if (typeof columns != 'object') throw new Error('Invalid columns input in query properties');
 
-    if (['insert', 'create-view'].indexOf(query.type) > -1){
-      return '(' + columns.map(function(col){
-        return utils.quoteObject( col );
-      }).join(', ') + ')';
+  if (['insert', 'create-view'].indexOf(query.type) > -1){
+    return '(' + columns.map(function(col){
+      return utils.quoteObject( col );
+    }).join(', ') + ')';
+  }
+
+  var output = "";
+
+  if (Array.isArray(columns)){
+    for (var i = 0, l = columns.length; i < l; ++i){
+      if (typeof columns[i] == 'object' && 'type' in columns[i] && !('expression' in columns[i]))
+        output += '(' + queryBuilder( columns[i], values ).toString() + ')';
+      else if (typeof columns[i] == 'object' && 'expression' in columns[i])
+        output += queryBuilder( columns[i], values ).toString();
+      else if (typeof columns[i] == 'object')
+        output += utils.quoteObject(columns[i].name, columns[i].table || query.__defaultTable);
+      else if (columns[i].indexOf('(') > -1)
+        output += columns[i];
+      else
+        output += utils.quoteObject(columns[i], query.__defaultTable);
+
+      if ( typeof columns[i] == 'object' && ('as' in columns[i] || 'alias' in columns[i]))
+        output += ' as "' + (columns[i].as || columns[i].alias) + '"';
+
+      output += ", ";
     }
-
-    var output = "";
-
-    if (Array.isArray(columns)){
-      for (var i = 0, l = columns.length; i < l; ++i){
-        if (typeof columns[i] == 'object' && 'type' in columns[i] && !('expression' in columns[i]))
-          output += '(' + queryBuilder( columns[i], values ).toString() + ')';
-        else if (typeof columns[i] == 'object' && 'expression' in columns[i])
-          output += queryBuilder( columns[i], values ).toString();
-        else if (typeof columns[i] == 'object')
-          output += utils.quoteObject(columns[i].name, columns[i].table || query.__defaultTable);
-        else if (columns[i].indexOf('(') > -1)
-          output += columns[i];
-        else
-          output += utils.quoteObject(columns[i], query.__defaultTable);
-
-        if ( typeof columns[i] == 'object' && ('as' in columns[i] || 'alias' in columns[i]))
-          output += ' as "' + (columns[i].as || columns[i].alias) + '"';
-
-        output += ", ";
-      }
-    } else {
-      for (var key in columns){
-        if (key.indexOf('(') > -1)
-          output += key + ', ';
-        else
-          output += (
-            typeof columns[key] == 'object' && ('table' in columns[key])
-          ) ? '(' + queryBuilder( columns[key], values ).toString() + ') as "' + key + '", '
-            : typeof columns[key] == 'object' && ('type' in columns[key])
-            ? queryBuilder( columns[key], values ).toString() + ' as "' + key + '", '
-            : utils.quoteObject(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
-      }
+  } else {
+    for (var key in columns){
+      if (key.indexOf('(') > -1)
+        output += key + ', ';
+      else
+        output += (
+          typeof columns[key] == 'object' && ('table' in columns[key])
+        ) ? '(' + queryBuilder( columns[key], values ).toString() + ') as "' + key + '", '
+          : typeof columns[key] == 'object' && ('type' in columns[key]) ?
+            queryBuilder( columns[key], values ).toString() + ' as "' + key + '", ' :
+            utils.quoteObject(key, query.__defaultTable) + ' as "' + columns[key] + '", ';
     }
+  }
 
-    if (output.length > 0) output = output.substring(0, output.length - 2);
+  if (output.length > 0) output = output.substring(0, output.length - 2);
 
-    return output;
-  });
-
-  return module.exports;
+  return output;
 });
 
 },{"../../lib/query-builder":44,"../../lib/query-helpers":45,"../../lib/utils":48}],12:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var defs    = require('../../lib/column-def-helpers');
-  var utils   = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var defs    = require('../../lib/column-def-helpers');
+var utils   = require('../../lib/utils');
 
-  helpers.register('definition', function(definition, values, query){
-    if (typeof definition == 'string') return definition;
+helpers.register('definition', function(definition, values, query){
+  if (typeof definition == 'string') return definition;
 
-    var output = "";
+  var output = "";
 
-    for (var k in definition){
-      output += utils.quoteObject(k);
+  for (var k in definition){
+    output += utils.quoteObject(k);
 
-      for (var j in definition[k])
-        if (defs.has(j))
-          output += ' ' + defs.get(j).fn(definition[k][j], values, query, j);
+    for (var j in definition[k])
+      if (defs.has(j))
+        output += ' ' + defs.get(j).fn(definition[k][j], values, query, j);
 
-      output +=  ", ";
-    }
+    output +=  ", ";
+  }
 
-    return output.substring(0, output.length - 2);
-  });
-
-  return module.exports;
+  return output.substring(0, output.length - 2);
 });
+
 },{"../../lib/column-def-helpers":39,"../../lib/query-helpers":45,"../../lib/utils":48}],13:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('distinct', function(distinct, values, query){
-    if (typeof distinct != 'boolean' && !Array.isArray(distinct))
-      throw new Error('Invalid distinct type: ' + typeof distinct);
+helpers.register('distinct', function(distinct, values, query){
+  if (typeof distinct != 'boolean' && !Array.isArray(distinct))
+    throw new Error('Invalid distinct type: ' + typeof distinct);
 
-    // distinct on
-    if (Array.isArray(distinct)) {
-       if(distinct.length == 0) return '';
+  // distinct on
+  if (Array.isArray(distinct)) {
+     if(distinct.length === 0) return '';
 
-      return 'distinct on (' + distinct.map(function(col){
-        return utils.quoteObject( col );
-      }).join(', ') + ')';
-    }
+    return 'distinct on (' + distinct.map(function(col){
+      return utils.quoteObject( col );
+    }).join(', ') + ')';
+  }
 
-    // distinct
-    return (distinct) ? 'distinct ': '';
-  });
-
-  return module.exports;
+  // distinct
+  return (distinct) ? 'distinct ': '';
 });
 
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],14:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var queryBuilder = require('../../lib/query-builder');
+var helpers = require('../../lib/query-helpers');
+var queryBuilder = require('../../lib/query-builder');
 
-  helpers.register('expression', function(exp, values, query){
-    if (Array.isArray(exp)) return exp.join(', ');
-    if (query.type == 'insert' && typeof exp == 'object')
-      return '(' + queryBuilder(exp, values) + ')';
-    if (typeof exp == 'object'){
-      var val = [
-        exp.parenthesis === true ? '( ' : ''
-      , queryBuilder(exp, values)
-      , exp.parenthesis === true ? ' )' : ''
-      ].join('');
+helpers.register('expression', function(exp, values, query){
+  if (Array.isArray(exp)) return exp.join(', ');
+  if (query.type == 'insert' && typeof exp == 'object')
+    return '(' + queryBuilder(exp, values) + ')';
+  if (typeof exp == 'object'){
+    var val = [
+      exp.parenthesis === true ? '( ' : ''
+    , queryBuilder(exp, values)
+    , exp.parenthesis === true ? ' )' : ''
+    ].join('');
 
-      if (Array.isArray(exp.values)){
-        for (var i = 0, l = exp.values.length; i < l; ++i){
-          val = val.replace(
-            RegExp('(\\$)' + (i+1) + '(\\W|$)','g')
-          , '$1' + values.push(exp.values[i]) + '$2'
-          );
-        }
+    if (Array.isArray(exp.values)){
+      for (var i = 0, l = exp.values.length; i < l; ++i){
+        val = val.replace(
+          RegExp('(\\$)' + (i+1) + '(\\W|$)','g')
+        , '$1' + values.push(exp.values[i]) + '$2'
+        );
       }
-
-      return val;
     }
-    return exp;
-  });
 
-  return module.exports;
+    return val;
+  }
+  return exp;
 });
+
 },{"../../lib/query-builder":44,"../../lib/query-helpers":45}],15:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('from', function(from, values, query){
-    if (typeof from === 'string') from = [from];
-    if (!Array.isArray(from)) throw new Error('Invalid from type: ' + typeof from);
+helpers.register('from', function(from, values, query){
+  if (typeof from === 'string') from = [from];
+  if (!Array.isArray(from)) throw new Error('Invalid from type: ' + typeof from);
 
-    for (var i = 0, l = from.length; i < l; ++i)
-      if (from[i].indexOf('"') == -1) from[i] = '"' + from[i] + '"';
+  for (var i = 0, l = from.length; i < l; ++i)
+    if (from[i].indexOf('"') == -1) from[i] = '"' + from[i] + '"';
 
-    return 'from ' + from.join(', ');
-  });
-
-  return module.exports;
+  return 'from ' + from.join(', ');
 });
 
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],16:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils   = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils   = require('../../lib/utils');
 
-  helpers.register('function', function(fn, values, query){
-    return fn;
-  });
-
-  return module.exports;
+helpers.register('function', function(fn, values, query){
+  return fn;
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],17:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils   = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils   = require('../../lib/utils');
 
-  helpers.register('groupBy', function(groupBy, values, query){
-    if (!Array.isArray(groupBy) && typeof groupBy != 'string')
-      throw new Error('Invalid groupBy type: ' + typeof groupBy);
+helpers.register('groupBy', function(groupBy, values, query){
+  if (!Array.isArray(groupBy) && typeof groupBy != 'string')
+    throw new Error('Invalid groupBy type: ' + typeof groupBy);
 
-    var output = "group by ";
+  var output = "group by ";
 
-    if (!Array.isArray(groupBy)) groupBy = [groupBy];
+  if (!Array.isArray(groupBy)) groupBy = [groupBy];
 
-    for (var i = 0, l = groupBy.length; i < l; ++i){
-      output += utils.quoteObject(groupBy[i], query.__defaultTable) + ', ';
-    }
+  for (var i = 0, l = groupBy.length; i < l; ++i){
+    output += utils.quoteObject(groupBy[i], query.__defaultTable) + ', ';
+  }
 
-    if (output.indexOf(', ') > -1) output = output.substring(0, output.length - 2);
+  if (output.indexOf(', ') > -1) output = output.substring(0, output.length - 2);
 
-    return output;
-  });
-
-  return module.exports;
+  return output;
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],18:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils   = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils   = require('../../lib/utils');
 
-  helpers.register('ifExists', function(ifExists, values, query){
-    return ifExists ? 'if exists' : null;
-  });
-
-  return module.exports;
+helpers.register('ifExists', function(ifExists, values, query){
+  return ifExists ? 'if exists' : null;
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],19:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils   = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils   = require('../../lib/utils');
 
-  helpers.register('ifNotExists', function(ifNotExists, values, query){
-    return ifNotExists ? 'if not exists' : null;
-  });
-
-  return module.exports;
+helpers.register('ifNotExists', function(ifNotExists, values, query){
+  return ifNotExists ? 'if not exists' : null;
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],20:[function(require,module,exports){
 /**
  * These query helpers are now deprecated!
  * Please use query helper: joins
  */
 
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var conditionBuilder = require('../../lib/condition-builder');
+var helpers = require('../../lib/query-helpers');
+var conditionBuilder = require('../../lib/condition-builder');
 
-  var buildJoin = function(type, joins, values){
-    var output = "";
-    for (var table in joins){
-      output += ' ' + type + ' join "' + table + '" on ';
-      output += conditionBuilder(joins[table], table, values);
-    }
-    return output;
-  };
+var buildJoin = function(type, joins, values){
+  var output = "";
+  for (var table in joins){
+    output += ' ' + type + ' join "' + table + '" on ';
+    output += conditionBuilder(joins[table], table, values);
+  }
+  return output;
+};
 
-  helpers.register('join', function(join, values, query){
-    return " " + buildJoin('', join, values);
-  });
-
-  helpers.register('innerJoin', function(join, values, query){
-    return " " + buildJoin('inner', join, values);
-  });
-
-  helpers.register('leftJoin', function(join, values, query){
-    return " " + buildJoin('left', join, values);
-  });
-
-  helpers.register('leftOuterJoin', function(join, values, query){
-    return " " + buildJoin('left outer', join, values);
-  });
-
-  helpers.register('fullOuterJoin', function(join, values, query){
-    return " " + buildJoin('full outer', join, values);
-  });
-
-  helpers.register('crossOuterJoin', function(join, values, query){
-    return " " + buildJoin('cross outer', join, values);
-  });
-
-  return module.exports;
+helpers.register('join', function(join, values, query){
+  return " " + buildJoin('', join, values);
 });
+
+helpers.register('innerJoin', function(join, values, query){
+  return " " + buildJoin('inner', join, values);
+});
+
+helpers.register('leftJoin', function(join, values, query){
+  return " " + buildJoin('left', join, values);
+});
+
+helpers.register('leftOuterJoin', function(join, values, query){
+  return " " + buildJoin('left outer', join, values);
+});
+
+helpers.register('fullOuterJoin', function(join, values, query){
+  return " " + buildJoin('full outer', join, values);
+});
+
+helpers.register('crossOuterJoin', function(join, values, query){
+  return " " + buildJoin('cross outer', join, values);
+});
+
 },{"../../lib/condition-builder":40,"../../lib/query-helpers":45}],21:[function(require,module,exports){
 /**
  * Query Helper: Joins
  */
 
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var helpers = require('../../lib/query-helpers');
+var conditionBuilder = require('../../lib/condition-builder');
+var queryBuilder = require('../../lib/query-builder');
+var utils = require('../../lib/utils');
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var conditionBuilder = require('../../lib/condition-builder');
-  var queryBuilder = require('../../lib/query-builder');
-  var utils = require('../../lib/utils')
+var buildJoin = function(join, values, query){
+  // Require a target
+  if ( !join.target )
+    throw new Error('Invalid join.target type `' + typeof join.target + '` for query helper `joins`');
 
-  var buildJoin = function(join, values, query){
-    // Require a target
-    if ( !join.target )
-      throw new Error('Invalid join.target type `' + typeof join.target + '` for query helper `joins`');
+  // Allow for strings or objects for join.on
+  if ( !join.on || ( typeof join.on !== 'string' && typeof join.on !== 'object' ) )
+    throw new Error('Invalid join.on type `' + typeof join.on + '` for query helper `joins`');
 
-    // Allow for strings or objects for join.on
-    if ( !join.on || ( typeof join.on !== 'string' && typeof join.on !== 'object' ) )
-      throw new Error('Invalid join.on type `' + typeof join.on + '` for query helper `joins`');
+  var output = ( join.type ? ( join.type + ' ' ) : '' ) + "join ";
 
-    var output = ( join.type ? ( join.type + ' ' ) : '' ) + "join ";
+  if ( typeof join.target === 'object' ) output += '(' + queryBuilder( join.target, values ) + ') ';
+  else {
+    output += utils.quoteObject.apply( null, [
+      join.target
+    , join.schema
+    , join.database
+    ].filter( function( a ){ return !!a; }) ) + ' ';
+  }
 
-    if ( typeof join.target === 'object' ) output += '(' + queryBuilder( join.target, values ) + ') ';
-    else {
-      output += utils.quoteObject.apply( null, [
-        join.target
-      , join.schema
-      , join.database
-      ].filter( function( a ){ return !!a; }) ) + ' ';
-    }
+  if ( join.alias ) output += '"' + join.alias + '" ';
 
-    if ( join.alias ) output += '"' + join.alias + '" ';
+  if ( typeof join.on === 'string' ) output += 'on ' + join.on;
+  else output += 'on ' + conditionBuilder( join.on, join.alias || join.target, values );
 
-    if ( typeof join.on === 'string' ) output += 'on ' + join.on;
-    else output += 'on ' + conditionBuilder( join.on, join.alias || join.target, values );
+  return output;
+};
 
-    return output;
-  };
+helpers.register('joins', function(joins, values, query){
+  if ( Array.isArray( joins ) ){
+    return joins.map( function( join ){
+      return buildJoin( join, values, query );
+    }).join(' ');
+  }
 
-  helpers.register('joins', function(joins, values, query){
-    if ( Array.isArray( joins ) ){
-      return joins.map( function( join ){
-        return buildJoin( join, values, query );
-      }).join(' ');
-    }
+  if ( typeof joins === 'object' ) {
+    return Object.keys( joins ).map(function( val ){
+      // For objects, the key is the default alias and target
+      if ( !joins[ val ].alias )  joins[ val ].alias = val;
+      if ( !joins[ val ].target ) joins[ val ].target = val;
 
-    if ( typeof joins === 'object' ) {
-      return Object.keys( joins ).map(function( val ){
-        // For objects, the key is the default alias and target
-        if ( !joins[ val ].alias )  joins[ val ].alias = val;
-        if ( !joins[ val ].target ) joins[ val ].target = val;
+      return buildJoin( joins[ val ], values, query );
+    }).join(' ');
+  }
 
-        return buildJoin( joins[ val ], values, query );
-      }).join(' ');
-    }
-
-    throw new Error('Invalid type `' + typeof joins + '` for query helper `joins`');
-  });
+  throw new Error('Invalid type `' + typeof joins + '` for query helper `joins`');
 });
+
 },{"../../lib/condition-builder":40,"../../lib/query-builder":44,"../../lib/query-helpers":45,"../../lib/utils":48}],22:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
+var helpers = require('../../lib/query-helpers');
 
-  helpers.register('limit', function(limit, values){
-    if ( typeof limit === 'number' )
-      return " limit $" + values.push(limit);
-    else if ( typeof limit === 'string' && limit.toLowerCase() === "all" )
-      return " limit all";
-    else
-      throw new Error('Invalid limit type `' + typeof limit  + '` for query helper `limit`. Limit must be number or \'all\'');
-  });
-
-  return module.exports;
+helpers.register('limit', function(limit, values){
+  if ( typeof limit === 'number' )
+    return " limit $" + values.push(limit);
+  else if ( typeof limit === 'string' && limit.toLowerCase() === "all" )
+    return " limit all";
+  else
+    throw new Error('Invalid limit type `' + typeof limit  + '` for query helper `limit`. Limit must be number or \'all\'');
 });
+
 },{"../../lib/query-helpers":45}],23:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
+var helpers = require('../../lib/query-helpers');
 
-  helpers.register('offset', function(offset, values){
-    return " offset $" + values.push(offset);
-  });
-
-  return module.exports;
+helpers.register('offset', function(offset, values){
+  return " offset $" + values.push(offset);
 });
+
 },{"../../lib/query-helpers":45}],24:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('only', function(only, values, query){
-    if (only) return "only";
-    return "";
-  });
-
-  return module.exports;
+helpers.register('only', function(only, values, query){
+  if (only) return "only";
+  return "";
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],25:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+helpers.register('order', function(order, values, query){
+  var output = "order by ";
 
-  helpers.register('order', function(order, values, query){
-    var output = "order by ";
+  if (typeof order === 'string') return output + order;
 
-    if (typeof order == 'string') return output + order;
+  if (Array.isArray(order)) return output + order.join(', ');
 
-    if (Array.isArray(order)) return output + order.join(', ');
+  for (var key in order){
+    output += utils.quoteObject(key, query.__defaultTable) + ' ' + order[key] + ', ';
+  }
 
-    for (var key in order){
-      output += utils.quoteObject(key, query.__defaultTable) + ' ' + order[key] + ', ';
-    }
+  if (output === "order by ") return "";
 
-    if (output == "order by ") return "";
-
-    return output.substring(0, output.length - 2);;
-  });
-
-  return module.exports;
+  return output.substring(0, output.length - 2);
 });
+
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],26:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module) {
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('over', function(over, values, query) {
-    if (over == null) return '';
+helpers.register('over', function(over, values, query) {
+  if (over === null) return '';
 
-    var order = helpers.get('order').fn;
-    var partition = helpers.get('partition').fn;
-    var clause = (typeof over === 'object') ?
-      [
-        over.partition ? partition(over.partition, values, query) : ''
-      , over.order ? order(over.order, values, query) : ''
-      ].join(' ').trim()
-    : (over||'').toString();
-    return 'over (' + clause + ')';
-  });
+  var order = helpers.get('order').fn;
+  var partition = helpers.get('partition').fn;
+  var clause = (typeof over === 'object') ?
+    [
+      over.partition ? partition(over.partition, values, query) : ''
+    , over.order ? order(over.order, values, query) : ''
+    ].join(' ').trim()
+  : (over||'').toString();
+  return 'over (' + clause + ')';
 });
 
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],27:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module) {
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('partition', function(partition, values, query) {
-    if (!Array.isArray(partition)) {
-      var val = (partition||'').toString();
-      partition = val ? [val] : [];
-    }
+helpers.register('partition', function(partition, values, query) {
+  if (!Array.isArray(partition)) {
+    var val = (partition||'').toString();
+    partition = val ? [val] : [];
+  }
 
-    var clause = partition.map(function(col) {
-      return utils.quoteObject(col, query.__defaultTable);
-    }).join(', ')
+  var clause = partition.map(function(col) {
+    return utils.quoteObject(col, query.__defaultTable);
+  }).join(', ');
 
-    return clause ? 'partition by ' + clause : '';
-  });
+  return clause ? 'partition by ' + clause : '';
 });
 
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],28:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var queryBuilder = require('../../lib/query-builder');
+var helpers = require('../../lib/query-helpers');
+var queryBuilder = require('../../lib/query-builder');
 
-  helpers.register( 'queries', function( queries, values, query ){
-    var allowedCombinations = [ 'union', 'intersect', 'except' ];
-    var joiner = query.joiner || ' ';
+helpers.register( 'queries', function( queries, values, query ){
+  var allowedCombinations = [ 'union', 'intersect', 'except' ];
+  var joiner = query.joiner || ' ';
 
-    if ( allowedCombinations.indexOf( query.type ) > -1 ){
-      joiner = query.type;
+  if ( allowedCombinations.indexOf( query.type ) > -1 ){
+    joiner = query.type;
 
-      if ( query.all ){
-        joiner += ' ' + helpers.get('all').fn( query.all, values, query );
-      }
-
-      joiner = ' ' + joiner + ' ';
+    if ( query.all ){
+      joiner += ' ' + helpers.get('all').fn( query.all, values, query );
     }
 
-    return queries.map( function( q ){
-      return queryBuilder( q, values );
-    }).join( joiner );
-  });
+    joiner = ' ' + joiner + ' ';
+  }
 
-  return module.exports;
+  return queries.map( function( q ){
+    return queryBuilder( q, values );
+  }).join( joiner );
 });
+
 },{"../../lib/query-builder":44,"../../lib/query-helpers":45}],29:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register('returning', function(returning, values, query){
-    if ( !Array.isArray(returning) ) throw new Error('Invalid returning input in query properties');
-    var oldType = query.type;
-    query.type = 'select';
-    var output = "returning " + helpers.get('columns').fn(returning, values, query);
-    query.type = oldType;
-    return output;
-  });
-
-  return module.exports;
+helpers.register('returning', function(returning, values, query){
+  if ( !Array.isArray(returning) ) throw new Error('Invalid returning input in query properties');
+  var oldType = query.type;
+  query.type = 'select';
+  var output = "returning " + helpers.get('columns').fn(returning, values, query);
+  query.type = oldType;
+  return output;
 });
 
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],30:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var queryBuilder = require('../../lib/query-builder');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var queryBuilder = require('../../lib/query-builder');
+var utils = require('../../lib/utils');
 
-  helpers.register('table', function(table, values, query){
-    if ( typeof table == 'object' && 'type' in table && !('alias' in table))
-      throw new Error('Sub query table selects must have an `alias` specified');
+helpers.register('table', function(table, values, query){
+  if ( typeof table == 'object' && 'type' in table && !('alias' in table))
+    throw new Error('Sub query table selects must have an `alias` specified');
 
-    if (typeof table != 'string' && typeof table != 'object') throw new Error('Invalid table type: ' + typeof table);
+  if (typeof table != 'string' && typeof table != 'object') throw new Error('Invalid table type: ' + typeof table);
 
-    if ( typeof table == 'object' && !Array.isArray(table)){
-      var alias = table.alias;
+  if ( typeof table == 'object' && !Array.isArray(table)){
+    var alias = table.alias;
 
-      // Remove alias because we're going to consume that property here
-      delete table.alias;
+    // Remove alias because we're going to consume that property here
+    delete table.alias;
 
-      return 'from (' + queryBuilder(table, values) + ') "' + alias + '"';
-    }
+    return 'from (' + queryBuilder(table, values) + ') "' + alias + '"';
+  }
 
-    if (!Array.isArray(table)) table = [table];
+  if (!Array.isArray(table)) table = [table];
 
-    for (var i = 0, l = table.length; i < l; ++i)
-      if (table[i].indexOf('"') == -1) table[i] = utils.quoteObject( table[i] );
+  for (var i = 0, l = table.length; i < l; ++i)
+    if (table[i].indexOf('"') == -1) table[i] = utils.quoteObject( table[i] );
 
-    return (query.type === 'select' ? 'from ' : '') + table.join(', ');
-  });
-
-  return module.exports;
+  return (query.type === 'select' ? 'from ' : '') + table.join(', ');
 });
+
 },{"../../lib/query-builder":44,"../../lib/query-helpers":45,"../../lib/utils":48}],31:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var queryTypes = require('../../lib/query-helpers');
-  var updateHelpers = require('../../lib/update-helpers');
-  var utils = require('../../lib/utils');
+var queryTypes = require('../../lib/query-helpers');
+var updateHelpers = require('../../lib/update-helpers');
+var utils = require('../../lib/utils');
 
-  queryTypes.register('updates', function($updates, values, query){
-    var output = "set ";
+queryTypes.register('updates', function($updates, values, query){
+  var output = "set ";
 
-    var result = Object.keys( $updates ).map( function( key ){
-      if (updateHelpers.has(key))
-        return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
-      if ($updates[key] === null)
-        return utils.quoteObject(key) + ' = null';
-      return utils.quoteObject(key) + ' = $' + values.push($updates[key]);
-    });
-
-    return result.length > 0 ? ('set ' + result.join(', ')) : '';
+  var result = Object.keys( $updates ).map( function( key ){
+    if (updateHelpers.has(key))
+      return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
+    if ($updates[key] === null)
+      return utils.quoteObject(key) + ' = null';
+    return utils.quoteObject(key) + ' = $' + values.push($updates[key]);
   });
 
-  return module.exports;
+  return result.length > 0 ? ('set ' + result.join(', ')) : '';
 });
 
 },{"../../lib/query-helpers":45,"../../lib/update-helpers":47,"../../lib/utils":48}],32:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
+var helpers = require('../../lib/query-helpers');
+var queryBuilder = require('../../lib/query-builder');
+
+helpers.register('values', function(values, valuesArray, query){
+  if (typeof values != 'object') throw new Error('Invalid values input in query properties');
+
+  if (query.type === 'update')
+    return helpers.get('updates').fn(values, valuesArray, query);
+
+  if ( !Array.isArray( values ) ) values = [ values ];
+
+  if ( values.length === 0 ) throw new Error('MoSQL.queryHelper.values - Invalid values array length `0`');
+
+  // Build object keys union
+  var keys = [], checkKeys = function( k ){
+    if ( keys.indexOf( k ) > -1 ) return;
+    keys.push( k );
   };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var queryBuilder = require('../../lib/query-builder');
+  for ( var i = 0, l = values.length; i < l; ++i ) {
+    Object.keys( values[i] ).forEach( checkKeys );
+  }
 
-  helpers.register('values', function(values, valuesArray, query){
-    if (typeof values != 'object') throw new Error('Invalid values input in query properties')
-
-    if (query.type === 'update')
-      return helpers.get('updates').fn(values, valuesArray, query);
-
-    if ( !Array.isArray( values ) ) values = [ values ];
-
-    if ( values.length == 0 ) throw new Error('MoSQL.queryHelper.values - Invalid values array length `0`');
-
-    // Build object keys union
-    var keys = [], checkKeys = function( k ){
-      if ( keys.indexOf( k ) > -1 ) return;
-      keys.push( k );
-    };
-
-    for ( var i = 0, l = values.length; i < l; ++i ) {
-      Object.keys( values[i] ).forEach( checkKeys )
-    }
-
-    var allValues = values.map( function( value ){
-      var result = [];
-      for ( var i = 0, l = keys.length; i < l; ++i ){
-        if (value[ keys[i] ] === null || value[ keys[i] ] === undefined) {
-          result.push('null');
-        } else if (typeof value[ keys[i] ] == 'object' && 'type' in value[ keys[i] ]){
-          result.push('(' + queryBuilder( value[ keys[i] ], valuesArray ) + ')');
-        } else {
-          result.push('$' + valuesArray.push(value[keys[i]]));
-        }
+  var allValues = values.map( function( value ) {
+    var result = [];
+    for ( var i = 0, l = keys.length; i < l; ++i ){
+      if (value[ keys[i] ] === null || value[ keys[i] ] === undefined) {
+        result.push('null');
+      } else if (typeof value[ keys[i] ] == 'object' && 'type' in value[ keys[i] ]) {
+        result.push('(' + queryBuilder( value[ keys[i] ], valuesArray ) + ')');
+      } else {
+        result.push('$' + valuesArray.push(value[keys[i]]));
       }
-      return '(' + result.join(', ') + ')';
-    }).join(', ')
+    }
+    return '(' + result.join(', ') + ')';
+  }).join(', ');
 
-    return '("' + keys.join('", "') + '") values ' + allValues;
-  });
-
-  return module.exports;
+  return '("' + keys.join('", "') + '") values ' + allValues;
 });
 
 },{"../../lib/query-builder":44,"../../lib/query-helpers":45}],33:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
+var helpers = require('../../lib/query-helpers');
 
-  helpers.register('view', function(view, values, query){
-    return '"' + view + '"';
-  });
-
-  return module.exports;
+helpers.register('view', function(view, values, query){
+  return '"' + view + '"';
 });
+
 },{"../../lib/query-helpers":45}],34:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var conditionBuilder = require('../../lib/condition-builder');
+var helpers = require('../../lib/query-helpers');
+var conditionBuilder = require('../../lib/condition-builder');
 
-  helpers.register('where', function(where, values, query){
-    var output = conditionBuilder(where, query.__defaultTable, values);
-    if (output.length > 0) output = 'where ' + output;
-    return output;
-  });
-
-  return module.exports;
+helpers.register('where', function(where, values, query){
+  var output = conditionBuilder(where, query.__defaultTable, values);
+  if (output.length > 0) output = 'where ' + output;
+  return output;
 });
+
 },{"../../lib/condition-builder":40,"../../lib/query-helpers":45}],35:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module) {
-  var helpers = require('../../lib/query-helpers');
-  var utils = require('../../lib/utils');
+var helpers = require('../../lib/query-helpers');
+var utils = require('../../lib/utils');
 
-  helpers.register( 'window', function(win, values, query) {
-    var out = ['window'];
+helpers.register( 'window', function(win, values, query) {
+  var out = ['window'];
 
-    if ( win.name ){
-      out.push( utils.quoteObject( win.name ) )
+  if ( win.name ){
+    out.push( utils.quoteObject( win.name ) );
+  }
+
+  if ( typeof win.as === 'object' ){
+    out.push('as (');
+
+    if ( win.as.existing ){
+      out.push( utils.quoteObject( win.as.existing ) );
+    } else {
+      // Supported sub-types in window expression
+      [
+        'partition'
+      , 'order'
+      , 'groupBy'
+      ].forEach( function( type ){
+        if ( win.as[ type ] ){
+          out.push( helpers.get( type ).fn( win.as[ type ], values, query ) );
+        }
+      });
     }
 
-    if ( typeof win.as === 'object' ){
-      out.push('as (');
+    out.push(')');
+  }
 
-      if ( win.as.existing ){
-        out.push( utils.quoteObject( win.as.existing ) );
-      } else {
-        // Supported sub-types in window expression
-        [
-          'partition'
-        , 'order'
-        , 'groupBy'
-        ].forEach( function( type ){
-          if ( win.as[ type ] ){
-            out.push( helpers.get( type ).fn( win.as[ type ], values, query ) );
-          }
-        });
-      }
-
-      out.push(')');
-    }
-
-    return out.join(' ');
-  });
+  return out.join(' ');
 });
 
 },{"../../lib/query-helpers":45,"../../lib/utils":48}],36:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var helpers = require('../../lib/query-helpers');
-  var queryBuilder = require('../../lib/query-builder');
+var helpers = require('../../lib/query-helpers');
+var queryBuilder = require('../../lib/query-builder');
 
-  helpers.register('with', function(withObj, values, query){
-    if (typeof withObj != 'object') return '';
+helpers.register('with', function(withObj, values, query){
+  if (typeof withObj != 'object') return '';
 
-    // Avoid mutating objects by storing objSyntax names in this array.
-    // Indices match up with the newly created withObj array
-    var names = [];
+  // Avoid mutating objects by storing objSyntax names in this array.
+  // Indices match up with the newly created withObj array
+  var names = [];
 
-    // Convert Object syntax to array syntax, pushing to names
-    if ( !Array.isArray( withObj ) ){
-      withObj = Object.keys( withObj ).map( function( name ){
-        names.push( name );
-        return withObj[ name ];
-      });
-    }
+  // Convert Object syntax to array syntax, pushing to names
+  if ( !Array.isArray( withObj ) ){
+    withObj = Object.keys( withObj ).map( function( name ){
+      names.push( name );
+      return withObj[ name ];
+    });
+  }
 
-    var output = withObj.map( function( obj, i ){
-      var name = 'name' in obj ? obj.name : names[ i ];
+  var output = withObj.map( function( obj, i ){
+    var name = 'name' in obj ? obj.name : names[ i ];
 
-      if ( !name ) throw new Error('MoSQL.queryHelper.with requires property `name`');
+    if ( !name ) throw new Error('MoSQL.queryHelper.with requires property `name`');
 
-      return '"' + name + '"' + ' as (' + queryBuilder( obj, values ) + ')';
-    }).join(', ');
+    return '"' + name + '"' + ' as (' + queryBuilder( obj, values ) + ')';
+  }).join(', ');
 
-    return output ? ( 'with ' + output) : '';
-  });
-
-  return module.exports;
+  return output ? ( 'with ' + output) : '';
 });
+
 },{"../../lib/query-builder":44,"../../lib/query-helpers":45}],37:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  /**
-   * Update Behaviors
-   */
+/**
+ * Update Behaviors
+ */
 
-  var helpers = require('../lib/update-helpers');
-  var utils = require('../lib/utils');
+var helpers = require('../lib/update-helpers');
+var utils = require('../lib/utils');
 
-  /**
-   * Increment column
-   * Example:
-   *  { $inc: { clicks: 1 } }
-   * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
-   */
-  helpers.add('$inc', function(value, values, collection){
-    var output = "";
+/**
+ * Increment column
+ * Example:
+ *  { $inc: { clicks: 1 } }
+ * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
+ */
+helpers.add('$inc', function(value, values, collection){
+  var output = "";
 
-    for (var key in value){
-      output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' + $' + values.push(value[key]);
-    }
+  for (var key in value){
+    output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' + $' + values.push(value[key]);
+  }
 
-    return output;
-  });
-
-  /**
-   * Decrement column
-   * Example:
-   *  { $dec: { clicks: 1 } }
-   * @param  {Object} Hash whose keys are the columns to dec and values are how much it will inc
-   */
-  helpers.add('$dec', function(value, values, collection){
-    var output = "";
-
-    for (var key in value){
-      output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' - $' + values.push(value[key]);
-    }
-
-    return output;
-  });
+  return output;
 });
+
+/**
+ * Decrement column
+ * Example:
+ *  { $dec: { clicks: 1 } }
+ * @param  {Object} Hash whose keys are the columns to dec and values are how much it will inc
+ */
+helpers.add('$dec', function(value, values, collection){
+  var output = "";
+
+  for (var key in value){
+    output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' - $' + values.push(value[key]);
+  }
+
+  return output;
+});
+
 },{"../lib/update-helpers":47,"../lib/utils":48}],38:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var HelperManager = require('./helper-manager');
-  return module.exports = new HelperManager();
-});
+var HelperManager = require('./helper-manager');
+
+module.exports = new HelperManager();
+
 },{"./helper-manager":42}],39:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
-
-define(function(require, exports, module){
-  var HelperManager = require('./helper-manager');
-  module.exports = new HelperManager();
-
-  return module.exports;
-});
+module.exports=require(38)
 },{"./helper-manager":42}],40:[function(require,module,exports){
 (function (Buffer){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var
+  utils   = require('./utils')
+, helpers = require('./conditional-helpers')
+;
 
-define(function(require, exports, module){
-  var
-    utils   = require('./utils')
-  , helpers = require('./conditional-helpers')
-  ;
+module.exports = function(where, table, values){
+  var buildConditions = function(where, condition, column, joiner){
+    joiner = joiner || ' and ';
+    if (column) column = utils.quoteObject(column, table);
 
-  module.exports = function(where, table, values){
-    var buildConditions = function(where, condition, column, joiner){
-      joiner = joiner || ' and ';
-      if (column) column = utils.quoteObject(column, table);
+    var conditions = [], result;
 
-      var conditions = [], result;
+    for (var key in where) {
 
-      for (var key in where){
-
-        // If the value is null, send a $null helper through the condition builder
-        if ( where[key] == null ){
-          var tmp = {};
-          tmp[key] = { $null: true };
-          conditions.push( buildConditions(tmp, condition, column, joiner) );
-          continue;
-        }
-
-        if (typeof where[key] == 'object' && !(where[key] instanceof Date) && !Buffer.isBuffer(where[key])){
-
-          // Key is conditional block
-          if (helpers.has(key)){
-            // If it cascades, run it through the builder using the helper key
-            // as the current condition
-            // If it doesn't cascade, run the helper immediately
-            if (helpers.get(key).options.cascade)
-              (result = buildConditions(where[key], key, column)) && conditions.push(result)
-            else
-              (result = helpers.get(key).fn(column, where[key], values, table)) && conditions.push(result);
-          }
-
-          // Key is Joiner
-          else if (key == '$or')
-            (result = buildConditions(where[key], condition, column, ' or ')) && conditions.push(result);
-          else if (key == '$and')
-            (result = buildConditions(where[key], condition, column)) && conditions.push(result);
-
-          // Key is array index
-          else if (+key >= 0)
-            (result = buildConditions(where[key], condition, column)) && conditions.push(result);
-
-          // Key is column
-          else
-            (result = buildConditions(where[key], condition, key)) && conditions.push(result);
-
-          continue;
-        }
-
-        // Key is a helper, use that for this value
-        if (helpers.has(key))
-          conditions.push(
-            helpers.get(key).fn(
-              column
-            , utils.parameterize(where[key], values)
-            , values
-            , table
-            )
-          );
-
-        // Key is an array index
-        else if (+key >= 0)
-          conditions.push(
-            helpers.get(condition).fn(
-              column
-            , utils.parameterize(where[key], values)
-            , values
-            , table
-            )
-          );
-
-        // Key is a column
-        else
-          conditions.push(
-            helpers.get(condition).fn(
-              utils.quoteObject(key, table)
-            , utils.parameterize(where[key], values)
-            , values
-            , table
-            )
-          );
+      // If the value is null, send a $null helper through the condition builder
+      if ( where[key] === null ) {
+        var tmp = {};
+        tmp[key] = { $null: true };
+        conditions.push( buildConditions(tmp, condition, column, joiner) );
+        continue;
       }
 
-      if (conditions.length > 1) return '(' + conditions.join(joiner) + ')';
-      if (conditions.length == 1) return conditions[0];
-    };
+      if (typeof where[key] == 'object' && !(where[key] instanceof Date) && !Buffer.isBuffer(where[key])) {
 
-    // Always remove outer-most parenthesis
-    var result = buildConditions(where, '$equals');
-    if (!result) return '';
-    if (result[0] == '(') return result.substring(1, result.length - 1);
-    return result;
+        // Key is conditional block
+        if (helpers.has(key)) {
+          // If it cascades, run it through the builder using the helper key
+          // as the current condition
+          // If it doesn't cascade, run the helper immediately
+          if (helpers.get(key).options.cascade)
+            (result = buildConditions(where[key], key, column)) && conditions.push(result);
+          else
+            (result = helpers.get(key).fn(column, where[key], values, table)) && conditions.push(result);
+        }
+
+        // Key is Joiner
+        else if (key == '$or')
+          (result = buildConditions(where[key], condition, column, ' or ')) && conditions.push(result);
+        else if (key == '$and')
+          (result = buildConditions(where[key], condition, column)) && conditions.push(result);
+
+        // Key is array index
+        else if (+key >= 0)
+          (result = buildConditions(where[key], condition, column)) && conditions.push(result);
+
+        // Key is column
+        else
+          (result = buildConditions(where[key], condition, key)) && conditions.push(result);
+
+        continue;
+      }
+
+      // Key is a helper, use that for this value
+      if (helpers.has(key))
+        conditions.push(
+          helpers.get(key).fn(
+            column
+          , utils.parameterize(where[key], values)
+          , values
+          , table
+          )
+        );
+
+      // Key is an array index
+      else if (+key >= 0)
+        conditions.push(
+          helpers.get(condition).fn(
+            column
+          , utils.parameterize(where[key], values)
+          , values
+          , table
+          )
+        );
+
+      // Key is a column
+      else
+        conditions.push(
+          helpers.get(condition).fn(
+            utils.quoteObject(key, table)
+          , utils.parameterize(where[key], values)
+          , values
+          , table
+          )
+        );
+    }
+
+    if (conditions.length > 1) return '(' + conditions.join(joiner) + ')';
+    if (conditions.length == 1) return conditions[0];
   };
 
-  return module.exports;
-});
+  // Always remove outer-most parenthesis
+  var result = buildConditions(where, '$equals');
+  if (!result) return '';
+  if (result[0] == '(') return result.substring(1, result.length - 1);
+  return result;
+};
 
 }).call(this,require("buffer").Buffer)
 },{"./conditional-helpers":41,"./utils":48,"buffer":49}],41:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var HelperManager = require('./helper-manager');
+var HelperManager = require('./helper-manager');
 
-  module.exports = new HelperManager({ cascade: true });
+module.exports = new HelperManager({ cascade: true });
 
-  return module.exports;
-});
 },{"./helper-manager":42}],42:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var HelperManager = function(defaults){
-    this.defaults = defaults || {};
-    this.helpers = {};
-    return this;
-  };
+var HelperManager = function(defaults){
+  this.defaults = defaults || {};
+  this.helpers = {};
+  return this;
+};
 
-  HelperManager.prototype.get = function(name){
-    if (!this.has(name)) throw new Error('Cannot find helper: ' + name);
-    return this.helpers[name];
-  };
+HelperManager.prototype.get = function(name){
+  if (!this.has(name)) throw new Error('Cannot find helper: ' + name);
+  return this.helpers[name];
+};
 
-  HelperManager.prototype.has = function(name){
-    return this.helpers.hasOwnProperty(name);
-  };
+HelperManager.prototype.has = function(name){
+  return this.helpers.hasOwnProperty(name);
+};
 
-  HelperManager.prototype.add = function(name, options, fn){
-    if (typeof options == 'function'){
-      fn = options;
-      options = {};
-    }
+HelperManager.prototype.add = function(name, options, fn){
+  if (typeof options == 'function'){
+    fn = options;
+    options = {};
+  }
 
-    options = options || {};
+  options = options || {};
 
-    for (var key in this.defaults){
-      if (!(key in options)) options[key] = this.defaults[key];
-    }
+  for (var key in this.defaults){
+    if (!(key in options)) options[key] = this.defaults[key];
+  }
 
-    this.helpers[name] = { fn: fn, options: options };
+  this.helpers[name] = { fn: fn, options: options };
 
-    return this;
-  };
+  return this;
+};
 
-  HelperManager.prototype.register = function(name, options, fn){
-    return this.add(name, options, fn);
-  };
+HelperManager.prototype.register = function(name, options, fn){
+  return this.add(name, options, fn);
+};
 
-  module.exports = HelperManager;
+module.exports = HelperManager;
 
-  return module.exports;
-});
 },{}],43:[function(require,module,exports){
 (function (Buffer){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
+
+// When condition builder is checking sub-objects, one of the
+// steps is to make sure we're not traversing a buffer
+if ( typeof Buffer === 'undefined' ){
+  window.Buffer = function(){};
+  window.Buffer.isBuffer = function(){
+    return false;
   };
 }
 
-define(function(require, exports, module){
-  // When condition builder is checking sub-objects, one of the
-  // steps is to make sure we're not traversing a buffer
-  if ( typeof Buffer === 'undefined' ){
-    window.Buffer = function(){};
-    window.Buffer.isBuffer = function(){
-      return false;
-    };
-  }
-});
 }).call(this,require("buffer").Buffer)
 },{"buffer":49}],44:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var queryTypes = require('./query-types');
-  var queryHelpers = require('./query-helpers');
+var queryTypes = require('./query-types');
+var queryHelpers = require('./query-helpers');
 
-  /**
-   * Main SQL Building function
-   * @param  {Object} query
-   * @param  {Array}  values
-   * @return {String}
-   */
-  module.exports = function(query, values){
-    if (!query.type){
-      query.type = 'expression';
-    } else if (!queryTypes.has(query.type)){
-      query.function = query.type;
-      query.type = 'function';
-    }
+/**
+ * Main SQL Building function
+ * @param  {Object} query
+ * @param  {Array}  values
+ * @return {String}
+ */
+module.exports = function(query, values){
+  if (!query.type){
+    query.type = 'expression';
+  } else if (!queryTypes.has(query.type)){
+    query.function = query.type;
+    query.type = 'function';
+  }
 
-    var
-      type      = queryTypes.get(query.type)
-    , variables = type.match(/\{\w+\}/g)
-    , values    = values || []
-    ;
+  var
+    type      = queryTypes.get(query.type)
+  , variables = type.match(/\{\w+\}/g);
 
-    query.__defaultTable = Array.isArray(query.table) ? query.table[0] : query.table;
+  values    = values || [];
 
-    // Table was a sub-query, use alias of the sub-query
-    if ( typeof query.__defaultTable == 'object' ){
-      query.__defaultTable = query.__defaultTable.alias;
-    }
+  query.__defaultTable = Array.isArray(query.table) ? query.table[0] : query.table;
 
-    if (query.alias) query.__defaultTable = query.alias;
+  // Table was a sub-query, use alias of the sub-query
+  if ( typeof query.__defaultTable == 'object' ){
+    query.__defaultTable = query.__defaultTable.alias;
+  }
 
-    if (!query.columns && query.type == 'select' && query.table){
-      query.columns = ['*'];
-    }
+  if (query.alias) query.__defaultTable = query.alias;
 
-    for (var i = 0, l = variables.length, key; i < l; ++i){
-      // If there exists a builder function and input in the options
-      // corresponding to the query helper name, then run that
-      // helper function with the value of the query->helper_key
-      type = type.replace(
-        variables[i]
-      , queryHelpers.has(key = variables[i].substring(1, variables[i].length - 1)) && query[key]
-        ? queryHelpers.get(key).fn(query[key], values, query)
-        : ''
-      );
-    }
+  if (!query.columns && query.type == 'select' && query.table){
+    query.columns = ['*'];
+  }
 
-    var result = {
-      query :   type.trim().replace(/\s+/g, " ")
-    , values:   values
-    , original: query
-    };
+  for (var i = 0, l = variables.length, key; i < l; ++i){
+    // If there exists a builder function and input in the options
+    // corresponding to the query helper name, then run that
+    // helper function with the value of the query->helper_key
+    type = type.replace(
+      variables[i]
+    , queryHelpers.has(key = variables[i].substring(1, variables[i].length - 1)) && query[key] ?
+      queryHelpers.get(key).fn(query[key], values, query) : ''
+    );
+  }
 
-    result.toString = function(){ return result.query; };
-    result.toQuery = function() { return { text: result.query, values: result.values } };
-
-    return result;
+  var result = {
+    query :   type.trim().replace(/\s+/g, " ")
+  , values:   values
+  , original: query
   };
 
-  return module.exports;
-});
+  result.toString = function(){ return result.query; };
+  result.toQuery = function() { return { text: result.query, values: result.values }; };
+
+  return result;
+};
 
 },{"./query-helpers":45,"./query-types":46}],45:[function(require,module,exports){
-module.exports=require(39)
+module.exports=require(38)
 },{"./helper-manager":42}],46:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var types = {};
+var types = {};
 
-  module.exports.add = function(type, query){
-    types[type] = query;
-  };
+module.exports.add = function(type, query){
+  types[type] = query;
+};
 
-  module.exports.get = function(type){
-    return types[type];
-  };
+module.exports.get = function(type){
+  return types[type];
+};
 
-  module.exports.has = function(type){
-    return types.hasOwnProperty(type);
-  };
+module.exports.has = function(type){
+  return types.hasOwnProperty(type);
+};
 
-  Object.defineProperty(module.exports, 'list', {
-    get: function() {
-      return Object.keys(types);
-    }
-  });
-
-  return module.exports;
+Object.defineProperty(module.exports, 'list', {
+  get: function() {
+    return Object.keys(types);
+  }
 });
+
 },{}],47:[function(require,module,exports){
 module.exports=require(41)
 },{"./helper-manager":42}],48:[function(require,module,exports){
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
 
-define(function(require, exports, module){
-  var utils = module.exports = {};
-  var regs = {
-    dereferenceOperators: /[-#=]+>+/g
-  , endsInCast: /::\w+$/
-  };
+var utils = module.exports = {};
+var regs = {
+  dereferenceOperators: /[-#=]+>+/g
+, endsInCast: /::\w+$/
+};
 
-  utils.parameterize = function(value, values){
-    if (typeof value == 'boolean') return value ? 'true' : 'false';
-    if (value[0] != '$') return '$' + values.push(value);
-    if (value[value.length - 1] != '$') return '$' + values.push(value);
-    return utils.quoteObject(value.substring(1, value.length - 1));
-  };
+utils.parameterize = function(value, values){
+  if (typeof value == 'boolean') return value ? 'true' : 'false';
+  if (value[0] != '$') return '$' + values.push(value);
+  if (value[value.length - 1] != '$') return '$' + values.push(value);
+  return utils.quoteObject(value.substring(1, value.length - 1));
+};
 
-  utils.quoteColumn = utils.quoteObject = function(field, collection){
-    var period;
-    var rest = Array.prototype.slice.call( arguments, 1 );
-    var split;
+utils.quoteColumn = utils.quoteObject = function(field, collection){
+  var period;
+  var rest = Array.prototype.slice.call( arguments, 1 );
+  var split;
 
-    // Wierdly on phantomjs Number.isNaN is undefined
-    // FIXME: find the root cause
-    var checkIsNaN = Number.isNaN || isNaN;
+  // Wierdly on phantomjs Number.isNaN is undefined
+  // FIXME: find the root cause
+  var checkIsNaN = Number.isNaN || isNaN;
 
-    // Split up database and/or schema definition
-    for(var i=0;i<rest.length;++i) {
-      if(rest[i].indexOf('.')) {
-        split = rest[i].split('.');
-        rest.splice(i,1);
-        split.forEach(function(s) {
-          rest.splice(i,0,s);
-        });
-      }
-    }
-
-    // They're casting
-    if ( regs.endsInCast.test( field ) ){
-      return utils.quoteObject.apply(
-        null
-      , [ field.replace( regs.endsInCast, '' ) ].concat( rest )
-      ) + field.match( regs.endsInCast )[0];
-    }
-
-    // They're using JSON/Hstore operators
-    if ( regs.dereferenceOperators.test( field ) ){
-      var operators = field.match( regs.dereferenceOperators );
-
-      // Split on operators
-      return field.split(
-        regs.dereferenceOperators
-      // Properly quote each part
-      ).map( function( part, i ){
-        if ( i === 0 ) return utils.quoteObject.apply( null, [ part ].concat( rest ) );
-
-        if ( checkIsNaN( parseInt( part ) ) && part.indexOf("'") === -1 ){
-          return "'" + part + "'";
-        }
-
-        return part;
-      // Re-join fields and operators
-      }).reduce( function( a, b, i ){
-        return [ a, b ].join( operators[ i - 1 ] );
+  // Split up database and/or schema definition
+  for(var i=0;i<rest.length;++i) {
+    if(rest[i].indexOf('.')) {
+      split = rest[i].split('.');
+      rest.splice(i,1);
+      split.forEach(function(s) {
+        rest.splice(i,0,s);
       });
     }
+  }
 
-    // Just using *, no collection
-    if (field.indexOf('*') == 0 && collection)
-      return '"' + collection + '".*';
+  // They're casting
+  if ( regs.endsInCast.test( field ) ){
+    return utils.quoteObject.apply(
+      null
+    , [ field.replace( regs.endsInCast, '' ) ].concat( rest )
+    ) + field.match( regs.endsInCast )[0];
+  }
 
-    // Using *, specified collection, used quotes
-    else if (field.indexOf('".*') > -1)
-      return field;
+  // They're using JSON/Hstore operators
+  if ( regs.dereferenceOperators.test( field ) ){
+    var operators = field.match( regs.dereferenceOperators );
 
-    // Using *, specified collection, didn't use quotes
-    else if (field.indexOf('.*') > -1)
-      return '"' + field.split('.')[0] + '".*';
+    // Split on operators
+    return field.split(
+      regs.dereferenceOperators
+    // Properly quote each part
+    ).map( function( part, i ){
+      if ( i === 0 ) return utils.quoteObject.apply( null, [ part ].concat( rest ) );
 
-    // No periods specified in field, use explicit `table[, schema[, database] ]`
-    else if (field.indexOf('.') === -1)
-      return '"' + ( rest.reverse() ).concat( field.replace( /\"/g, '' ) ).join('"."') + '"';
+      if ( checkIsNaN( parseInt( part ) ) && part.indexOf("'") === -1 ){
+        return "'" + part + "'";
+      }
 
-    // Otherwise, a `.` was in there, just quote whatever was specified
-    else
-      return '"' + field.replace( /\"/g, '' ).split('.').join('"."') + '"';
-  };
+      return part;
+    // Re-join fields and operators
+    }).reduce( function( a, b, i ){
+      return [ a, b ].join( operators[ i - 1 ] );
+    });
+  }
 
-  utils.quoteValue = function(value){
-    var num = parseInt(value), isNum = (typeof num == 'number' && (num < 0 || num > 0));
-    return isNum ? value : "$$" + value + "$$";
-  };
+  // Just using *, no collection
+  if (field.indexOf('*') === 0 && collection)
+    return '"' + collection + '".*';
 
-  /**
-   * Returns a function that when called, will call the
-   * passed in function with a specific set of arguments
-   */
-  utils.with = function(fn){
-    var args = Array.prototype.slice.call(arguments, 1);
-    return function(){ fn.apply({}, args); };
-  };
+  // Using *, specified collection, used quotes
+  else if (field.indexOf('".*') > -1)
+    return field;
 
+  // Using *, specified collection, didn't use quotes
+  else if (field.indexOf('.*') > -1)
+    return '"' + field.split('.')[0] + '".*';
 
-  return module.exports;
-});
+  // No periods specified in field, use explicit `table[, schema[, database] ]`
+  else if (field.indexOf('.') === -1)
+    return '"' + ( rest.reverse() ).concat( field.replace( /\"/g, '' ) ).join('"."') + '"';
+
+  // Otherwise, a `.` was in there, just quote whatever was specified
+  else
+    return '"' + field.replace( /\"/g, '' ).split('.').join('"."') + '"';
+};
+
+utils.quoteValue = function(value){
+  var num = parseInt(value), isNum = (typeof num == 'number' && (num < 0 || num > 0));
+  return isNum ? value : "$$" + value + "$$";
+};
+
+/**
+ * Returns a function that when called, will call the
+ * passed in function with a specific set of arguments
+ */
+utils.with = function(fn){
+  var args = Array.prototype.slice.call(arguments, 1);
+  return function(){ fn.apply({}, args); };
+};
 
 },{}],49:[function(require,module,exports){
 /*!
