@@ -5,7 +5,7 @@ describe('Helpers', function(){
 
   describe('Types', function(){
     it('should add a query type', function(){
-      builder.registerQueryType('users', 'select * from users {where}')
+      builder.registerQueryType('users', 'select * from users {where}');
 
       var query = builder.sql({
         type: 'users'

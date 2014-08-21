@@ -328,10 +328,10 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where '
-      + '"users"."id" in ('
-        + 'select "groups"."userId" from "groups" where '
-          + '"groups"."groupId" = $1)'
+    , 'select "users".* from "users" where ' +
+      '"users"."id" in (' +
+        'select "groups"."userId" from "groups" where ' +
+          '"groups"."groupId" = $1)'
     );
 
     assert.deepEqual(
@@ -353,8 +353,8 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where '
-      + '"users"."id" in ($1, $2, $3)'
+    , 'select "users".* from "users" where ' +
+      '"users"."id" in ($1, $2, $3)'
     );
 
     assert.deepEqual(
@@ -381,10 +381,10 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where '
-      + '"users"."id" not in ('
-        + 'select "groups"."userId" from "groups" where '
-          + '"groups"."groupId" = $1)'
+    , 'select "users".* from "users" where ' +
+      '"users"."id" not in (' +
+        'select "groups"."userId" from "groups" where ' +
+          '"groups"."groupId" = $1)'
     );
 
     assert.deepEqual(
@@ -406,8 +406,8 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where '
-      + '"users"."id" not in ($1, $2, $3)'
+    , 'select "users".* from "users" where ' +
+      '"users"."id" not in ($1, $2, $3)'
     );
 
     assert.deepEqual(
@@ -732,7 +732,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob']
-      )
+      );
     });
 
     it ('Should Get JSON array element', function(){
@@ -752,7 +752,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob']
-      )
+      );
     });
 
     it ('Should Get JSON array element as text', function(){
@@ -772,7 +772,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob']
-      )
+      );
     });
 
     it ('Should Get JSON object field as text', function(){
@@ -792,7 +792,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob']
-      )
+      );
     });
 
     it ('Should operate on JSON text and cast the column', function(){
@@ -812,7 +812,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob']
-      )
+      );
     });
 
     it ('Should operate on JSON text and cast the column and specify table', function(){
@@ -832,7 +832,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob']
-      )
+      );
     });
 
     it ('Should operate on JSON and play nicely with other helpers', function(){
@@ -862,7 +862,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , ['Bob', 7, 'blah', 'bill']
-      )
+      );
     });
 
     it ('Should be able to go deep', function(){
@@ -885,7 +885,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , [27]
-      )
+      );
     });
 
     it ('Should be able to go deep with array syntax', function(){
@@ -908,7 +908,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , [27]
-      )
+      );
     });
 
     it ('Should not double quote things already quoted', function(){
@@ -931,7 +931,7 @@ describe('Conditions', function(){
       assert.deepEqual(
         query.values
       , [27]
-      )
+      );
     });
   });
 

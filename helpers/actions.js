@@ -56,177 +56,169 @@
 //     { UNIQUE | PRIMARY KEY } USING INDEX index_name
 //     [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
-if (typeof module === 'object' && typeof define !== 'function') {
-  var define = function(factory) {
-    module.exports = factory(require, exports, module);
-  };
-}
+var actions = require('../lib/action-helpers');
+var queryHelpers = require('../lib/query-helpers');
+var utils = require('../lib/utils');
 
-define(function(require, exports, module){
-  var actions = require('../lib/action-helpers');
-  var queryHelpers = require('../lib/query-helpers');
-  var utils = require('../lib/utils');
+actions.add('renameTable', function(value, values, query){
+  return 'rename to "' + value + '"';
+});
 
-  actions.add('renameTable', function(value, values, query){
-    return 'rename to "' + value + '"';
+actions.add('rename', function(value, values, query){
+  return actions.get('renameTable').fn(value, values, query);
+});
+
+actions.add('renameConstraint', function(value, values, query){
+  return (
+    "rename constraint " +
+    utils.quoteObject(value.from) +
+    " to " +
+    utils.quoteObject(value.to)
+  );
+});
+
+actions.add('renameColumn', function(value, values, query){
+  return (
+    "rename column " +
+    utils.quoteObject(value.from) +
+    " to " +
+    utils.quoteObject(value.to)
+  );
+});
+
+actions.add('setSchema', function(value, values, query){
+  return 'set schema "' + value + '"';
+});
+
+actions.add('addColumn', function(value, values, query){
+  var output = ["add column"];
+
+  output.push( utils.quoteObject(value.name) );
+  output.push( value.type );
+
+  output.push( queryHelpers.get('columnConstraint').fn(value, values, query) );
+
+  return output.join(' ');
+});
+
+actions.add('dropColumn', function(value, values, query){
+  if ( Array.isArray(value) ){
+    return value.map( function( v ){
+      return actions.get('dropColumn').fn( v, values, query );
+    }).join(', ');
+  }
+
+  var output = ["drop column"];
+
+  if (value.ifExists)
+    output.push( 'if exists' );
+
+  output.push( utils.quoteObject(value.name) );
+
+  if (value.restrict)
+    output.push( 'restrict' );
+
+  else if (value.cascade)
+    output.push( 'cascade' );
+
+  return output.join(' ');
+});
+
+actions.add('alterColumn', function(value, values, query){
+  if ( Array.isArray(value) ){
+    return value.map( function( v ){
+      return actions.get('alterColumn').fn( v, values, query );
+    }).join(', ');
+  }
+
+  var output = ["alter column"];
+
+  output.push( utils.quoteObject(value.name) );
+
+  if (value.type)
+    output.push( 'type ' + value.type );
+
+  if (value.collation)
+    output.push( 'collate ' + value.collation );
+
+  if (value.using)
+    output.push( 'using (' + value.using + ')' );
+
+  if (value.default)
+    output.push( 'set default ' + value.default );
+
+  if (value.dropDefault)
+    output.push( 'drop default' );
+
+  if (value.notNull === true)
+    output.push( 'set not null' );
+
+  if (value.notNull === false)
+    output.push( 'drop not null' );
+
+  if (value.statistics)
+    output.push( 'set statistics $' + values.push(value.statistics) );
+
+  if (value.storage)
+    output.push( 'set storage ' + value.storage );
+
+  return output.join(' ');
+});
+
+actions.add( 'dropConstraint', function( value, values, query ){
+  if ( !value ) return;
+
+  var out = ['drop constraint'];
+
+  if ( typeof value === 'object' ){
+    if ( value.ifExists ) out.push('if exists');
+    if ( value.name )     out.push('"' + value.name + '"');
+    if ( value.cascade )  out.push('cascade');
+    if ( value.restrict ) out.push('restrict');
+  } else if ( typeof value === 'string' ){
+    out.push('"' + value + '"');
+  } else return;
+
+  return out.join(' ');
+});
+
+actions.add( 'addConstraint', function( constraint, values, query ){
+  return [
+    'add constraint'
+  , utils.quoteObject( constraint.name )
+  , queryHelpers.get('columnConstraint').fn( constraint, values, query )
+  ,
+  ].join(' ');
+});
+
+// Single Parameter actions
+[
+  { name: 'enableReplicaTrigger', text: 'enable replica trigger' }
+, { name: 'enableAlwaysTrigger',  text: 'enable always trigger' }
+, { name: 'disableRule',          text: 'disable rule' }
+, { name: 'enableRule',           text: 'enable rule' }
+, { name: 'enableReplicaRule',    text: 'enable replica rule' }
+, { name: 'enableAlwaysRule',     text: 'enable always rule' }
+, { name: 'clusterOn',            text: 'cluster on' }
+, { name: 'inherit',              text: 'inherit' }
+, { name: 'noInherit',            text: 'no inherit' }
+, { name: 'of',                   text: 'of' }
+, { name: 'notOf',                text: 'not of' }
+, { name: 'ownerTo',              text: 'owner to' }
+, { name: 'setTableSpace',        text: 'set tablespace' }
+].forEach(function(action){
+  actions.add( action.name, function(value, values, query){
+    return action.text + " " + utils.quoteObject(value);
   });
+});
 
-  actions.add('rename', function(value, values, query){
-    return actions.get('renameTable').fn(value, values, query);
-  });
-
-  actions.add('renameConstraint', function(value, values, query){
-    return (
-      "rename constraint "
-    + utils.quoteObject(value.from)
-    + " to "
-    + utils.quoteObject(value.to)
-    );
-  });
-
-  actions.add('renameColumn', function(value, values, query){
-    return (
-      "rename column "
-    + utils.quoteObject(value.from)
-    + " to "
-    + utils.quoteObject(value.to)
-    );
-  });
-
-  actions.add('setSchema', function(value, values, query){
-    return 'set schema "' + value + '"';
-  });
-
-  actions.add('addColumn', function(value, values, query){
-    var output = ["add column"];
-
-    output.push( utils.quoteObject(value.name) );
-    output.push( value.type );
-
-    output.push( queryHelpers.get('columnConstraint').fn(value, values, query) );
-
-    return output.join(' ');
-  });
-
-  actions.add('dropColumn', function(value, values, query){
-    if ( Array.isArray(value) ){
-      return value.map( function( v ){
-        return actions.get('dropColumn').fn( v, values, query );
-      }).join(', ');
-    }
-
-    var output = ["drop column"];
-
-    if (value.ifExists)
-      output.push( 'if exists' );
-
-    output.push( utils.quoteObject(value.name) );
-
-    if (value.restrict)
-      output.push( 'restrict' );
-
-    else if (value.cascade)
-      output.push( 'cascade' );
-
-    return output.join(' ');
-  });
-
-  actions.add('alterColumn', function(value, values, query){
-    if ( Array.isArray(value) ){
-      return value.map( function( v ){
-        return actions.get('alterColumn').fn( v, values, query );
-      }).join(', ');
-    }
-
-    var output = ["alter column"];
-
-    output.push( utils.quoteObject(value.name) );
-
-    if (value.type)
-      output.push( 'type ' + value.type );
-
-    if (value.collation)
-      output.push( 'collate ' + value.collation );
-
-    if (value.using)
-      output.push( 'using (' + value.using + ')' );
-
-    if (value.default)
-      output.push( 'set default ' + value.default );
-
-    if (value.dropDefault)
-      output.push( 'drop default' );
-
-    if (value.notNull == true)
-      output.push( 'set not null' );
-
-    if (value.notNull == false)
-      output.push( 'drop not null' );
-
-    if (value.statistics)
-      output.push( 'set statistics $' + values.push(value.statistics) );
-
-    if (value.storage)
-      output.push( 'set storage ' + value.storage );
-
-    return output.join(' ');
-  });
-
-  actions.add( 'dropConstraint', function( value, values, query ){
-    if ( !value ) return;
-
-    var out = ['drop constraint'];
-
-    if ( typeof value === 'object' ){
-      if ( value.ifExists ) out.push('if exists');
-      if ( value.name )     out.push('"' + value.name + '"');
-      if ( value.cascade )  out.push('cascade');
-      if ( value.restrict ) out.push('restrict');
-    } else if ( typeof value === 'string' ){
-      out.push('"' + value + '"');
-    } else return;
-
-    return out.join(' ');
-  });
-
-  actions.add( 'addConstraint', function( constraint, values, query ){
-    return [
-      'add constraint'
-    , utils.quoteObject( constraint.name )
-    , queryHelpers.get('columnConstraint').fn( constraint, values, query )
-    ,
-    ].join(' ');
-  });
-
-  // Single Parameter actions
-  [
-    { name: 'enableReplicaTrigger', text: 'enable replica trigger' }
-  , { name: 'enableAlwaysTrigger',  text: 'enable always trigger' }
-  , { name: 'disableRule',          text: 'disable rule' }
-  , { name: 'enableRule',           text: 'enable rule' }
-  , { name: 'enableReplicaRule',    text: 'enable replica rule' }
-  , { name: 'enableAlwaysRule',     text: 'enable always rule' }
-  , { name: 'clusterOn',            text: 'cluster on' }
-  , { name: 'inherit',              text: 'inherit' }
-  , { name: 'noInherit',            text: 'no inherit' }
-  , { name: 'of',                   text: 'of' }
-  , { name: 'notOf',                text: 'not of' }
-  , { name: 'ownerTo',              text: 'owner to' }
-  , { name: 'setTableSpace',        text: 'set tablespace' }
-  ].forEach(function(action){
-    actions.add( action.name, function(value, values, query){
-      return action.text + " " + utils.quoteObject(value);
-    });
-  });
-
-  // Same text booleans
-  [
-    { name: 'setWithoutCluster',  text: 'set without cluster' }
-  , { name: 'setWithOids',        text: 'set with oids' }
-  , { name: 'setWithoutOids',     text: 'set without oids' }
-  ].forEach(function(action){
-    actions.add( action.name, function(value, values, query){
-      return value ? action.text : '';
-    });
+// Same text booleans
+[
+  { name: 'setWithoutCluster',  text: 'set without cluster' }
+, { name: 'setWithOids',        text: 'set with oids' }
+, { name: 'setWithoutOids',     text: 'set without oids' }
+].forEach(function(action){
+  actions.add( action.name, function(value, values, query){
+    return value ? action.text : '';
   });
 });
