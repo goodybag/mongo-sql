@@ -1,5 +1,7 @@
 # MoSQL - JSON to SQL
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/goodybag/mongo-sql?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Put value and _semantic meaning_ back into your queries by writing your SQL as JSON:
 
 [![NPM](https://nodei.co/npm/mongo-sql.png)](https://nodei.co/npm/mongo-sql/)
