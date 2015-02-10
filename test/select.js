@@ -5,6 +5,18 @@ describe('Built-In Query Types', function(){
 
   describe('Type: select', function(){
 
+    it ('should build a query selecting on users with a schema', function(){
+      var query = builder.sql({
+        type: 'select'
+      , table: 'private.users'
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "private"."users".* from "private"."users"'
+      );
+    });
+
     it ('should build a query selecting on users', function(){
       var query = builder.sql({
         type: 'select'
