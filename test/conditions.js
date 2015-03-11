@@ -460,6 +460,27 @@ describe('Conditions', function(){
     );
   });
 
+  it ('should handle interpolating custom parameters', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        name: { $like: 'Bob' }
+      , $custom: ['$1 $2 $3 $4', 5, 6, 7, 8]
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."name" like $1 and $2 $3 $4 $5'
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['Bob', 5, 6, 7, 8]
+    );
+  });
+
   it ('$years_ago', function(){
     var query = builder.sql({
       type: 'select'

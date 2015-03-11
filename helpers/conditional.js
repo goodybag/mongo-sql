@@ -154,14 +154,10 @@ conditionals.add('$custom', { cascade: false }, function(column, value, values, 
 conditionals.add('$custom_array', { cascade: false }, function(column, value, values, collection){
   var output = value[0];
 
-  for (var i = 1, l = value.length; i < l; ++i){
-    output = output.replace(
-      RegExp('(\\$)' + i + '(\\W|$)','g')
-    , '$1' + values.push(value[i]) + '$2'
-    );
-  }
-
-  return output;
+  return output.replace(
+    /\$\d+/g, function(match) {
+    return '$' + values.push( value[match.slice(1)] );
+  });
 });
 
 conditionals.add('$custom_object', { cascade: false }, function(column, value, values, collection){
