@@ -238,5 +238,37 @@ describe('Built-In Query Types', function(){
         ].join('')
       );
     });
+
+    it('Should default to false', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'posts'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+
+        , content: {
+            type: 'text'
+          }
+
+        , deleted: {
+            type: 'boolean'
+          , default: false
+          }
+        }
+      });
+      console.log(query.toString());
+      assert.equal(
+        query.toString()
+      , [ 'create table "posts" ('
+        , '"id" serial, '
+        , '"content" text, '
+        , '"deleted" boolean default false'
+        , ')'
+        ].join('')
+      );
+    });
+
   });
 });
