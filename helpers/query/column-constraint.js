@@ -32,7 +32,7 @@ helpers.register('columnConstraint', function(constraint, values, query){
     output.push( columnDefs.get('noInherit', true, values, query) );
 
   // Default expression
-  if (constraint.default)
+  if ('default' in constraint)
     output.push( columnDefs.get('default').fn(constraint.default, values, query) );
 
   // Unique
