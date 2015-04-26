@@ -67,7 +67,12 @@ defs.add('unique', function(unique, values, query){
 });
 
 defs.add('default', function(def, values, query){
-  return def !== undefined ? ('default ' + def) : '';
+  if (def === undefined) return '';
+  if (typeof def === 'string'){
+    def = def.trim();
+    if (!/.+\(.*\)/.test(def)) return 'default \'' + def + '\''; 
+  }
+  return 'default ' + def;
 });
 
 defs.add('check', function(check, values, query){
