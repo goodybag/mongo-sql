@@ -314,7 +314,7 @@ describe('Built-In Query Types', function(){
         ].join('')
       );
     });
-    it('Should default to \'string\'', function(){
+    it('Should default to \'\'', function(){
       var query = builder.sql({
         type: 'create-table'
       , table: 'posts'
