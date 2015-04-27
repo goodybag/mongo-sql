@@ -67,7 +67,12 @@ defs.add('unique', function(unique, values, query){
 });
 
 defs.add('default', function(def, values, query){
-  return def !== undefined ? ('default ' + def) : '';
+  if (def === undefined) return '';
+  // check if def is a string and not a function expression
+  // treat any string like xxx(xx) is a function expression 
+  // limitation: you can't define default as a string which is like a function expression 
+  if (typeof def === 'string' && !/.+\(.*\)/.test(def)) return 'default \'' + def + '\''; 
+  return 'default ' + def;
 });
 
 defs.add('check', function(check, values, query){

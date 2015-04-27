@@ -258,7 +258,6 @@ describe('Built-In Query Types', function(){
           }
         }
       });
-      console.log(query.toString());
       assert.equal(
         query.toString()
       , [ 'create table "posts" ('
@@ -269,6 +268,74 @@ describe('Built-In Query Types', function(){
         ].join('')
       );
     });
-
+    it('Should default to 0', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'posts'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+        , count: {
+            type: 'int',
+            default:0
+          }
+        }
+      });
+      assert.equal(
+        query.toString()
+      , [ 'create table "posts" ('
+        , '"id" serial, '
+        , '"count" int default 0'
+        , ')'
+        ].join('')
+      );
+    });
+    it('Should default to \'string\'', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'posts'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+        , name: {
+            type: 'text',
+            default:'string'
+          }
+        }
+      });
+      assert.equal(
+        query.toString()
+      , [ 'create table "posts" ('
+        , '"id" serial, '
+        , '"name" text default \'string\''
+        , ')'
+        ].join('')
+      );
+    });
+    it('Should default to \'\'', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'posts'
+      , definition: {
+          id: {
+            type: 'serial'
+          }
+        , name: {
+            type: 'text',
+            default:''
+          }
+        }
+      });
+      assert.equal(
+        query.toString()
+      , [ 'create table "posts" ('
+        , '"id" serial, '
+        , '"name" text default \'\''
+        , ')'
+        ].join('')
+      );
+    });
   });
 });
