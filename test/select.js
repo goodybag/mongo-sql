@@ -831,4 +831,108 @@ describe('Built-In Query Types', function(){
       );
     });
   });
+
+  describe('Type: select for', function() {
+    it ('should select for update', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'update' }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for update'
+      );
+    });
+
+    it ('should select for update on table', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'update', table: 'bar' }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for update of "bar"'
+      );
+    });
+
+    it ('should select for share on table', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'share', table: 'bar' }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for share of "bar"'
+      );
+    });
+
+    it ('should select for no key update on table', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'no key update', table: 'bar' }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for no key update of "bar"'
+      );
+    });
+
+    it ('should select for key share on table', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'key share', table: 'bar' }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for key share of "bar"'
+      );
+    });
+
+
+    it ('should select for update on multiple tables', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'update', table: ['bar', '"wiz"', 'wog'] }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for update of "bar", "wiz", "wog"'
+      );
+    });
+
+    it ('should select for update nowait', function() {
+      var query = builder.sql({
+        type: 'select'
+      , table: 'foo'
+      , for: { type: 'update', noWait: true }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "foo".* from "foo" for update nowait'
+      );
+    });
+
+    it ('should throw "for" helper requires type', function() {
+      assert.throws(function() {
+        var query = builder.sql({
+          type: 'select'
+        , table: 'foo'
+        , for: { noWait: true }
+        });
+      });
+    });
+  });
 });
