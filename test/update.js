@@ -391,6 +391,60 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should update with expression', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , values: {
+          name: {
+            type: 'select'
+          , columns: ['name']
+          , table: 'users'
+          , limit: 1
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = ( select "users"."name" from "users" limit $1 ) where "users"."id" = $2'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [1, 7]
+      );
+    });
+
+    it('should update with function expression', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , values: {
+          name: {
+            type: 'lower'
+          , expression: 'users.name'
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = ( lower( users.name ) ) where "users"."id" = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [7]
+      );
+    });
+
 
   });
 });
