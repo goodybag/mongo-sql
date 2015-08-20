@@ -283,6 +283,40 @@ Expressions can also be parameterized within the grander query:
 
 See the [columns helper examples](#helper-columns) for more uses of expression.
 
+### Helper: 'for'
+
+Used in [select](./query-types.md#type-select) queries to specify
+[locking clauses](http://www.postgresql.org/docs/9.4/static/sql-select.html#SQL-FOR-UPDATE-SHARE).
+
+The `for` helper accepts an object containing
+
+* type: "update" | "share" | "no key update" | "key share"
+* table: string or array of table names
+* noWait: boolean for NOWAIT flag
+
+```javascript
+{
+  type: 'update'
+, table: 'jobs'
+, updates: {
+    status: 'working'
+  }
+, where: {
+    id: {
+      $in: {
+        type: 'select'
+      , table: 'jobs'
+      , where: { status: 'pending' }
+      , limit: 5
+      , for: {
+          type: 'update'
+        }
+      }
+    }
+  }
+}
+```
+
 ### Helper: 'from'
 
 Used in the [update](./query-types.md#type-update) query helper to specify a list of table expressions, allowing columns from other tables to appear in the WHERE condition and the update expressions. Pass a string or an array of strings.
