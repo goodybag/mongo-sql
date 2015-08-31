@@ -248,6 +248,19 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$null should be not null when false', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: { id: { $null: false } }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."id" is not null'
+    );
+  });
+
   it ('should use $null when value is null', function(){
     var query = builder.sql({
       type: 'select'
@@ -271,6 +284,19 @@ describe('Conditions', function(){
     assert.equal(
       query.toString()
     , 'select "users".* from "users" where "users"."id" is not null'
+    );
+  });
+
+  it ('$notNull should be null when false', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: { id: { $notNull: false } }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."id" is null'
     );
   });
 
