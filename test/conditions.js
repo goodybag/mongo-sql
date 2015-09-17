@@ -1005,4 +1005,27 @@ describe('Conditions', function(){
     );
   });
 
+  it('having', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , groupBy: 'id'
+    , having: {
+        name: { $gt: 'Bob' }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , [ 'select "users".* from "users" group by "users"."id" '
+      , 'having "users"."name" > $1'
+      ].join('')
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['Bob']
+    );
+  });
+
 });

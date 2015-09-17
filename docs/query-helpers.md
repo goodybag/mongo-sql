@@ -371,6 +371,19 @@ Adds a group by clause. GROUP BY will condense into a single row all selected ro
 
 [Playground](http://mosql.j0.hn/#/snippets/19)
 
+### Helper: 'having'
+
+Adds a `having` conditional expression. This follows the same semantics as any other [conditional express](#helper-where). If the HAVING clause is present, it eliminates groups that do not satisfy the given condition.
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, groupBy: ['id', 'name']
+, having: { $custom: ['lower(name) > $1', 'bob'] }
+}
+```
+
 ### Helper: 'ifExists'
 
 Adds IF EXISTS condition to [drop-table](./query-types.md#type-drop-table) and [alter-table](./query-types.md#type-alter-table) query types.

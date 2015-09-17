@@ -29,6 +29,7 @@ require('./helpers/query/for');
 require('./helpers/query/from');
 require('./helpers/query/function');
 require('./helpers/query/group-by');
+require('./helpers/query/having');
 require('./helpers/query/if-exists');
 require('./helpers/query/if-not-exists');
 require('./helpers/query/joins');
