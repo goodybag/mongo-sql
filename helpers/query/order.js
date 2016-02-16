@@ -6,7 +6,19 @@ helpers.register('order', function(order, values, query){
 
   if (typeof order === 'string') return output + order;
 
-  if (Array.isArray(order)) return output + order.join(', ');
+  if (Array.isArray(order)) {
+  	if (typeof order[0] === 'string') {
+  		return output + order.join(', ');	
+  	} else {
+		for (var i in order) {
+		  for (var key in order[i]){
+			output += utils.quoteObject(key, query.__defaultTable) + ' ' + order[i][key] + ', ';
+		  }
+		}
+		return output.substring(0, output.length - 2);
+  	}
+  	
+  }
 
   for (var key in order){
     output += utils.quoteObject(key, query.__defaultTable) + ' ' + order[key] + ', ';
