@@ -238,7 +238,7 @@ describe('Built-In Query Types', function(){
       var query = builder.sql({
         type:     'select'
       , table:    'users'
-      , order:    [{id: 'desc'}, {name: 'asc'}]
+      , order:    [{ id: 'desc'}, { name: 'asc'}]
       });
 
       assert.equal(

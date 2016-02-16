@@ -609,6 +609,7 @@ Add an ORDER BY clause. There are many different acceptable inputs here best des
   // quote your columns and add in the default table
 , order:    { id: 'desc', name: 'asc' }
 , order:    ['id desc', 'name asc']
+, order:    [{ id: 'desc'}, { name: 'asc'}]
 , order:    'id desc'
 }
 ```
