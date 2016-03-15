@@ -319,7 +319,7 @@ The `for` helper accepts an object containing
 
 ### Helper: 'from'
 
-Used in the [update](./query-types.md#type-update) query helper to specify a list of table expressions, allowing columns from other tables to appear in the WHERE condition and the update expressions. Pass a string or an array of strings.
+Used in the [update](./query-types.md#type-update) query helper to specify a list of table expressions, allowing columns from other tables to appear in the WHERE condition and the update expressions. Pass a string, an array of strings, or a MoSQL query object.
 
 ```javascript
 {
@@ -329,6 +329,14 @@ Used in the [update](./query-types.md#type-update) query helper to specify a lis
     sales_count: { $inc: 1 }
   }
 , from: 'accounts'
+, from: ['accounts', 'users']
+, from: {
+    type: 'select'
+  , alias: 'limited_accounts'
+  , table: 'accounts'
+  , where: { id: { $gt: 100 } }
+  , limit: 5
+  }
 , where: {
     'accounts.name': 'Acme Corporation'
   , id: '$accounts.sales_person$'
