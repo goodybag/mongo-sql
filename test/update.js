@@ -221,6 +221,26 @@ describe('Built-In Query Types', function(){
       , 'update "users" set "name" = $1, "email" = $2 from "other1", "other2"');
     });
 
+    it('from sub-query', function() {
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , updates: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , from: {
+          type: 'select'
+        , alias: 'foo'
+        , table: 'bar'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1, "email" = $2 from (select "bar".* from "bar") "foo"');
+    });
+
     it('should update with null value', function() {
       var query = builder.sql({
         type: 'update'
