@@ -166,6 +166,80 @@ Because column selection may have many different variations in form, it is recom
 }
 ```
 
+### Helper: 'Conflict'
+
+The optional `ON CONFLICT` clause specifies an alternative action to raising a unique violation or exclusion constraint violation error.
+
+See the [Postgres Insert Documentation](https://www.postgresql.org/docs/current/static/sql-insert.html#SQL-ON-CONFLICT) for more information.
+
+__Example__
+
+```javascript
+{
+  type: 'insert'
+, table: 'users'
+, values: {
+    name: 'Bob'
+  , email: 'bob@bob.com'
+  }
+, conflict: {
+    target: {
+      // When the email column raises a unique exception
+      column: 'email'
+    }
+  , action: {
+      // Go ahead and update the name to the name we tried to use
+      update: { name: '$excluded.name$' }
+      // Optionally, supply a condition for which resolve the conflict in this way
+    , where: { id: { $lt: 100 } }
+    }
+  }
+}
+```
+
+__Result__
+
+```sql
+insert into "users" ("name", "email") values ($1, $2)
+on conflict ("email") do update
+  set "name" = "excluded"."name"
+  where "users"."id" < $3
+```
+
+Complete list of properties:
+
+```javascript
+{
+  conflict: {
+    // Target describes
+    target: 'for custom targets, you can enter arbitrary strings'
+  , target: {
+      // The column that will raise the failure
+      column: 'failing_column_name'
+      // Index expressions, see Postgres docs
+    , expression: 'index_expression'
+    , collation: ''
+    , opclass: '' || ['', ...]
+      // Standard conditional for index expressions
+    , where: {...}
+      // Additionally, you can specify the exact failing constraint
+    , constraint: 'users_id_pkey'
+    }
+    // Action represents the action to be taken in the event of a conflict
+  , action: 'for custom actions, you can enter arbitrary strings'
+    // If you want "do nothing" on conflict, just use the string
+  , action: 'nothing'
+  , action: {
+      // A set of key->val pairs to update
+      // Works just like standard updates in mosql
+      update: {}
+      // Conditions on which to update
+    , where: {}
+    }
+  }
+}
+```
+
 ### Helper: 'definition'
 
 Used for the [create-table](./query-types#type-create-table) query type to define the schema for a table. Definition has helpers of its own that this query helper references. You can find them in the [Column Definitions Document](./column-definitions.md)

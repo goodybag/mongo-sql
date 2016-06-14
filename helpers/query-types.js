@@ -10,7 +10,7 @@ queryTypes.add( 'select', [
 
 queryTypes.add(
   'insert'
-, '{with} insert into {table} {columns} {values} {expression} {returning}'
+, '{with} insert into {table} {columns} {values} {expression} {conflict} {returning}'
 );
 
 queryTypes.add(

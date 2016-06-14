@@ -46,10 +46,10 @@ Performs an insert query.
 __Definition:__
 
 ```
-{with} insert into {table} {columns} {values} {expression} {returning}
+{with} insert into {table} {columns} {values} {expression} {returning} {conflict}
 ```
 
-__Helpers Used:__ [with](./query-helpers.md#helper-with), [table](./query-helpers.md#helper-table), [columns](./query-helpers.md#helper-columns), [values](./query-helpers.md#helper-values), [expression](./query-helpers.md#helper-expression), [returning](./query-helpers.md#helper-returning)
+__Helpers Used:__ [with](./query-helpers.md#helper-with), [table](./query-helpers.md#helper-table), [columns](./query-helpers.md#helper-columns), [values](./query-helpers.md#helper-values), [expression](./query-helpers.md#helper-expression), [returning](./query-helpers.md#helper-returning), [conflict](./query-helpers.md#helper-conflict)
 
 ### Type: 'update'
 
