@@ -105,6 +105,7 @@ Sorry, these are in no particular order.
 * [Updates increment decrement](http://mosql.j0.hn/#/snippets/1n)
 * [Expand foreign key array of integers to an array of JSON results](http://mosql.j0.hn/#/snippets/1t)
 * [Access Fields on HStore and JSON and casting](http://mosql.j0.hn/#/snippets/2y)
+* [Create Index](http://mosql.j0.hn/#/snippets/94)
 
 For even more examples, take a look at the `./tests` directory.
 
