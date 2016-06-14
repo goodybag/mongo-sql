@@ -222,5 +222,149 @@ describe('Built-In Query Types', function(){
       , 'insert into "users" ("name", "email") values ($1, $2) returning "users"."id", ("orders"."datetime"::text) as "datetime"'
       );
     });
+
+    it('conflict', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , conflict: {
+          target: {
+            column: 'email'
+          }
+        , action: {
+            update: { name: '$excluded.name$' }
+          , where: { id: { $lt: 100 } }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'insert into "users" ("name", "email") '
+        , 'values ($1, $2) '
+        , 'on conflict ("email") do update '
+        , 'set "name" = "excluded"."name" '
+        , 'where "users"."id" < $3'
+        ].join('')
+      );
+
+      // Do nothing
+      query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , conflict: {
+          target: {
+            column: 'email'
+          }
+        , action: 'nothing'
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'insert into "users" ("name", "email") '
+        , 'values ($1, $2) '
+        , 'on conflict ("email") do nothing'
+        ].join('')
+      );
+
+      // Specifying constraint name
+      query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , conflict: {
+          target: {
+            constraint: 'users_pkey'
+          }
+        , action: {
+            update: { name: '$excluded.name$' }
+          , where: { id: { $lt: 100 } }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'insert into "users" ("name", "email") '
+        , 'values ($1, $2) '
+        , 'on conflict on constraint "users_pkey" do update '
+        , 'set "name" = "excluded"."name" '
+        , 'where "users"."id" < $3'
+        ].join('')
+      );
+
+      // Collation
+      query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , conflict: {
+          target: {
+            column: 'email'
+          , collation: 'foo'
+          }
+        , action: {
+            update: { name: '$excluded.name$' }
+          , where: { id: { $lt: 100 } }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'insert into "users" ("name", "email") '
+        , 'values ($1, $2) '
+        , 'on conflict ("email" collate foo) do update '
+        , 'set "name" = "excluded"."name" '
+        , 'where "users"."id" < $3'
+        ].join('')
+      );
+
+      // Opclasses
+      query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: 'bob@bob.com'
+        }
+      , conflict: {
+          target: {
+            column: 'email'
+          , collation: 'foo'
+          , opclass: ['foo', 'bar'] 
+          }
+        , action: {
+            update: { name: '$excluded.name$' }
+          , where: { id: { $lt: 100 } }
+          }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , [ 'insert into "users" ("name", "email") '
+        , 'values ($1, $2) '
+        , 'on conflict ("email" collate foo foo, bar) do update '
+        , 'set "name" = "excluded"."name" '
+        , 'where "users"."id" < $3'
+        ].join('')
+      );
+    });
   });
 });

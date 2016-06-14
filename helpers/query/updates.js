@@ -18,7 +18,7 @@ queryTypes.register('updates', function($updates, values, query){
     if (typeof $updates[ key ] == 'object' && 'type' in $updates[ key ]){
       return utils.quoteObject(key) + ' = ( ' + queryBuilder( $updates[ key ], values ) + ' )';
     }
-    return utils.quoteObject(key) + ' = $' + values.push($updates[key]);
+    return utils.quoteObject(key) + ' = ' + utils.parameterize($updates[key], values);
   });
 
   return result.length > 0 ? ('set ' + result.join(', ')) : '';

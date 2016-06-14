@@ -258,7 +258,7 @@ describe('Built-In Query Types', function(){
           }
         }
       });
-      console.log(query.toString());
+
       assert.equal(
         query.toString()
       , [ 'create table "posts" ('
