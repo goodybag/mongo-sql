@@ -23,6 +23,7 @@ require('./helpers/query/cascade');
 require('./helpers/query/column-constraint');
 require('./helpers/query/columns');
 require('./helpers/query/conflict');
+require('./helpers/query/constraints');
 require('./helpers/query/definition');
 require('./helpers/query/distinct');
 require('./helpers/query/expression');
