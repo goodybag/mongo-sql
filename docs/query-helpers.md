@@ -185,7 +185,7 @@ __Example__
 , conflict: {
     target: {
       // When the email column raises a unique exception
-      column: 'email'
+      columns: ['email']
     }
   , action: {
       // Go ahead and update the name to the name we tried to use
@@ -215,7 +215,7 @@ Complete list of properties:
     target: 'for custom targets, you can enter arbitrary strings'
   , target: {
       // The column that will raise the failure
-      column: 'failing_column_name'
+      columns: ['failing_column_name']
       // Index expressions, see Postgres docs
     , expression: 'index_expression'
     , collation: ''

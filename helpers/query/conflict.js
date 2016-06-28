@@ -31,9 +31,16 @@ helpers.register( 'conflict', function( conflict, values, query ){
       result += '(' + conflict.target + ') ';
     // Or get more specific
     } else {
-      // Handle (index_column_name | (index_expression))
       if ( conflict.target.column ){
-        var columnExpression = '(' + utils.quoteObject( conflict.target.column );
+        console.log('conflict.target.column is deprecated. Use an array of columns on conflict.target.columns instead');
+        conflict.target.columns = [ conflict.target.column ];
+      }
+
+      // Handle (index_column_name | (index_expression))
+      if ( Array.isArray( conflict.target.columns ) ){
+        var columnExpression = '(' + conflict.target.columns.map(function( column ){
+          return utils.quoteObject( column );
+        }).join(', ');
 
         if ( conflict.target.expression ){
           columnExpression += '(' + conflict.target.expression + ') ';

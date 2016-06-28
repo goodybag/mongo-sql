@@ -233,7 +233,7 @@ describe('Built-In Query Types', function(){
         }
       , conflict: {
           target: {
-            column: 'email'
+            columns: ['email']
           }
         , action: {
             update: { name: '$excluded.name$' }
@@ -262,7 +262,7 @@ describe('Built-In Query Types', function(){
         }
       , conflict: {
           target: {
-            column: 'email'
+            columns: ['email']
           }
         , action: 'nothing'
         }
@@ -315,7 +315,7 @@ describe('Built-In Query Types', function(){
         }
       , conflict: {
           target: {
-            column: 'email'
+            columns: ['email']
           , collation: 'foo'
           }
         , action: {
@@ -345,7 +345,7 @@ describe('Built-In Query Types', function(){
         }
       , conflict: {
           target: {
-            column: 'email'
+            columns: ['email']
           , collation: 'foo'
           , opclass: ['foo', 'bar'] 
           }
