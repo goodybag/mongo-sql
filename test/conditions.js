@@ -1028,4 +1028,25 @@ describe('Conditions', function(){
     );
   });
 
+  it('skip undefined', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: undefined,
+        name: 'Bob',
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."name" = $1'
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['Bob']
+    );
+  });
+
 });
