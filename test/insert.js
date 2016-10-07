@@ -157,7 +157,7 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'insert into "users" ("name", "email", "code") values ($1, $2, null), ($3, null, null), ($4, null, $5)'
+      , 'insert into "users" ("name", "email", "code") values ($1, $2, DEFAULT), ($3, DEFAULT, DEFAULT), ($4, DEFAULT, $5)'
       );
 
       assert.deepEqual(
@@ -347,7 +347,7 @@ describe('Built-In Query Types', function(){
           target: {
             columns: ['email']
           , collation: 'foo'
-          , opclass: ['foo', 'bar'] 
+          , opclass: ['foo', 'bar']
           }
         , action: {
             update: { name: '$excluded.name$' }
@@ -364,6 +364,49 @@ describe('Built-In Query Types', function(){
         , 'set "name" = "excluded"."name" '
         , 'where "users"."id" < $3'
         ].join('')
+      );
+    });
+
+    it('should skip undefined in insert', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: undefined
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name") values ($1)'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      );
+    });
+
+    it('should skip undefined in multi-insert', function(){
+      var query = builder.sql({
+        type: 'insert'
+      , table: 'users'
+      , values: [
+          { name: 'Bob', email: undefined }
+        , { name: undefined, email: 'tom@tom.com' }
+        , { name: 'Pam' }
+        ]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'insert into "users" ("name", "email") values ($1, DEFAULT), (DEFAULT, $2), ($3, DEFAULT)'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [ query.original.values[0].name, query.original.values[1].email, query.original.values[2].name ]
       );
     });
   });

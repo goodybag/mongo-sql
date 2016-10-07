@@ -18,14 +18,17 @@ helpers.register('values', function(values, valuesArray, query){
   };
 
   for ( var i = 0, l = values.length; i < l; ++i ) {
-    Object.keys( values[i] ).forEach( checkKeys );
+    function hasValue (key) { return values[i][key] !== undefined; }
+    Object.keys( values[i] ).filter( hasValue ).forEach( checkKeys );
   }
 
   var allValues = values.map( function( value ) {
     var result = [];
     for ( var i = 0, l = keys.length; i < l; ++i ){
-      if (value[ keys[i] ] === null || value[ keys[i] ] === undefined) {
+      if (value[ keys[i] ] === null) {
         result.push('null');
+      } else if (value[ keys[i] ] === undefined) {
+        result.push('DEFAULT');
       } else if (typeof value[ keys[i] ] == 'object' && 'type' in value[ keys[i] ]) {
         result.push('(' + queryBuilder( value[ keys[i] ], valuesArray ) + ')');
       } else {
