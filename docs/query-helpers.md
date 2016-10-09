@@ -453,6 +453,8 @@ Adds a group by clause. GROUP BY will condense into a single row all selected ro
 
 [Playground](http://mosql.j0.hn/#/snippets/19)
 
+__Note:__ This uses the [columns](#helper-columns), so feel free to use any functionality defined there.
+
 ### Helper: 'having'
 
 Adds a `having` conditional expression. This follows the same semantics as any other [conditional express](#helper-where). If the HAVING clause is present, it eliminates groups that do not satisfy the given condition.
