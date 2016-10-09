@@ -194,6 +194,21 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('group by expression', function(){
+      var expression = 'extract(hour from created_at)'
+
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , groupBy:  [expression]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" group by extract(hour from created_at)'
+      );
+    });
+
     it ('order by string', function(){
       var query = builder.sql({
         type:     'select'
