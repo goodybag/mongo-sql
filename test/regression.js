@@ -81,4 +81,47 @@ describe('Regression Tests', function(){
 
   });
 
+  it('expressions should allow for nested values', function(){
+    var query = builder.sql({
+      type: 'select',
+      table: 'blah',
+      where: { foo: 'bar', bar: 'baz', $custom: ['$1 = $2 or $2 = $1', 21, 22] },
+      with: [
+        { type: 'expression',
+          name: 'something',
+          expression: {
+            expression: 'select $1, $2, $2, $1',
+            values: [11, 12]
+          }
+        },
+        { type: 'expression',
+          name: 'something_else',
+          expression: {
+            expression: 'select $4, $3, $2, $1',
+            values: [13, 14, 15, 16]
+          }
+        }
+      ],
+      groupBy: ['foo', {
+        expression: {
+          expression: 'bar $1 $2',
+          values: [123, 234]
+        }
+      }]
+    });
+
+    assert.equal(
+      query.toString()
+    , 'with "something" as (select $1, $2, $2, $1), ' +
+      '"something_else" as (select $3, $4, $5, $6) ' +
+      'select "blah".* from "blah" ' +
+      'where "blah"."foo" = $7 and "blah"."bar" = $8 and $9 = $10 or $10 = $9 ' +
+      'group by "blah"."foo", bar $11 $12'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [11, 12, 16, 15, 14, 13, 'bar', 'baz', 21, 22, 123, 234]
+    );
+  });
 });

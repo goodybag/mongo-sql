@@ -153,10 +153,18 @@ conditionals.add('$custom', { cascade: false }, function(column, value, values, 
 
 conditionals.add('$custom_array', { cascade: false }, function(column, value, values, collection, original){
   var output = value[0];
+  var localToGlobalValuesIndices = {}
 
-  return output.replace(
-    /\$\d+/g, function(match) {
-    return '$' + values.push( value[match.slice(1)] );
+  return output.replace(/\$\d+/g, function(match) {
+    var i = match.slice(1);
+
+    var globalI = i in localToGlobalValuesIndices
+      ? localToGlobalValuesIndices[i]
+      : values.push(value[i]);
+
+    localToGlobalValuesIndices[i] = globalI;
+
+    return '$' + globalI;
   });
 });
 
