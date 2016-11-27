@@ -7,22 +7,28 @@ helpers.register('expression', function(exp, values, query){
   if (query.type == 'insert' && typeof exp == 'object')
     return '(' + queryBuilder(exp, values) + ')';
   if (typeof exp == 'object'){
+    var expValues = Array.isArray(exp.values) ? exp.values : []
+
     var val = [
       exp.parenthesis === true ? '( ' : ''
-    , queryBuilder(exp, values)
+    , queryBuilder(exp, expValues)
     , exp.parenthesis === true ? ' )' : ''
     ].join('');
 
-    if (Array.isArray(exp.values)){
-      for (var i = 0, l = exp.values.length; i < l; ++i){
-        val = val.replace(
-          RegExp('(\\$)' + (i+1) + '(\\W|$)','g')
-        , '$1' + values.push(exp.values[i]) + '$2'
-        );
-      }
-    }
+    var localToGlobalValuesIndices = {}
 
-    return val;
+    return val.replace(/\$\d+/g, function(match) {
+      var i = +match.slice(1);
+
+      var globalI = i in localToGlobalValuesIndices
+        ? localToGlobalValuesIndices[i]
+        : values.push(expValues[i - 1]);
+
+      localToGlobalValuesIndices[i] = globalI;
+
+      return '$' + globalI;
+    });
   }
-  return exp;
+
+  return exp
 });
