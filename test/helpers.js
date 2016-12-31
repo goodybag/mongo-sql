@@ -2,6 +2,34 @@ var assert  = require('assert');
 var builder = require('../');
 
 describe('Helpers', function(){
+  describe('Individual Helpers', function(){
+    it('expression: Array', function(){
+      var query = builder.sql({
+        expression: ['foo_bar($1, \'baz\', $2)', 100, 200]
+      })
+
+      assert.equal(query.toString(), 'foo_bar($1, \'baz\', $2)')
+
+      assert.deepEqual(query.values, [100, 200])
+    })
+
+    it('expression: Array should work in values into global context', function(){
+      var query = builder.sql({
+        type: 'select',
+        table: 'users',
+        where: { foo: 'bar' },
+        groupBy: [{ expression: ['foo_bar($1, \'baz\', $2)', 100, 200] }],
+      })
+
+      assert.equal(query.toString(), [
+        'select "users".* from "users"',
+        'where "users"."foo" = $1',
+        'group by foo_bar($2, \'baz\', $3)'
+      ].join(' '))
+
+      assert.deepEqual(query.values, ['bar', 100, 200])
+    })
+  })
 
   describe('Types', function(){
     it('should add a query type', function(){

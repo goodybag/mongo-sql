@@ -1,9 +1,12 @@
-
 var helpers = require('../../lib/query-helpers');
 var queryBuilder = require('../../lib/query-builder');
 
 helpers.register('expression', function(exp, values, query){
-  if (Array.isArray(exp)) return exp.join(', ');
+  if (Array.isArray(exp)) {
+    var expObj = { expression: exp[0], values: exp.slice(1) }
+    return helpers.get('expression').fn(expObj, values, query)
+  }
+
   if (query.type == 'insert' && typeof exp == 'object')
     return '(' + queryBuilder(exp, values) + ')';
   if (typeof exp == 'object'){
