@@ -440,7 +440,7 @@ __Example:__
 ```javascript
 var mosql = require('mongo-sql');
 
-mosql.condtionalHelpers.add('$years_ago', function(column, value, values, table){
+mosql.conditionalHelpers.add('$years_ago', function(column, value, values, table){
   return column + " >= now() - interval " + value + " year";
 });
 
