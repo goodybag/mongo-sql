@@ -7,6 +7,18 @@
 var conditionals = require('../lib/conditional-helpers');
 var queryBuilder = require('../lib/query-builder');
 
+var valuesThatUseIsOrIsNot = [
+  'true', 'false', true, false, null
+]
+
+function getValueEqualityOperator(value) {
+  return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is' : '='
+}
+
+function getValueInequalityOperator(value) {
+  return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is not' : '!='
+}
+
 /**
  * Querying where column is equal to a value
  * @param column {String}  - Column name either table.column or column
@@ -15,7 +27,7 @@ var queryBuilder = require('../lib/query-builder');
 conditionals.add('$equals', function(column, value, values, collection, original){
   var equator = '=';
 
-  return column + ' ' + ((value == 'true' || value == 'false') ? 'is' : '=') + ' ' + value;
+  return column + ' ' + getValueEqualityOperator(value) + ' ' + value;
 });
 
 /**
@@ -24,7 +36,8 @@ conditionals.add('$equals', function(column, value, values, collection, original
  * @param value  {Mixed}   - What the column should be equal to
  */
 conditionals.add('$ne', function(column, value, values, collection, original){
-  return column + ' != ' + value;
+  console.log('CALLING $ne', column, value)
+  return column + ' ' + getValueInequalityOperator(value) + ' ' + value;
 });
 
 /**

@@ -1049,4 +1049,44 @@ describe('Conditions', function(){
     );
   });
 
+  it('should handle nulls', function() {
+    var query = builder.sql({
+      type: 'select',
+      table: 'users',
+      where: {
+        email: { $ne: null }
+      }
+    })
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."email" is not null'
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+
+    query = builder.sql({
+      type: 'select',
+      table: 'users',
+      where: {
+        email: null,
+        $ne: { name: null },
+      }
+    })
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."email" is null '
+        + 'and "users"."name" is not null'
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  })
+
 });
