@@ -231,9 +231,9 @@ describe('Built-In Query Types', function(){
         }
       , from: {
           type: 'select'
-        , alias: 'foo'
         , table: 'bar'
         }
+        , alias: 'foo'
       });
 
       assert.equal(
