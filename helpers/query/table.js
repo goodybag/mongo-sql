@@ -4,18 +4,15 @@ var queryBuilder = require('../../lib/query-builder');
 var utils = require('../../lib/utils');
 
 helpers.register('table', function(table, values, query){
-  if ( typeof table == 'object' && 'type' in table && !('alias' in table))
-    throw new Error('Sub query table selects must have an `alias` specified');
 
   if (typeof table != 'string' && typeof table != 'object') throw new Error('Invalid table type: ' + typeof table);
 
   if ( typeof table == 'object' && !Array.isArray(table)){
-    var alias = table.alias;
-
-    // Remove alias because we're going to consume that property here
-    delete table.alias;
-
-    return 'from (' + queryBuilder(table, values) + ') "' + alias + '"';
+      if ('alias' in query) {
+          return 'from (' + queryBuilder(table, values) + ')';
+      } else {
+          throw new Error("Sub query needs an alias")
+      }
   }
 
   if (!Array.isArray(table)) table = [table];
