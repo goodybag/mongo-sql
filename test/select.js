@@ -601,17 +601,17 @@ describe('Built-In Query Types', function(){
     });
 
       it ('sub query and alias works correct', function(){
-          var query = builder.sql({
+        var query = builder.sql({
+          type: 'select'
+          , table: {
               type: 'select'
-              , table: {
-                  type: 'select'
-                  , table: 'users'
+              , table: 'users'
               }
               , alias: 'u'
           });
 
           assert.equal(
-              query.toString()
+            query.toString()
               , 'select "u".* from (select "users".* from "users") "u"'
           );
       });

@@ -8,11 +8,11 @@ helpers.register('table', function(table, values, query){
   if (typeof table != 'string' && typeof table != 'object') throw new Error('Invalid table type: ' + typeof table);
 
   if ( typeof table == 'object' && !Array.isArray(table)){
-      if ('alias' in query) {
-          return 'from (' + queryBuilder(table, values) + ')';
-      } else {
-          throw new Error("Sub query needs an alias")
-      }
+    if ('alias' in query) {
+      return 'from (' + queryBuilder(table, values) + ')';
+    } else {
+      throw new Error("Sub query needs an alias")
+    }
   }
 
   if (!Array.isArray(table)) table = [table];
