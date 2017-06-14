@@ -590,8 +590,8 @@ describe('Built-In Query Types', function(){
       , table: {
           type: 'select'
         , table: 'users'
-        , alias: 'u'
         }
+        , alias: 'u'
       });
 
       assert.equal(
@@ -599,6 +599,25 @@ describe('Built-In Query Types', function(){
       , 'select "u".* from (select "users".* from "users") "u"'
       );
     });
+
+      it ('sub query and alias works correct', function(){
+        var query = builder.sql({
+          type: 'select'
+          , table: {
+              type: 'select'
+              , table: 'users'
+              }
+              , alias: 'u'
+          });
+
+          assert.equal(
+            query.toString()
+              , 'select "u".* from (select "users".* from "users") "u"'
+          );
+      });
+
+
+
 
     it ('allow arbitrary sub-queries on table', function(){
       var query = builder.sql({
@@ -610,12 +629,13 @@ describe('Built-In Query Types', function(){
           , table: {
               type: 'select'
             , table: 'users'
-            , alias: 'uuu'
+            , alias: 'uuuu'
             }
-          , alias: 'uu'
+          , alias: 'uuu'
           }
-        , alias: 'u'
-        }
+        , alias: 'uu'
+        },
+          alias: 'u'
       });
 
       assert.equal(
@@ -624,7 +644,7 @@ describe('Built-In Query Types', function(){
           'select "u".* from '
         , '(select "uu".* from '
         , '(select "uuu".* from '
-        , '(select "users".* from "users") "uuu") "uu") "u"'
+        , '(select "uuuu".* from "users" "uuuu") "uuu") "uu") "u"'
         ].join('')
       );
     });

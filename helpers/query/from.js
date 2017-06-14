@@ -15,16 +15,11 @@ helpers.register('from', function(from, values, query){
   }
 
   if ( typeof from === 'object' ){
-    if ( typeof from == 'object' && 'type' in from && !('alias' in from) ){
-      throw new Error('Sub query from selects must have an `alias` specified');
+    if ('alias' in query) {
+      return 'from (' + queryBuilder( from, values ) + ') "' + query.alias +'"';
+    } else {
+      throw new Error('Alias needs to be specified for sub query');
     }
-
-    var alias = utils.quoteObject( from.alias );
-
-    // Remove alias because we're going to consume that property here
-    delete from.alias;
-
-    return 'from (' + queryBuilder( from, values ) + ') ' + alias;
   }
 
   throw new Error('Invalid from type: ' + typeof from);
