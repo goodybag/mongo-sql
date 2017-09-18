@@ -1127,7 +1127,7 @@ describe('Conditions', function(){
         );
     })
 
-    it.only('should handle $not correctly for expression with $and', function() {
+    it('should handle $not correctly for expression with $and', function() {
         var query = builder.sql({
             type: 'select',
             table: 'users',
