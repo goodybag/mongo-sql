@@ -154,6 +154,15 @@ conditionals.add('$nin', { cascade: false }, function(column, set, values, colle
   return column + ' not in (' + queryBuilder(set, values).toString() + ')';
 });
 
+/**
+ * Querying where helper is $not, parsing to opposite of equal
+ * @param column {String}  - Column name either table.column or column
+ */
+conditionals.add('$not', function(column, value, values, collection, original){
+    return 'not ' + column + ' ' + getValueEqualityOperator(value) + ' ' + value;
+});
+
+
 conditionals.add('$custom', { cascade: false }, function(column, value, values, collection, original){
   if (Array.isArray(value))
     return conditionals.get('$custom_array').fn( column, value, values, collection );
