@@ -36,7 +36,6 @@ conditionals.add('$equals', function(column, value, values, collection, original
  * @param value  {Mixed}   - What the column should be equal to
  */
 conditionals.add('$ne', function(column, value, values, collection, original){
-  console.log('CALLING $ne', column, value)
   return column + ' ' + getValueInequalityOperator(value) + ' ' + value;
 });
 
