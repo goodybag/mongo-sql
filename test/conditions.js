@@ -1089,65 +1089,65 @@ describe('Conditions', function(){
     );
   })
 
-    it('should handle $not correctly', function() {
-        var query = builder.sql({
-            type: 'select',
-            table: 'users',
-            where: {
-                $not: { email : "not-me@internet.com" }
-            }
-        })
-
-        assert.equal(
-            query.toString()
-            , 'select "users".* from "users" where not ("users"."email" = $1)'
-        );
+  it('should handle $not correctly', function() {
+    var query = builder.sql({
+      type: 'select',
+      table: 'users',
+      where: {
+        $not: { email : "not-me@internet.com" }
+      }
     })
 
-    it('should handle $not correctly for expression with $or', function() {
-        var query = builder.sql({
-            type: 'select',
-            table: 'users',
-            where: {
-                $not: {
-                    $or: [{
-                        email: 'not-me@internet.com'
-                    },
-                        {
-                            email: 'me-neither@internet.com'
-                        }
-                    ]
-                }
-            }
-        })
-
-        assert.equal(
-            query.toString()
-            , 'select "users".* from "users" where not ("users"."email" = $1 or "users"."email" = $2)'
-        );
+    assert.equal(
+      query.toString()
+      , 'select "users".* from "users" where not ("users"."email" = $1)'
+      );
     })
 
-    it('should handle $not correctly for expression with $and', function() {
-        var query = builder.sql({
-            type: 'select',
-            table: 'users',
-            where: {
-                $not: {
-                      $and: [{
-                          email: 'not-me@internet.com'
-                      },
-                        {
-                            otherEmail: 'not-me@internet.com'
-                        }
-                    ]
-                }
-            }
-        })
+  it('should handle $not correctly for expression with $or', function() {
+    var query = builder.sql({
+      type: 'select',
+      table: 'users',
+      where: {
+        $not: {
+        $or: [{
+          email: 'not-me@internet.com'
+        },
+        {
+          email: 'me-neither@internet.com'
+        }
+        ]
+      }
+    }
+  })
 
-        assert.equal(
-            query.toString()
-            , 'select "users".* from "users" where not ("users"."email" = $1 and "users"."otherEmail" = $2)'
-        )
-    })
+  assert.equal(
+    query.toString()
+    , 'select "users".* from "users" where not ("users"."email" = $1 or "users"."email" = $2)'
+    );
+  })
+
+  it('should handle $not correctly for expression with $and', function() {
+   var query = builder.sql({
+     type: 'select',
+     table: 'users',
+     where: {
+       $not: {
+       $and: [{
+         email: 'not-me@internet.com'
+       },
+       {
+         otherEmail: 'not-me@internet.com'
+       }
+       ]
+      }
+    }
+  })
+
+  assert.equal(
+     query.toString()
+     , 'select "users".* from "users" where not ("users"."email" = $1 and "users"."otherEmail" = $2)'
+     )
+  })
 
 });
