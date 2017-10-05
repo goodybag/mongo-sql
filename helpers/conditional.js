@@ -159,21 +159,16 @@ conditionals.add('$nin', { cascade: false }, function(column, set, values, colle
  * Querying where helper is $not, parsing to opposite of equal
  * @param column {String}  - Column name either table.column or column
  */
-conditionals.add('$not', { cascade: false }, function(column, value, values, collection, original){
-    var result = 'not '
+conditionals.add('$not', { cascade: false }, function(column, value, values, collection, original) {
+  var result = 'not '
 
-    // This is the normal case where there are no nested conditionals
-    if (typeof value === 'string') {
-        result += + column + ' ' + getValueEqualityOperator(value) + ' ' + value
-    } else {
-        // Somehow get the conditionBuilder since there would be
-        // a circular depdency. We could maybe just pass it as a param
-        // to conditional helpers? This stuff really needs a refactor
-        var condBuildResult = conditionBuilder(value, collection, values)
-        result += "(" + condBuildResult + ")"
-    }
-
-    return result
+  if (typeof value === 'string') {
+    result += +column + ' ' + getValueEqualityOperator(value) + ' ' + value
+  } else {
+    var condBuildResult = conditionBuilder(value, collection, values)
+    result += "(" + condBuildResult + ")"
+  }
+  return result
 
 });
 
