@@ -1100,7 +1100,7 @@ describe('Conditions', function(){
 
         assert.equal(
             query.toString()
-            , 'select "users".* from "users" where not "users"."email" = $1'
+            , 'select "users".* from "users" where not ("users"."email" = $1)'
         );
     })
 
