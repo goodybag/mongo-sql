@@ -6,6 +6,7 @@
 
 var conditionals = require('../lib/conditional-helpers');
 var queryBuilder = require('../lib/query-builder');
+var conditionBuilder = require('../lib/condition-builder');
 
 var valuesThatUseIsOrIsNot = [
   'true', 'false', true, false, null
@@ -152,6 +153,24 @@ conditionals.add('$nin', { cascade: false }, function(column, set, values, colle
 
   return column + ' not in (' + queryBuilder(set, values).toString() + ')';
 });
+
+/**
+ * Querying where helper is $not, parsing to opposite of equal
+ * @param column {String}  - Column name either table.column or column
+ */
+conditionals.add('$not', { cascade: false }, function(column, value, values, collection, original) {
+  var result = 'not '
+
+  if (typeof value === 'string') {
+    result += +column + ' ' + getValueEqualityOperator(value) + ' ' + value
+  } else {
+    var condBuildResult = conditionBuilder(value, collection, values)
+    result += "(" + condBuildResult + ")"
+  }
+  return result
+
+});
+
 
 conditionals.add('$custom', { cascade: false }, function(column, value, values, collection, original){
   if (Array.isArray(value))
