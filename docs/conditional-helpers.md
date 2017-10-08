@@ -107,7 +107,7 @@ __Example:__
 ```
 
 ```sql
-select "users".* from "users" where not ("users"."roleId" = 7)
+select "users".* from "users" where not "users"."roleId" = 7
 ```
 
 __Example with nested expression__
