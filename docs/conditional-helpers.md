@@ -92,7 +92,7 @@ select "users".* from "users" where "users"."id" = 7
 
 ___Cascades:___ _false_
 
-__Format:__ ```not (col = val)```
+__Format:__ ```not col = val```
 
 This inverts any expression that is contained by the helper.
 
@@ -102,12 +102,25 @@ __Example:__
 {
   type: 'select'
 , table: 'users'
-, where: { $not: { roleId : 7 } }
+, where: { roleid: { $not : 7 } }
 }
 ```
 
 ```sql
-select "users".* from "users" where not ("users"."roleId" = 7)
+select "users".* from "users" where not "users"."roleId" = 7
+```
+
+__Example with nested expression__
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { age : { $not : { $gt: 7 } } }
+}
+```
+
+```sql
+select "users".* from "users" where not "users"."age" > 7
 ```
 
 ### Helper: '$ne'
