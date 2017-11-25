@@ -11,10 +11,8 @@ jobs:
   include:
     - stage: tests
       node_js: 0.10
-      env: LINT=false
     - stage: tests
       node_js: 0.12
-      env: LINT=false
     - stage: tests
       node_js: 4
       env: LINT=true
