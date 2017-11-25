@@ -113,7 +113,7 @@ conditionals.add('$ilike', function(column, value, values, collection, original)
  * Querying where column is in a set
  *
  * Values
- * - String, no explaination necessary
+ * - String, no explanation necessary
  * - Array, joins escaped values with a comma
  * - Function, executes function, expects string in correct format
  *  |- Useful for sub-queries
@@ -123,7 +123,7 @@ conditionals.add('$ilike', function(column, value, values, collection, original)
  */
 conditionals.add('$in', { cascade: false }, function(column, set, values, collection, original){
   if (Array.isArray(set)) {
-    return column + ' in (' + set.map( function(val){
+    return column + ' in (' + set.filter(val => val !== undefined).map( function(val){
       return '$' + values.push( val );
     }).join(', ') + ')';
   }
