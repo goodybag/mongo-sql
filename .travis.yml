@@ -4,7 +4,7 @@ dist: trusty
 language: node_js
 
 script:
-  - "if [ $LINT ]; then npm run lint; fi"
+  - "if [ $LINT ]; then npm i eslint eslint-plugin-mocha && npm run lint; fi"
   - npm run test
 
 jobs:

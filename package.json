@@ -24,8 +24,6 @@
   "author": "John Fawcett",
   "license": "BSD",
   "devDependencies": {
-    "eslint": "^4.11.0",
-    "eslint-plugin-mocha": "^4.11.0",
-    "mocha": "~1.12.0"
+    "mocha": "^3.x"
   }
 }
