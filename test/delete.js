@@ -1,48 +1,48 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Built-In Query Types', function(){
+describe('Built-In Query Types', function() {
 
-  describe('Type: delete', function(){
+  describe('Type: delete', function() {
 
-    it('should delete', function(){
+    it('should delete', function() {
       var query = builder.sql({
-        type: 'delete'
-      , table: 'users'
-      , where: {
+        type: 'delete',
+        table: 'users',
+        where: {
           id: 7
         }
       });
 
       assert.equal(
         query.toString()
-      , 'delete from "users" where "users"."id" = $1'
+        , 'delete from "users" where "users"."id" = $1'
       );
 
       assert.deepEqual(
         query.values
-      , [7]
+        , [7]
       );
     });
 
-    it('should insert and return', function(){
+    it('should insert and return', function() {
       var query = builder.sql({
-        type: 'delete'
-      , table: 'users'
-      , where: {
+        type: 'delete',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , returning: ['name']
+        },
+        returning: ['name']
       });
 
       assert.equal(
         query.toString()
-      , 'delete from "users" where "users"."id" = $1 returning "users"."name"'
+        , 'delete from "users" where "users"."id" = $1 returning "users"."name"'
       );
 
       assert.deepEqual(
         query.values
-      , [7]
+        , [7]
       );
     });
 

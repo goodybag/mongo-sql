@@ -56,140 +56,140 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Built-In Query Types', function(){
+describe('Built-In Query Types', function() {
 
-  describe('Type: alter table', function(){
+  describe('Type: alter table', function() {
 
-    it('should alter a table', function(){
+    it('should alter a table', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
+        type: 'alter-table',
+        table: 'users'
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table "users"'
+        , ['alter table "users"'
         ].join('')
       );
     });
 
-    it('should alter a table if it exists', function(){
+    it('should alter a table if it exists', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , ifExists: true
+        type: 'alter-table',
+        table: 'users',
+        ifExists: true
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table if exists "users"'
+        , ['alter table if exists "users"'
         ].join('')
       );
     });
 
-    it('should alter a table only', function(){
+    it('should alter a table only', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , only: true
+        type: 'alter-table',
+        table: 'users',
+        only: true
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table only "users"'
+        , ['alter table only "users"'
         ].join('')
       );
     });
 
-    it('should rename a table', function(){
+    it('should rename a table', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , action: {
+        type: 'alter-table',
+        table: 'users',
+        action: {
           rename: 'consumers'
         }
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table "users" rename to "consumers"'
+        , ['alter table "users" rename to "consumers"'
         ].join('')
       );
     });
 
-    it('should rename a column', function(){
+    it('should rename a column', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , action: {
+        type: 'alter-table',
+        table: 'users',
+        action: {
           renameColumn: {
-            from: 'id'
-          , to:   'uid'
+            from: 'id',
+            to: 'uid'
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table "users" rename column "id" to "uid"'
+        , ['alter table "users" rename column "id" to "uid"'
         ].join('')
       );
     });
 
-    it('should rename a constraint', function(){
+    it('should rename a constraint', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , action: {
+        type: 'alter-table',
+        table: 'users',
+        action: {
           renameConstraint: {
-            from: 'id_idx'
-          , to:   'uid_idx'
+            from: 'id_idx',
+            to: 'uid_idx'
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table "users" rename constraint "id_idx" to "uid_idx"'
+        , ['alter table "users" rename constraint "id_idx" to "uid_idx"'
         ].join('')
       );
     });
 
-    it('should set schema', function(){
+    it('should set schema', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , action: {
+        type: 'alter-table',
+        table: 'users',
+        action: {
           setSchema: 'newSchema'
         }
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table "users" set schema "newSchema"'
+        , ['alter table "users" set schema "newSchema"'
         ].join('')
       );
     });
 
-    it('should perform multiple actions', function(){
+    it('should perform multiple actions', function() {
       var query = builder.sql({
-        type: 'alter-table'
-      , table: 'users'
-      , action: [
-          { dropConstraint: { name: 'users_pkey' } }
-        , { addConstraint: { name: 'users_pkey', primaryKey: [ 'id', 'name' ] } }
-        , { addConstraint: { name: 'users_stuff_key', unique: 'name' } }
-        , { alterColumn: { name: 'createdAt', default: 'now()' } }
+        type: 'alter-table',
+        table: 'users',
+        action: [
+          { dropConstraint: { name: 'users_pkey' } },
+          { addConstraint: { name: 'users_pkey', primaryKey: ['id', 'name'] } },
+          { addConstraint: { name: 'users_stuff_key', unique: 'name' } },
+          { alterColumn: { name: 'createdAt', default: 'now()' } }
         ]
       });
 
       assert.equal(
         query.toString()
-      , [ 'alter table "users" '
-        , 'drop constraint "users_pkey", '
-        , 'add constraint "users_pkey" primary key ("id", "name"), '
-        , 'add constraint "users_stuff_key" unique ("name"), '
-        , 'alter column "createdAt" set default now()'
+        , ['alter table "users" ',
+          'drop constraint "users_pkey", ',
+          'add constraint "users_pkey" primary key ("id", "name"), ',
+          'add constraint "users_stuff_key" unique ("name"), ',
+          'alter column "createdAt" set default now()'
         ].join('')
       );
     });
@@ -199,178 +199,178 @@ describe('Built-In Query Types', function(){
      ******************
      ******************
      */
-    describe('Add Column', function(){
+    describe('Add Column', function() {
 
-      it('should add a new column', function(){
+      it('should add a new column', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
+              name: 'groupId',
+              type: 'int'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int'
+          , ['alter table "users" add column "groupId" int'
           ].join('')
         );
       });
 
-      it('should add a new column not null', function(){
+      it('should add a new column not null', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , notNull: true
+              name: 'groupId',
+              type: 'int',
+              notNull: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int not null'
+          , ['alter table "users" add column "groupId" int not null'
           ].join('')
         );
       });
 
-      it('should add a new column null', function(){
+      it('should add a new column null', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , null: true
+              name: 'groupId',
+              type: 'int',
+              null: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int null'
+          , ['alter table "users" add column "groupId" int null'
           ].join('')
         );
       });
 
-      it('should add a new column as primary key', function(){
+      it('should add a new column as primary key', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , primaryKey: true
+              name: 'groupId',
+              type: 'int',
+              primaryKey: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int primary key'
+          , ['alter table "users" add column "groupId" int primary key'
           ].join('')
         );
       });
 
-      it('should add a new column with unique constraint', function(){
+      it('should add a new column with unique constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , unique: true
+              name: 'groupId',
+              type: 'int',
+              unique: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int unique'
+          , ['alter table "users" add column "groupId" int unique'
           ].join('')
         );
       });
 
-      it('should add a new column with a check', function(){
+      it('should add a new column with a check', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , check: { groupId: { $gt: 7 } }
+              name: 'groupId',
+              type: 'int',
+              check: { groupId: { $gt: 7 } }
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int check ("users"."groupId" > $1)'
+          , ['alter table "users" add column "groupId" int check ("users"."groupId" > $1)'
           ].join('')
         );
       });
 
-      it('should add a new column with a default', function(){
+      it('should add a new column with a default', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , default: 'now()'
+              name: 'groupId',
+              type: 'int',
+              default: 'now()'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int default now()'
+          , ['alter table "users" add column "groupId" int default now()'
           ].join('')
         );
       });
 
-      it('should add a new column with a reference', function(){
+      it('should add a new column with a reference', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , references: 'groups'
+              name: 'groupId',
+              type: 'int',
+              references: 'groups'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int references "groups"'
+          , ['alter table "users" add column "groupId" int references "groups"'
           ].join('')
         );
       });
 
-      it('should add a new column with a column specific reference', function(){
+      it('should add a new column with a column specific reference', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , references: {
-                table: 'groups'
-              , column: 'id'
+              name: 'groupId',
+              type: 'int',
+              references: {
+                table: 'groups',
+                column: 'id'
               }
             }
           }
@@ -378,23 +378,23 @@ describe('Built-In Query Types', function(){
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int references "groups"("id")'
+          , ['alter table "users" add column "groupId" int references "groups"("id")'
           ].join('')
         );
       });
 
-      it('should add a new column with a reference with delete behavior', function(){
+      it('should add a new column with a reference with delete behavior', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , references: {
-                table: 'groups'
-              , column: 'id'
-              , onDelete: 'cascade'
+              name: 'groupId',
+              type: 'int',
+              references: {
+                table: 'groups',
+                column: 'id',
+                onDelete: 'cascade'
               }
             }
           }
@@ -402,23 +402,23 @@ describe('Built-In Query Types', function(){
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int references "groups"("id") on delete cascade'
+          , ['alter table "users" add column "groupId" int references "groups"("id") on delete cascade'
           ].join('')
         );
       });
 
-      it('should add a new column with a reference with update behavior', function(){
+      it('should add a new column with a reference with update behavior', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , references: {
-                table: 'groups'
-              , column: 'id'
-              , onUpdate: 'set null'
+              name: 'groupId',
+              type: 'int',
+              references: {
+                table: 'groups',
+                column: 'id',
+                onUpdate: 'set null'
               }
             }
           }
@@ -426,23 +426,23 @@ describe('Built-In Query Types', function(){
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int references "groups"("id") on update set null'
+          , ['alter table "users" add column "groupId" int references "groups"("id") on update set null'
           ].join('')
         );
       });
 
-      it('should add a new column with a reference with match behavior', function(){
+      it('should add a new column with a reference with match behavior', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , references: {
-                table: 'groups'
-              , column: 'id'
-              , match: 'full'
+              name: 'groupId',
+              type: 'int',
+              references: {
+                table: 'groups',
+                column: 'id',
+                match: 'full'
               }
             }
           }
@@ -450,48 +450,48 @@ describe('Built-In Query Types', function(){
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" int references "groups"("id") match full'
+          , ['alter table "users" add column "groupId" int references "groups"("id") match full'
           ].join('')
         );
       });
 
-      it('should add a new column with all restraints', function(){
+      it('should add a new column with all restraints', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             addColumn: {
-              name: 'groupId'
-            , type: 'int'
-            , notNull: true
-            , check: {
+              name: 'groupId',
+              type: 'int',
+              notNull: true,
+              check: {
                 groupId: { $gt: 100 }
-              }
-            , default: 'now()'
-            , unique: true
-            , primaryKey: true
-            , references: {
-                table: 'groups'
-              , column: 'id'
-              , match: 'partial'
-              }
-            , deferrable: true
+              },
+              default: 'now()',
+              unique: true,
+              primaryKey: true,
+              references: {
+                table: 'groups',
+                column: 'id',
+                match: 'partial'
+              },
+              deferrable: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" add column "groupId" '
-          , 'int '
-          , 'not null '
-          , 'check ("users"."groupId" > $1) '
-          , 'default now() '
-          , 'unique '
-          , 'primary key '
-          , 'references "groups"("id") '
-          , 'match partial '
-          , 'deferrable'
+          , ['alter table "users" add column "groupId" ',
+            'int ',
+            'not null ',
+            'check ("users"."groupId" > $1) ',
+            'default now() ',
+            'unique ',
+            'primary key ',
+            'references "groups"("id") ',
+            'match partial ',
+            'deferrable'
           ].join('')
         );
       });
@@ -502,263 +502,263 @@ describe('Built-In Query Types', function(){
      ******************
      ******************
      */
-    describe('Alter Column', function(){
+    describe('Alter Column', function() {
 
-      it('should alter a column changing the type', function(){
+      it('should alter a column changing the type', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'groupId'
-            , type: 'text'
+              name: 'groupId',
+              type: 'text'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "groupId" type text'
+          , ['alter table "users" alter column "groupId" type text'
           ].join('')
         );
       });
 
-      it('should alter a column changing the type adding a using expression', function(){
+      it('should alter a column changing the type adding a using expression', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'groupId'
-            , type: 'text'
-            , using: 'null'
+              name: 'groupId',
+              type: 'text',
+              using: 'null'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "groupId" type text using (null)'
+          , ['alter table "users" alter column "groupId" type text using (null)'
           ].join('')
         );
       });
 
-      it('should alter a column changing the default', function(){
+      it('should alter a column changing the default', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'createdAt'
-            , default: 'now()'
+              name: 'createdAt',
+              default: 'now()'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "createdAt" set default now()'
+          , ['alter table "users" alter column "createdAt" set default now()'
           ].join('')
         );
       });
 
-      it('should alter a column dropping the default', function(){
+      it('should alter a column dropping the default', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'createdAt'
-            , dropDefault: true
+              name: 'createdAt',
+              dropDefault: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "createdAt" drop default'
+          , ['alter table "users" alter column "createdAt" drop default'
           ].join('')
         );
       });
 
-      it('should alter a column adding not null constraint', function(){
+      it('should alter a column adding not null constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'createdAt'
-            , notNull: true
+              name: 'createdAt',
+              notNull: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "createdAt" set not null'
+          , ['alter table "users" alter column "createdAt" set not null'
           ].join('')
         );
       });
 
-      it('should alter a column dropping not null constraint', function(){
+      it('should alter a column dropping not null constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'createdAt'
-            , notNull: false
+              name: 'createdAt',
+              notNull: false
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "createdAt" drop not null'
+          , ['alter table "users" alter column "createdAt" drop not null'
           ].join('')
         );
       });
 
-      it('should alter a column setting statistics', function(){
+      it('should alter a column setting statistics', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'createdAt'
-            , statistics: 5
+              name: 'createdAt',
+              statistics: 5
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "createdAt" set statistics $1'
+          , ['alter table "users" alter column "createdAt" set statistics $1'
           ].join('')
         );
       });
 
-      it('should alter a column setting storage', function(){
+      it('should alter a column setting storage', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: {
-              name: 'createdAt'
-            , storage: 'external'
+              name: 'createdAt',
+              storage: 'external'
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" alter column "createdAt" set storage external'
+          , ['alter table "users" alter column "createdAt" set storage external'
           ].join('')
         );
       });
 
-      it('should perform multiple alter columns', function(){
+      it('should perform multiple alter columns', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             alterColumn: [
-              { name: 'createdAt', storage: 'external' }
-            , { name: 'createdAt', notNull: true }
-            , { name: 'createdAt', default: 'now()' }
+              { name: 'createdAt', storage: 'external' },
+              { name: 'createdAt', notNull: true },
+              { name: 'createdAt', default: 'now()' }
             ]
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" '
-          , 'alter column "createdAt" set storage external, '
-          , 'alter column "createdAt" set not null, '
-          , 'alter column "createdAt" set default now()'
+          , ['alter table "users" ',
+            'alter column "createdAt" set storage external, ',
+            'alter column "createdAt" set not null, ',
+            'alter column "createdAt" set default now()'
           ].join('')
         );
       });
     });
 
-    describe('add/drop constraint', function(){
+    describe('add/drop constraint', function() {
 
-      it('should drop a constraint', function(){
+      it('should drop a constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'distributors'
-        , action: {
+          type: 'alter-table',
+          table: 'distributors',
+          action: {
             dropConstraint: 'zipchk'
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "distributors" '
-          , 'drop constraint "zipchk"'
+          , ['alter table "distributors" ',
+            'drop constraint "zipchk"'
           ].join('')
         );
       });
 
-      it('should drop a constraint with all options', function(){
+      it('should drop a constraint with all options', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'distributors'
-        , action: {
+          type: 'alter-table',
+          table: 'distributors',
+          action: {
             dropConstraint: {
-              name: "zipchk"
-            , ifExists: true
-            , cascade: true
+              name: 'zipchk',
+              ifExists: true,
+              cascade: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "distributors" '
-          , 'drop constraint if exists "zipchk" cascade'
+          , ['alter table "distributors" ',
+            'drop constraint if exists "zipchk" cascade'
           ].join('')
         );
       });
 
-      it('should add a check constraint', function(){
+      it('should add a check constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'distributors'
-        , action: {
+          type: 'alter-table',
+          table: 'distributors',
+          action: {
             addConstraint: {
-              name: 'zipchk'
-            , check: { $custom: ['char_length(zipcode) = $1', 5] }
+              name: 'zipchk',
+              check: { $custom: ['char_length(zipcode) = $1', 5] }
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "distributors" '
-          , 'add constraint "zipchk" '
-          , 'check (char_length(zipcode) = $1)'
+          , ['alter table "distributors" ',
+            'add constraint "zipchk" ',
+            'check (char_length(zipcode) = $1)'
           ].join('')
         );
 
         assert.deepEqual(
           query.values
-        , [5]
+          , [5]
         );
       });
 
-      it('should add a foreign key constraint', function(){
+      it('should add a foreign key constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'distributors'
-        , action: {
+          type: 'alter-table',
+          table: 'distributors',
+          action: {
             addConstraint: {
-              name: 'distfk'
-            , foreignKey: {
-                column: 'address'
-              , references: {
-                  table: 'addresses'
-                , column: 'address'
+              name: 'distfk',
+              foreignKey: {
+                column: 'address',
+                references: {
+                  table: 'addresses',
+                  column: 'address'
                 }
               }
             }
@@ -767,41 +767,41 @@ describe('Built-In Query Types', function(){
 
         assert.equal(
           query.toString()
-        , [ 'alter table "distributors" '
-          , 'add constraint "distfk" foreign key ("address") '
-          , 'references "addresses"("address")'
+          , ['alter table "distributors" ',
+            'add constraint "distfk" foreign key ("address") ',
+            'references "addresses"("address")'
           ].join('')
         );
       });
 
-      it('should add a unique constraint', function(){
+      it('should add a unique constraint', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'distributors'
-        , action: {
+          type: 'alter-table',
+          table: 'distributors',
+          action: {
             addConstraint: {
-              name: 'dist_id_zipcode_key'
-            , unique: ['dist_id', 'zipcode']
+              name: 'dist_id_zipcode_key',
+              unique: ['dist_id', 'zipcode']
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "distributors" '
-          , 'add constraint "dist_id_zipcode_key" '
-          , 'unique ("dist_id", "zipcode")'
+          , ['alter table "distributors" ',
+            'add constraint "dist_id_zipcode_key" ',
+            'unique ("dist_id", "zipcode")'
           ].join('')
         );
       });
     });
 
-    describe('drop column', function(){
-      it('should drop a column', function(){
+    describe('drop column', function() {
+      it('should drop a column', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             dropColumn: {
               name: 'groupId'
             }
@@ -810,79 +810,79 @@ describe('Built-In Query Types', function(){
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" '
-          , 'drop column "groupId"'
+          , ['alter table "users" ',
+            'drop column "groupId"'
           ].join('')
         );
       });
 
-      it('should if exists drop a column restrict', function(){
+      it('should if exists drop a column restrict', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             dropColumn: {
-              name: 'groupId'
-            , ifExists: true
-            , restrict: true
+              name: 'groupId',
+              ifExists: true,
+              restrict: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" '
-          , 'drop column if exists "groupId" '
-          , 'restrict'
+          , ['alter table "users" ',
+            'drop column if exists "groupId" ',
+            'restrict'
           ].join('')
         );
       });
 
-      it('should drop a column cascade', function(){
+      it('should drop a column cascade', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             dropColumn: {
-              name: 'groupId'
-            , cascade: true
+              name: 'groupId',
+              cascade: true
             }
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" '
-          , 'drop column "groupId" '
-          , 'cascade'
+          , ['alter table "users" ',
+            'drop column "groupId" ',
+            'cascade'
           ].join('')
         );
       });
 
-      it('should drop multiple columns', function(){
+      it('should drop multiple columns', function() {
         var query = builder.sql({
-          type: 'alter-table'
-        , table: 'users'
-        , action: {
+          type: 'alter-table',
+          table: 'users',
+          action: {
             dropColumn: [
-              { name: 'groupId'
-              , ifExists: true
-              , restrict: true
-              }
-            , { name: 'itemId'
-              , cascade: true
-              }
-            , { name: 'horseId' }
+              { name: 'groupId',
+                ifExists: true,
+                restrict: true
+              },
+              { name: 'itemId',
+                cascade: true
+              },
+              { name: 'horseId' }
             ]
           }
         });
 
         assert.equal(
           query.toString()
-        , [ 'alter table "users" '
-          , 'drop column if exists "groupId" restrict, '
-          , 'drop column "itemId" cascade, '
-          , 'drop column "horseId"'
+          , ['alter table "users" ',
+            'drop column if exists "groupId" restrict, ',
+            'drop column "itemId" cascade, ',
+            'drop column "horseId"'
           ].join('')
         );
       });

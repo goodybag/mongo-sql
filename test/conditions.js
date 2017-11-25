@@ -1,352 +1,352 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Conditions', function(){
+describe('Conditions', function() {
 
-  it ('should build a query selecting on users where id = $1', function(){
+  it ('should build a query selecting on users where id = $1', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: 5 }
+      type: 'select',
+      table: 'users',
+      where: { id: 5 }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" = $1'
+      , 'select "users".* from "users" where "users"."id" = $1'
     );
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('should build a query selecting on users where id = $1 and name = $2', function(){
+  it ('should build a query selecting on users where id = $1 and name = $2', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: 5, name: 'Bob' }
+      type: 'select',
+      table: 'users',
+      where: { id: 5, name: 'Bob' }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" = $1 and "users"."name" = $2'
+      , 'select "users".* from "users" where "users"."id" = $1 and "users"."name" = $2'
     );
 
     assert.deepEqual(
       query.values
-    , [5, 'Bob']
+      , [5, 'Bob']
     );
   });
 
-  it ('should use boolean syntax', function(){
+  it ('should use boolean syntax', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { isAwesome: true }
+      type: 'select',
+      table: 'users',
+      where: { isAwesome: true }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."isAwesome" is true'
+      , 'select "users".* from "users" where "users"."isAwesome" is true'
     );
 
     assert.deepEqual(
       query.values
-    , []
+      , []
     );
 
     query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { isAwesome: false }
+      type: 'select',
+      table: 'users',
+      where: { isAwesome: false }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."isAwesome" is false'
+      , 'select "users".* from "users" where "users"."isAwesome" is false'
     );
 
     assert.deepEqual(
       query.values
-    , []
+      , []
     );
   });
 
-  it ('should build a query selecting on users where id = $1 or name = $2', function(){
+  it ('should build a query selecting on users where id = $1 or name = $2', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { $or: { id: 5, name: 'Bob' } }
+      type: 'select',
+      table: 'users',
+      where: { $or: { id: 5, name: 'Bob' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" = $1 or "users"."name" = $2'
+      , 'select "users".* from "users" where "users"."id" = $1 or "users"."name" = $2'
     );
 
     assert.deepEqual(
       query.values
-    , [5, 'Bob']
+      , [5, 'Bob']
     );
   });
 
-  it ('$gt', function(){
+  it ('$gt', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $gt: 5 } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $gt: 5 } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" > $1'
+      , 'select "users".* from "users" where "users"."id" > $1'
     );
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('$gt multi', function(){
+  it ('$gt multi', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { $gt: { id: 5, name: 'Tobias' } }
+      type: 'select',
+      table: 'users',
+      where: { $gt: { id: 5, name: 'Tobias' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" > $1 and "users"."name" > $2'
+      , 'select "users".* from "users" where "users"."id" > $1 and "users"."name" > $2'
     );
 
     assert.deepEqual(
       query.values
-    , [5, 'Tobias']
+      , [5, 'Tobias']
     );
   });
 
-  it ('$gte', function(){
+  it ('$gte', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $gte: 5 } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $gte: 5 } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" >= $1'
+      , 'select "users".* from "users" where "users"."id" >= $1'
     );
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('$gte multi', function(){
+  it ('$gte multi', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { $gte: { id: 5, name: 'Tobias' } }
+      type: 'select',
+      table: 'users',
+      where: { $gte: { id: 5, name: 'Tobias' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" >= $1 and "users"."name" >= $2'
+      , 'select "users".* from "users" where "users"."id" >= $1 and "users"."name" >= $2'
     );
 
     assert.deepEqual(
       query.values
-    , [5, 'Tobias']
+      , [5, 'Tobias']
     );
   });
 
-  it ('$lt', function(){
+  it ('$lt', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $lt: 5 } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $lt: 5 } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" < $1'
+      , 'select "users".* from "users" where "users"."id" < $1'
     );
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('$lt multi', function(){
+  it ('$lt multi', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { $lt: { id: 5, name: 'Tobias' } }
+      type: 'select',
+      table: 'users',
+      where: { $lt: { id: 5, name: 'Tobias' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" < $1 and "users"."name" < $2'
+      , 'select "users".* from "users" where "users"."id" < $1 and "users"."name" < $2'
     );
 
     assert.deepEqual(
       query.values
-    , [5, 'Tobias']
+      , [5, 'Tobias']
     );
   });
 
-  it ('$lte', function(){
+  it ('$lte', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $lte: 5 } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $lte: 5 } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" <= $1'
+      , 'select "users".* from "users" where "users"."id" <= $1'
     );
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('$lte multi', function(){
+  it ('$lte multi', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { $lte: { id: 5, name: 'Tobias' } }
+      type: 'select',
+      table: 'users',
+      where: { $lte: { id: 5, name: 'Tobias' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" <= $1 and "users"."name" <= $2'
+      , 'select "users".* from "users" where "users"."id" <= $1 and "users"."name" <= $2'
     );
 
     assert.deepEqual(
       query.values
-    , [5, 'Tobias']
+      , [5, 'Tobias']
     );
   });
 
-  it ('$null', function(){
+  it ('$null', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $null: true } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $null: true } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" is null'
+      , 'select "users".* from "users" where "users"."id" is null'
     );
   });
 
-  it ('$null should be not null when false', function(){
+  it ('$null should be not null when false', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $null: false } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $null: false } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" is not null'
+      , 'select "users".* from "users" where "users"."id" is not null'
     );
   });
 
-  it ('should use $null when value is null', function(){
+  it ('should use $null when value is null', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: null }
+      type: 'select',
+      table: 'users',
+      where: { id: null }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" is null'
+      , 'select "users".* from "users" where "users"."id" is null'
     );
   });
 
-  it ('$notNull', function(){
+  it ('$notNull', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $notNull: true } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $notNull: true } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" is not null'
+      , 'select "users".* from "users" where "users"."id" is not null'
     );
   });
 
-  it ('$notNull should be null when false', function(){
+  it ('$notNull should be null when false', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { id: { $notNull: false } }
+      type: 'select',
+      table: 'users',
+      where: { id: { $notNull: false } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."id" is null'
+      , 'select "users".* from "users" where "users"."id" is null'
     );
   });
 
-  it ('$like', function(){
+  it ('$like', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { name: { $like: 'Bobo' } }
+      type: 'select',
+      table: 'users',
+      where: { name: { $like: 'Bobo' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" like $1'
+      , 'select "users".* from "users" where "users"."name" like $1'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bobo']
+      , ['Bobo']
     );
   });
 
-  it ('$ilike', function(){
+  it ('$ilike', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: { name: { $ilike: 'Bobo' } }
+      type: 'select',
+      table: 'users',
+      where: { name: { $ilike: 'Bobo' } }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" ilike $1'
+      , 'select "users".* from "users" where "users"."name" ilike $1'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bobo']
+      , ['Bobo']
     );
   });
 
-  it ('$in', function(){
+  it ('$in', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         id: {
           $in: {
-            type: 'select'
-          , table: 'groups'
-          , columns: ['userId']
-          , where: { "groupId": 5 }
+            type: 'select',
+            table: 'groups',
+            columns: ['userId'],
+            where: { 'groupId': 5 }
           }
         }
       }
@@ -354,7 +354,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ' +
+      , 'select "users".* from "users" where ' +
       '"users"."id" in (' +
         'select "groups"."userId" from "groups" where ' +
           '"groups"."groupId" = $1)'
@@ -362,15 +362,15 @@ describe('Conditions', function(){
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('$in array', function(){
+  it ('$in array', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         id: {
           $in: [1, 2, 3]
         }
@@ -379,13 +379,13 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ' +
+      , 'select "users".* from "users" where ' +
       '"users"."id" in ($1, $2, $3)'
     );
 
     assert.deepEqual(
       query.values
-    , [1, 2, 3]
+      , [1, 2, 3]
     );
   });
 
@@ -415,15 +415,15 @@ describe('Conditions', function(){
 
   it ('$nin', function(){
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         id: {
           $nin: {
-            type: 'select'
-          , table: 'groups'
-          , columns: ['userId']
-          , where: { "groupId": 5 }
+            type: 'select',
+            table: 'groups',
+            columns: ['userId'],
+            where: { 'groupId': 5 }
           }
         }
       }
@@ -431,7 +431,7 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ' +
+      , 'select "users".* from "users" where ' +
       '"users"."id" not in (' +
         'select "groups"."userId" from "groups" where ' +
           '"groups"."groupId" = $1)'
@@ -439,15 +439,15 @@ describe('Conditions', function(){
 
     assert.deepEqual(
       query.values
-    , [5]
+      , [5]
     );
   });
 
-  it ('$nin array', function(){
+  it ('$nin array', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         id: {
           $nin: [1, 2, 3]
         }
@@ -456,13 +456,13 @@ describe('Conditions', function(){
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where ' +
+      , 'select "users".* from "users" where ' +
       '"users"."id" not in ($1, $2, $3)'
     );
 
     assert.deepEqual(
       query.values
-    , [1, 2, 3]
+      , [1, 2, 3]
     );
   });
 
@@ -492,608 +492,608 @@ describe('Conditions', function(){
 
   it ('should allow an arbitrary amount of conditions', function(){
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
-        name: 'Bob'
-      , id: { $lt: 500 }
-      , groupId: { $equals: 7 }
-      , another: { $or: [1, 2, 3, 4] }
+      type: 'select',
+      table: 'users',
+      where: {
+        name: 'Bob',
+        id: { $lt: 500 },
+        groupId: { $equals: 7 },
+        another: { $or: [1, 2, 3, 4] }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" = $1 and "users"."id" < $2 and "users"."groupId" = $3 and ("users"."another" = $4 or "users"."another" = $5 or "users"."another" = $6 or "users"."another" = $7)'
+      , 'select "users".* from "users" where "users"."name" = $1 and "users"."id" < $2 and "users"."groupId" = $3 and ("users"."another" = $4 or "users"."another" = $5 or "users"."another" = $6 or "users"."another" = $7)'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bob', 500, 7, 1, 2, 3, 4]
+      , ['Bob', 500, 7, 1, 2, 3, 4]
     );
   });
 
-  it ('should inline custom conditions', function(){
+  it ('should inline custom conditions', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
-        name: { $like: 'Bob' }
-      , $custom: ['"users"."createdAt" > now() - interval $1 month', 5]
+      type: 'select',
+      table: 'users',
+      where: {
+        name: { $like: 'Bob' },
+        $custom: ['"users"."createdAt" > now() - interval $1 month', 5]
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" like $1 and "users"."createdAt" > now() - interval $2 month'
+      , 'select "users".* from "users" where "users"."name" like $1 and "users"."createdAt" > now() - interval $2 month'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bob', 5]
+      , ['Bob', 5]
     );
   });
 
-  it ('should handle interpolating custom parameters', function(){
+  it ('should handle interpolating custom parameters', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
-        name: { $like: 'Bob' }
-      , $custom: ['$1 $2 $3 $4', 5, 6, 7, 8]
+      type: 'select',
+      table: 'users',
+      where: {
+        name: { $like: 'Bob' },
+        $custom: ['$1 $2 $3 $4', 5, 6, 7, 8]
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" like $1 and $2 $3 $4 $5'
+      , 'select "users".* from "users" where "users"."name" like $1 and $2 $3 $4 $5'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bob', 5, 6, 7, 8]
+      , ['Bob', 5, 6, 7, 8]
     );
   });
 
-  it ('$years_ago', function(){
+  it ('$years_ago', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         createdAt: { $years_ago: 2 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 year'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 year'
     );
 
     assert.deepEqual(
       query.values
-    , [2]
+      , [2]
     );
   });
 
-  it ('$years_ago inverse', function(){
+  it ('$years_ago inverse', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         $years_ago: { createdAt: 2, somethingElse: 3 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 year and "users"."somethingElse" >= now() - interval $2 year'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 year and "users"."somethingElse" >= now() - interval $2 year'
     );
 
     assert.deepEqual(
       query.values
-    , [2, 3]
+      , [2, 3]
     );
   });
 
-  it ('$months_ago', function(){
+  it ('$months_ago', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         createdAt: { $months_ago: 2 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 month'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 month'
     );
 
     assert.deepEqual(
       query.values
-    , [2]
+      , [2]
     );
   });
 
-  it ('$months_ago inverse', function(){
+  it ('$months_ago inverse', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         $months_ago: { createdAt: 2, somethingElse: 3 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 month and "users"."somethingElse" >= now() - interval $2 month'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 month and "users"."somethingElse" >= now() - interval $2 month'
     );
 
     assert.deepEqual(
       query.values
-    , [2, 3]
+      , [2, 3]
     );
   });
 
-  it ('$days_ago', function(){
+  it ('$days_ago', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         createdAt: { $days_ago: 2 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 day'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 day'
     );
 
     assert.deepEqual(
       query.values
-    , [2]
+      , [2]
     );
   });
 
-  it ('$days_ago inverse', function(){
+  it ('$days_ago inverse', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         $days_ago: { createdAt: 2, somethingElse: 3 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 day and "users"."somethingElse" >= now() - interval $2 day'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 day and "users"."somethingElse" >= now() - interval $2 day'
     );
 
     assert.deepEqual(
       query.values
-    , [2, 3]
+      , [2, 3]
     );
   });
 
-  it ('$hours_ago', function(){
+  it ('$hours_ago', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         createdAt: { $hours_ago: 2 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 hour'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 hour'
     );
 
     assert.deepEqual(
       query.values
-    , [2]
+      , [2]
     );
   });
 
-  it ('$hours_ago inverse', function(){
+  it ('$hours_ago inverse', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         $hours_ago: { createdAt: 2, somethingElse: 3 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 hour and "users"."somethingElse" >= now() - interval $2 hour'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 hour and "users"."somethingElse" >= now() - interval $2 hour'
     );
 
     assert.deepEqual(
       query.values
-    , [2, 3]
+      , [2, 3]
     );
   });
 
-  it ('$minutes_ago', function(){
+  it ('$minutes_ago', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         createdAt: { $minutes_ago: 2 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 minute'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 minute'
     );
 
     assert.deepEqual(
       query.values
-    , [2]
+      , [2]
     );
   });
 
-  it ('$minutes_ago inverse', function(){
+  it ('$minutes_ago inverse', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         $minutes_ago: { createdAt: 2, somethingElse: 3 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 minute and "users"."somethingElse" >= now() - interval $2 minute'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 minute and "users"."somethingElse" >= now() - interval $2 minute'
     );
 
     assert.deepEqual(
       query.values
-    , [2, 3]
+      , [2, 3]
     );
   });
 
-  it ('$seconds_ago', function(){
+  it ('$seconds_ago', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         createdAt: { $seconds_ago: 2 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 second'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 second'
     );
 
     assert.deepEqual(
       query.values
-    , [2]
+      , [2]
     );
   });
 
-  it ('$seconds_ago inverse', function(){
+  it ('$seconds_ago inverse', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         $seconds_ago: { createdAt: 2, somethingElse: 3 }
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 second and "users"."somethingElse" >= now() - interval $2 second'
+      , 'select "users".* from "users" where "users"."createdAt" >= now() - interval $1 second and "users"."somethingElse" >= now() - interval $2 second'
     );
 
     assert.deepEqual(
       query.values
-    , [2, 3]
+      , [2, 3]
     );
   });
 
-  it ('Should have no conditions if where is an empty object', function(){
+  it ('Should have no conditions if where is an empty object', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {}
+      type: 'select',
+      table: 'users',
+      where: {}
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users"'
+      , 'select "users".* from "users"'
     );
   });
 
-  describe('JSON Operators', function(){
+  describe('JSON Operators', function() {
 
-    it ('Should Get JSON object field', function(){
+    it ('Should Get JSON object field', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data->name': 'Bob'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where "users"."data"->\'name\' = $1'
+        , 'select "users".* from "users" where "users"."data"->\'name\' = $1'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob']
+        , ['Bob']
       );
     });
 
-    it ('Should Get JSON array element', function(){
+    it ('Should Get JSON array element', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data->1': 'Bob'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where "users"."data"->1 = $1'
+        , 'select "users".* from "users" where "users"."data"->1 = $1'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob']
+        , ['Bob']
       );
     });
 
-    it ('Should Get JSON array element as text', function(){
+    it ('Should Get JSON array element as text', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data->>5': 'Bob'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where "users"."data"->>5 = $1'
+        , 'select "users".* from "users" where "users"."data"->>5 = $1'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob']
+        , ['Bob']
       );
     });
 
-    it ('Should Get JSON object field as text', function(){
+    it ('Should Get JSON object field as text', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data->>name': 'Bob'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where "users"."data"->>\'name\' = $1'
+        , 'select "users".* from "users" where "users"."data"->>\'name\' = $1'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob']
+        , ['Bob']
       );
     });
 
-    it ('Should operate on JSON text and cast the column', function(){
+    it ('Should operate on JSON text and cast the column', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data::json->name': 'Bob'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where "users"."data"::json->\'name\' = $1'
+        , 'select "users".* from "users" where "users"."data"::json->\'name\' = $1'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob']
+        , ['Bob']
       );
     });
 
-    it ('Should operate on JSON text and cast the column and specify table', function(){
+    it ('Should operate on JSON text and cast the column and specify table', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'other_table.data::json->name': 'Bob'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" where "other_table"."data"::json->\'name\' = $1'
+        , 'select "users".* from "users" where "other_table"."data"::json->\'name\' = $1'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob']
+        , ['Bob']
       );
     });
 
-    it ('Should operate on JSON and play nicely with other helpers', function(){
+    it ('Should operate on JSON and play nicely with other helpers', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
-          'data->name': 'Bob'
-        , $or: {
-            id: 7
-          , 'data->other_id': 'blah'
-          , 'data::hstore->other_thing': { $gt: 'bill' }
+        type: 'select',
+        table: 'users',
+        where: {
+          'data->name': 'Bob',
+          $or: {
+            id: 7,
+            'data->other_id': 'blah',
+            'data::hstore->other_thing': { $gt: 'bill' }
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , [
-          'select "users".* from "users" where '
-        , '"users"."data"->\'name\' = $1 and '
-        , '("users"."id" = $2 or "users"."data"->\'other_id\' = $3 or '
-        , '"users"."data"::hstore->\'other_thing\' > $4)'
+        , [
+          'select "users".* from "users" where ',
+          '"users"."data"->\'name\' = $1 and ',
+          '("users"."id" = $2 or "users"."data"->\'other_id\' = $3 or ',
+          '"users"."data"::hstore->\'other_thing\' > $4)'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 7, 'blah', 'bill']
+        , ['Bob', 7, 'blah', 'bill']
       );
     });
 
-    it ('Should be able to go deep', function(){
+    it ('Should be able to go deep', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data->3->records->4->id': 27
         }
       });
 
       assert.equal(
         query.toString()
-      , [
-          'select "users".* from "users" where '
-        , '"users"."data"->3->\'records\'->4->\'id\' = $1'
+        , [
+          'select "users".* from "users" where ',
+          '"users"."data"->3->\'records\'->4->\'id\' = $1'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , [27]
+        , [27]
       );
     });
 
-    it ('Should be able to go deep with array syntax', function(){
+    it ('Should be able to go deep with array syntax', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data#>{3,records,4,id}': 27
         }
       });
 
       assert.equal(
         query.toString()
-      , [
-          'select "users".* from "users" where '
-        , '"users"."data"#>\'{3,records,4,id}\' = $1'
+        , [
+          'select "users".* from "users" where ',
+          '"users"."data"#>\'{3,records,4,id}\' = $1'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , [27]
+        , [27]
       );
     });
 
-    it ('Should not double quote things already quoted', function(){
+    it ('Should not double quote things already quoted', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , where: {
+        type: 'select',
+        table: 'users',
+        where: {
           'data->\'3\'': 27
         }
       });
 
       assert.equal(
         query.toString()
-      , [
-          'select "users".* from "users" where '
-        , '"users"."data"->\'3\' = $1'
+        , [
+          'select "users".* from "users" where ',
+          '"users"."data"->\'3\' = $1'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , [27]
+        , [27]
       );
     });
   });
 
-  it ('should cast', function(){
+  it ('should cast', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         'my_column::some_type': 27
       }
     });
 
     assert.equal(
       query.toString()
-    , [
-        'select "users".* from "users" where '
-      , '"users"."my_column"::some_type = $1'
+      , [
+        'select "users".* from "users" where ',
+        '"users"."my_column"::some_type = $1'
       ].join('')
     );
 
     assert.deepEqual(
       query.values
-    , [27]
+      , [27]
     );
   });
 
-  it('having', function(){
+  it('having', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , groupBy: 'id'
-    , having: {
+      type: 'select',
+      table: 'users',
+      groupBy: 'id',
+      having: {
         name: { $gt: 'Bob' }
       }
     });
 
     assert.equal(
       query.toString()
-    , [ 'select "users".* from "users" group by "users"."id" '
-      , 'having "users"."name" > $1'
+      , ['select "users".* from "users" group by "users"."id" ',
+        'having "users"."name" > $1'
       ].join('')
     );
 
     assert.deepEqual(
       query.values
-    , ['Bob']
+      , ['Bob']
     );
   });
 
-  it('skip undefined', function(){
+  it('skip undefined', function() {
     var query = builder.sql({
-      type: 'select'
-    , table: 'users'
-    , where: {
+      type: 'select',
+      table: 'users',
+      where: {
         id: undefined,
-        name: 'Bob',
+        name: 'Bob'
       }
     });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."name" = $1'
+      , 'select "users".* from "users" where "users"."name" = $1'
     );
 
     assert.deepEqual(
       query.values
-    , ['Bob']
+      , ['Bob']
     );
   });
 
@@ -1104,16 +1104,16 @@ describe('Conditions', function(){
       where: {
         email: { $ne: null }
       }
-    })
+    });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."email" is not null'
+      , 'select "users".* from "users" where "users"."email" is not null'
     );
 
     assert.deepEqual(
       query.values
-    , []
+      , []
     );
 
     query = builder.sql({
@@ -1121,36 +1121,36 @@ describe('Conditions', function(){
       table: 'users',
       where: {
         email: null,
-        $ne: { name: null },
+        $ne: { name: null }
       }
-    })
+    });
 
     assert.equal(
       query.toString()
-    , 'select "users".* from "users" where "users"."email" is null '
+      , 'select "users".* from "users" where "users"."email" is null '
         + 'and "users"."name" is not null'
     );
 
     assert.deepEqual(
       query.values
-    , []
+      , []
     );
-  })
+  });
 
   it('should handle $not correctly', function() {
     var query = builder.sql({
       type: 'select',
       table: 'users',
       where: {
-        email: { $not : "not-me@internet.com" }
+        email: { $not: 'not-me@internet.com' }
       }
-    })
+    });
 
     assert.equal(
       query.toString()
       , 'select "users".* from "users" where not "users"."email" = $1'
-      );
-    })
+    );
+  });
 
   it('should handle $not correctly for expression with other expression', function() {
     var query = builder.sql({
@@ -1161,15 +1161,15 @@ describe('Conditions', function(){
           $not: [{
             $lte: 12
           }
-        ]
+          ]
+        }
       }
-    }
-  })
+    });
 
-  assert.equal(
-    query.toString()
-    , 'select "users".* from "users" where not "users"."age" <= $1'
+    assert.equal(
+      query.toString()
+      , 'select "users".* from "users" where not "users"."age" <= $1'
     );
-  })
+  });
 
 });

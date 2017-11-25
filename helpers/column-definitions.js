@@ -3,27 +3,27 @@ var utils = require('../lib/utils');
 var defs = require('../lib/column-def-helpers');
 var conditional = require('../lib/condition-builder');
 
-defs.add('type', function(type, values, query){
+defs.add('type', function(type) {
   return type;
 });
 
-defs.add('primaryKey', function(primaryKey, values, query){
+defs.add('primaryKey', function(primaryKey) {
   if ( !primaryKey ) return '';
 
   var out = 'primary key';
 
-  if ( typeof primaryKey === 'string' ){
+  if ( typeof primaryKey === 'string' ) {
     out += ' ("' + primaryKey + '")';
-  } else if ( Array.isArray( primaryKey ) ){
+  } else if ( Array.isArray( primaryKey ) ) {
     out += ' ("' + primaryKey.join('", "') + '")';
   }
 
   return out;
 });
 
-defs.add('references', function(reference, values, query){
-  var output = "references ";
-  if (typeof reference == 'string')
+defs.add('references', function(reference) {
+  var output = 'references ';
+  if (typeof reference === 'string')
     return output + '"' + reference + '"';
 
   output += '"' + reference.table + '"';
@@ -43,38 +43,38 @@ defs.add('references', function(reference, values, query){
   return output;
 });
 
-defs.add('notNull', function(notNull, values, query){
+defs.add('notNull', function(notNull) {
   return notNull ? 'not null' : 'null';
 });
 
-defs.add('null', function($null, values, query){
+defs.add('null', function($null) {
   if ($null === true) return 'null';
   if ($null === false) return 'not null';
   return '';
 });
 
-defs.add('unique', function(unique, values, query){
+defs.add('unique', function(unique) {
   if (unique === true) return 'unique';
 
   if ( typeof unique === 'string' ) return 'unique ("' + unique + '")';
 
   if (Array.isArray(unique))
-    return 'unique (' + unique.map(function(column){
+    return 'unique (' + unique.map(function(column) {
       return utils.quoteObject(column);
     }).join(', ') + ')';
 
   return '';
 });
 
-defs.add('default', function(def, values, query){
-  return def !== undefined ? ('default ' + def) : '';
+defs.add('default', function(def) {
+  return def !== undefined ? 'default ' + def : '';
 });
 
-defs.add('check', function(check, values, query){
+defs.add('check', function(check, values, query) {
   return 'check (' + conditional(check, query.__defaultTable, values) + ')';
 });
 
-defs.add('noInherit', function(noInherit, values, query){
+defs.add('noInherit', function(noInherit) {
   if (noInherit) return 'no inherit';
   return '';
 });

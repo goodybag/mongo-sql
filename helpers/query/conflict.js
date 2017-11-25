@@ -21,39 +21,39 @@
 var helpers = require('../../lib/query-helpers');
 var utils = require('../../lib/utils');
 
-helpers.register( 'conflict', function( conflict, values, query ){
+helpers.register( 'conflict', function( conflict, values, query ) {
   var result = 'on conflict';
 
   // Handle target specification
-  if ( conflict.target ){
+  if ( conflict.target ) {
     // Users can just pass in a big ol' target string
-    if ( typeof conflict.target === 'string' ){
+    if ( typeof conflict.target === 'string' ) {
       result += '(' + conflict.target + ') ';
     // Or get more specific
     } else {
-      if ( conflict.target.column ){
+      if ( conflict.target.column ) {
         console.log('conflict.target.column is deprecated. Use an array of columns on conflict.target.columns instead');
-        conflict.target.columns = [ conflict.target.column ];
+        conflict.target.columns = [conflict.target.column];
       }
 
       // Handle (index_column_name | (index_expression))
-      if ( Array.isArray( conflict.target.columns ) ){
-        var columnExpression = '(' + conflict.target.columns.map(function( column ){
+      if ( Array.isArray( conflict.target.columns ) ) {
+        var columnExpression = '(' + conflict.target.columns.map(function( column ) {
           return utils.quoteObject( column );
         }).join(', ');
 
-        if ( conflict.target.expression ){
+        if ( conflict.target.expression ) {
           columnExpression += '(' + conflict.target.expression + ') ';
         }
 
         // Collation
-        if ( conflict.target.collation ){
+        if ( conflict.target.collation ) {
           columnExpression += ' collate ' + conflict.target.collation;
         }
 
         // Opclasses either string or array of strings
-        if ( conflict.target.opclass ){
-          if ( Array.isArray( conflict.target.opclass ) ){
+        if ( conflict.target.opclass ) {
+          if ( Array.isArray( conflict.target.opclass ) ) {
             columnExpression += ' ' + conflict.target.opclass.join(', ');
           } else {
             columnExpression += ' ' + conflict.target.opclass;
@@ -66,27 +66,27 @@ helpers.register( 'conflict', function( conflict, values, query ){
       }
 
       // Where condition doesn't need a table name
-      if ( conflict.target.where ){
+      if ( conflict.target.where ) {
         result += ' ' + helpers.get('where').fn( conflict.target.where, values, query );
       }
 
       // Constraint
-      if ( conflict.target.constraint ){
+      if ( conflict.target.constraint ) {
         result += ' on constraint ' + utils.quoteObject( conflict.target.constraint );
       }
     }
   }
 
-  if ( conflict.action ){
+  if ( conflict.action ) {
     result += ' do ';
 
-    if ( typeof conflict.action === 'string' ){
+    if ( typeof conflict.action === 'string' ) {
       result += conflict.action;
-    } else if ( conflict.action.update ){
+    } else if ( conflict.action.update ) {
       result += 'update ';
       result += helpers.get('updates').fn( conflict.action.update, values, query );
 
-      if ( conflict.action.where ){
+      if ( conflict.action.where ) {
         result += ' ' + helpers.get('where').fn( conflict.action.where, values, query );
       }
     }

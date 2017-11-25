@@ -1,10 +1,10 @@
 var helpers = require('../../lib/query-helpers');
-var lockStrengths = [ 'update', 'share', 'no key update', 'key share' ];
+var lockStrengths = ['update', 'share', 'no key update', 'key share'];
 var quote = function(val) {
   return val.indexOf('"') < 0 ? ['"', val, '"'].join('') : val;
 };
 
-helpers.register('for', function($for, values, query){
+helpers.register('for', function($for) {
   if (typeof $for !== 'object') throw new Error('Invalid for type: ' + typeof $for);
   if (!$for.type || typeof $for.type !== 'string') throw new Error('For helper requires type');
 
@@ -25,9 +25,9 @@ helpers.register('for', function($for, values, query){
   $for.noWait = $for.noWait === true ? 'nowait' : '';
 
   return [
-    'for'
-  , $for.type
-  , $for.table
-  , $for.noWait
+    'for',
+    $for.type,
+    $for.table,
+    $for.noWait
   ].join(' ');
 });

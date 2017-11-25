@@ -12,10 +12,10 @@ var utils = require('../lib/utils');
  *  { $inc: { clicks: 1 } }
  * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
  */
-helpers.add('$inc', function(value, values, collection){
-  var output = "";
+helpers.add('$inc', function(value, values, collection) {
+  var output = '';
 
-  for (var key in value){
+  for (var key in value) {
     output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' + $' + values.push(value[key]);
   }
 
@@ -28,10 +28,10 @@ helpers.add('$inc', function(value, values, collection){
  *  { $dec: { clicks: 1 } }
  * @param  {Object} Hash whose keys are the columns to dec and values are how much it will inc
  */
-helpers.add('$dec', function(value, values, collection){
-  var output = "";
+helpers.add('$dec', function(value, values, collection) {
+  var output = '';
 
-  for (var key in value){
+  for (var key in value) {
     output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' - $' + values.push(value[key]);
   }
 

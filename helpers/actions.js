@@ -60,38 +60,38 @@ var actions = require('../lib/action-helpers');
 var queryHelpers = require('../lib/query-helpers');
 var utils = require('../lib/utils');
 
-actions.add('renameTable', function(value, values, query){
+actions.add('renameTable', function(value) {
   return 'rename to "' + value + '"';
 });
 
-actions.add('rename', function(value, values, query){
+actions.add('rename', function(value, values, query) {
   return actions.get('renameTable').fn(value, values, query);
 });
 
-actions.add('renameConstraint', function(value, values, query){
+actions.add('renameConstraint', function(value) {
   return (
-    "rename constraint " +
+    'rename constraint ' +
     utils.quoteObject(value.from) +
-    " to " +
+    ' to ' +
     utils.quoteObject(value.to)
   );
 });
 
-actions.add('renameColumn', function(value, values, query){
+actions.add('renameColumn', function(value) {
   return (
-    "rename column " +
+    'rename column ' +
     utils.quoteObject(value.from) +
-    " to " +
+    ' to ' +
     utils.quoteObject(value.to)
   );
 });
 
-actions.add('setSchema', function(value, values, query){
+actions.add('setSchema', function(value) {
   return 'set schema "' + value + '"';
 });
 
-actions.add('addColumn', function(value, values, query){
-  var output = ["add column"];
+actions.add('addColumn', function(value, values, query) {
+  var output = ['add column'];
 
   output.push( utils.quoteObject(value.name) );
   output.push( value.type );
@@ -101,14 +101,14 @@ actions.add('addColumn', function(value, values, query){
   return output.join(' ');
 });
 
-actions.add('dropColumn', function(value, values, query){
-  if ( Array.isArray(value) ){
-    return value.map( function( v ){
+actions.add('dropColumn', function(value, values, query) {
+  if ( Array.isArray(value) ) {
+    return value.map( function( v ) {
       return actions.get('dropColumn').fn( v, values, query );
     }).join(', ');
   }
 
-  var output = ["drop column"];
+  var output = ['drop column'];
 
   if (value.ifExists)
     output.push( 'if exists' );
@@ -124,14 +124,14 @@ actions.add('dropColumn', function(value, values, query){
   return output.join(' ');
 });
 
-actions.add('alterColumn', function(value, values, query){
-  if ( Array.isArray(value) ){
-    return value.map( function( v ){
+actions.add('alterColumn', function(value, values, query) {
+  if ( Array.isArray(value) ) {
+    return value.map( function( v ) {
       return actions.get('alterColumn').fn( v, values, query );
     }).join(', ');
   }
 
-  var output = ["alter column"];
+  var output = ['alter column'];
 
   output.push( utils.quoteObject(value.name) );
 
@@ -165,60 +165,59 @@ actions.add('alterColumn', function(value, values, query){
   return output.join(' ');
 });
 
-actions.add( 'dropConstraint', function( value, values, query ){
+actions.add( 'dropConstraint', function( value ) {
   if ( !value ) return;
 
   var out = ['drop constraint'];
 
-  if ( typeof value === 'object' ){
+  if ( typeof value === 'object' ) {
     if ( value.ifExists ) out.push('if exists');
     if ( value.name )     out.push('"' + value.name + '"');
     if ( value.cascade )  out.push('cascade');
     if ( value.restrict ) out.push('restrict');
-  } else if ( typeof value === 'string' ){
+  } else if ( typeof value === 'string' ) {
     out.push('"' + value + '"');
   } else return;
 
   return out.join(' ');
 });
 
-actions.add( 'addConstraint', function( constraint, values, query ){
+actions.add( 'addConstraint', function( constraint, values, query ) {
   return [
-    'add constraint'
-  , utils.quoteObject( constraint.name )
-  , queryHelpers.get('columnConstraint').fn( constraint, values, query )
-  ,
+    'add constraint',
+    utils.quoteObject( constraint.name ),
+    queryHelpers.get('columnConstraint').fn( constraint, values, query )  
   ].join(' ');
 });
 
 // Single Parameter actions
 [
-  { name: 'enableReplicaTrigger', text: 'enable replica trigger' }
-, { name: 'enableAlwaysTrigger',  text: 'enable always trigger' }
-, { name: 'disableRule',          text: 'disable rule' }
-, { name: 'enableRule',           text: 'enable rule' }
-, { name: 'enableReplicaRule',    text: 'enable replica rule' }
-, { name: 'enableAlwaysRule',     text: 'enable always rule' }
-, { name: 'clusterOn',            text: 'cluster on' }
-, { name: 'inherit',              text: 'inherit' }
-, { name: 'noInherit',            text: 'no inherit' }
-, { name: 'of',                   text: 'of' }
-, { name: 'notOf',                text: 'not of' }
-, { name: 'ownerTo',              text: 'owner to' }
-, { name: 'setTableSpace',        text: 'set tablespace' }
-].forEach(function(action){
-  actions.add( action.name, function(value, values, query){
-    return action.text + " " + utils.quoteObject(value);
+  { name: 'enableReplicaTrigger', text: 'enable replica trigger' },
+  { name: 'enableAlwaysTrigger',  text: 'enable always trigger' },
+  { name: 'disableRule',          text: 'disable rule' },
+  { name: 'enableRule',           text: 'enable rule' },
+  { name: 'enableReplicaRule',    text: 'enable replica rule' },
+  { name: 'enableAlwaysRule',     text: 'enable always rule' },
+  { name: 'clusterOn',            text: 'cluster on' },
+  { name: 'inherit',              text: 'inherit' },
+  { name: 'noInherit',            text: 'no inherit' },
+  { name: 'of',                   text: 'of' },
+  { name: 'notOf',                text: 'not of' },
+  { name: 'ownerTo',              text: 'owner to' },
+  { name: 'setTableSpace',        text: 'set tablespace' }
+].forEach(function(action) {
+  actions.add( action.name, function(value) {
+    return action.text + ' ' + utils.quoteObject(value);
   });
 });
 
 // Same text booleans
 [
-  { name: 'setWithoutCluster',  text: 'set without cluster' }
-, { name: 'setWithOids',        text: 'set with oids' }
-, { name: 'setWithoutOids',     text: 'set without oids' }
-].forEach(function(action){
-  actions.add( action.name, function(value, values, query){
+  { name: 'setWithoutCluster',  text: 'set without cluster' },
+  { name: 'setWithOids',        text: 'set with oids' },
+  { name: 'setWithoutOids',     text: 'set without oids' }
+].forEach(function(action) {
+  actions.add( action.name, function(value) {
     return value ? action.text : '';
   });
 });

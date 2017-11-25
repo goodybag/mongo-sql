@@ -1,148 +1,148 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Built-In Query Types', function(){
+describe('Built-In Query Types', function() {
 
-  describe('Type: select', function(){
+  describe('Type: select', function() {
 
-    it ('should build a query selecting on users with a schema', function(){
+    it ('should build a query selecting on users with a schema', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'private.users'
+        type: 'select',
+        table: 'private.users'
       });
 
       assert.equal(
         query.toString()
-      , 'select "private"."users".* from "private"."users"'
+        , 'select "private"."users".* from "private"."users"'
       );
     });
 
-    it ('should build a query selecting on users', function(){
+    it ('should build a query selecting on users', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
+        type: 'select',
+        table: 'users'
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users"'
+        , 'select "users".* from "users"'
       );
     });
 
-    it ('should specify columns', function(){
+    it ('should specify columns', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , columns: ['id', 'name']
+        type: 'select',
+        table: 'users',
+        columns: ['id', 'name']
       });
 
       assert.equal(
         query.toString()
-      , 'select "users"."id", "users"."name" from "users"'
+        , 'select "users"."id", "users"."name" from "users"'
       );
     });
 
-    it ('should specify columns with schema', function(){
+    it ('should specify columns with schema', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'private.users'
-      , columns: ['private.users.id', 'private.users.name']
+        type: 'select',
+        table: 'private.users',
+        columns: ['private.users.id', 'private.users.name']
       });
 
       assert.equal(
         query.toString()
-      , 'select "private"."users"."id", "private"."users"."name" from "private"."users"'
+        , 'select "private"."users"."id", "private"."users"."name" from "private"."users"'
       );
     });
 
-    it ('should specify columns with schema even for simple column names', function(){
+    it ('should specify columns with schema even for simple column names', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'private.users'
-      , columns: ['id', 'name']
+        type: 'select',
+        table: 'private.users',
+        columns: ['id', 'name']
       });
 
       assert.equal(
         query.toString()
-      , 'select "private"."users"."id", "private"."users"."name" from "private"."users"'
+        , 'select "private"."users"."id", "private"."users"."name" from "private"."users"'
       );
     });
 
-    it ('should specify columns that are objects', function(){
+    it ('should specify columns that are objects', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , columns: [
-          { name: 'id', alias: 'user_id' }
-        , 'name'
-        , { name: 'test', table: 'things' }
+        type: 'select',
+        table: 'users',
+        columns: [
+          { name: 'id', alias: 'user_id' },
+          'name',
+          { name: 'test', table: 'things' }
         ]
       });
 
       assert.equal(
         query.toString()
-      , 'select "users"."id" as "user_id", "users"."name", "things"."test" from "users"'
+        , 'select "users"."id" as "user_id", "users"."name", "things"."test" from "users"'
       );
     });
 
-    it ('should specify columns and use functions', function(){
+    it ('should specify columns and use functions', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , columns: ['max(version) as max']
+        type: 'select',
+        table: 'users',
+        columns: ['max(version) as max']
       });
 
       assert.equal(
         query.toString()
-      , 'select max(version) as max from "users"'
+        , 'select max(version) as max from "users"'
       );
     });
 
-    it ('should specify columns and use a sub-query', function(){
+    it ('should specify columns and use a sub-query', function() {
       var query = builder.sql({
-        type: 'select'
-      , columns: [
+        type: 'select',
+        columns: [
           {
-            type: 'select'
-          , table: 'consumers'
-          , columns: ['id']
-          , as: 'u'
+            type: 'select',
+            table: 'consumers',
+            columns: ['id'],
+            as: 'u'
           }
         ]
       });
 
       assert.equal(
         query.toString()
-      , 'select (select "consumers"."id" from "consumers") as "u"'
+        , 'select (select "consumers"."id" from "consumers") as "u"'
       );
     });
 
-    it ('should specify multiple tables', function(){
+    it ('should specify multiple tables', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: ['users', 'groups']
+        type: 'select',
+        table: ['users', 'groups']
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users", "groups"'
+        , 'select "users".* from "users", "groups"'
       );
     });
 
     it ('should specify multiple tables and columns ' +
         'from both tables assuming that if a table ' +
         'name is not specified in the column definition, ' +
-        'then the first table is default', function(){
+        'then the first table is default', function() {
 
       var query = builder.sql({
-        type: 'select'
-      , table: ['users', 'groups']
-      , columns: ['id', 'name', 'groups.name']
+        type: 'select',
+        table: ['users', 'groups'],
+        columns: ['id', 'name', 'groups.name']
       });
 
       assert.equal(
         query.toString()
-      , 'select "users"."id", "users"."name", "groups"."name" from "users", "groups"'
+        , 'select "users"."id", "users"."name", "groups"."name" from "users", "groups"'
       );
     });
 
@@ -150,223 +150,223 @@ describe('Built-In Query Types', function(){
         'from both tables assuming that if a table ' +
         'name is not specified in the column definition, ' +
         'then the first table is default, using an object' +
-        'as the column definition', function(){
+        'as the column definition', function() {
 
       var query = builder.sql({
-        type: 'select'
-      , table: ['users', 'groups']
-      , columns: {
-          'id':           'id'
-        , 'name':         'name'
-        , 'groups.name':  'group'
+        type: 'select',
+        table: ['users', 'groups'],
+        columns: {
+          'id': 'id',
+          'name': 'name',
+          'groups.name': 'group'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users"."id" as "id", "users"."name" as "name", "groups"."name" as "group" from "users", "groups"'
+        , 'select "users"."id" as "id", "users"."name" as "name", "groups"."name" as "group" from "users", "groups"'
       );
     });
 
-    it ('group by string', function(){
+    it ('group by string', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , groupBy:  'id'
+        type: 'select',
+        table: 'users',
+        groupBy: 'id'
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" group by "users"."id"'
+        , 'select "users".* from "users" group by "users"."id"'
       );
     });
 
-    it ('group by array', function(){
+    it ('group by array', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , groupBy:  ['id', 'name']
+        type: 'select',
+        table: 'users',
+        groupBy: ['id', 'name']
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" group by "users"."id", "users"."name"'
+        , 'select "users".* from "users" group by "users"."id", "users"."name"'
       );
     });
 
-    it ('group by expression', function(){
-      var expression = 'extract(hour from created_at)'
+    it ('group by expression', function() {
+      var expression = 'extract(hour from created_at)';
 
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , groupBy:  [expression]
+        type: 'select',
+        table: 'users',
+        groupBy: [expression]
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" group by extract(hour from created_at)'
+        , 'select "users".* from "users" group by extract(hour from created_at)'
       );
     });
 
-    it ('order by string', function(){
+    it ('order by string', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , order:    'id desc'
+        type: 'select',
+        table: 'users',
+        order: 'id desc'
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" order by id desc'
+        , 'select "users".* from "users" order by id desc'
       );
     });
 
-    it ('should put order before limit', function(){
+    it ('should put order before limit', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , order:    'id desc'
-      , limit:    5
+        type: 'select',
+        table: 'users',
+        order: 'id desc',
+        limit: 5
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" order by id desc limit $1'
+        , 'select "users".* from "users" order by id desc limit $1'
       );
     });
 
-    it ('order by array', function(){
+    it ('order by array', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , order:    ['id desc', 'name asc']
+        type: 'select',
+        table: 'users',
+        order: ['id desc', 'name asc']
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" order by id desc, name asc'
+        , 'select "users".* from "users" order by id desc, name asc'
       );
     });
 
-    it ('order by object', function(){
+    it ('order by object', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , order:    { id: 'desc' }
+        type: 'select',
+        table: 'users',
+        order: { id: 'desc' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" order by "users"."id" desc'
+        , 'select "users".* from "users" order by "users"."id" desc'
       );
     });
 
-    it ('order by object, multiple', function(){
+    it ('order by object, multiple', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , order:    { id: 'desc', name: 'asc' }
+        type: 'select',
+        table: 'users',
+        order: { id: 'desc', name: 'asc' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" order by "users"."id" desc, "users"."name" asc'
+        , 'select "users".* from "users" order by "users"."id" desc, "users"."name" asc'
       );
     });
 
-    it ('order by object, multiple tables', function(){
+    it ('order by object, multiple tables', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    ['users', 'groups']
-      , order:    { id: 'desc', 'groups.id': 'asc' }
+        type: 'select',
+        table: ['users', 'groups'],
+        order: { id: 'desc', 'groups.id': 'asc' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users", "groups" order by "users"."id" desc, "groups"."id" asc'
+        , 'select "users".* from "users", "groups" order by "users"."id" desc, "groups"."id" asc'
       );
     });
 
-    it ('limit', function(){
+    it ('limit', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , limit:    10
+        type: 'select',
+        table: 'users',
+        limit: 10
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" limit $1'
+        , 'select "users".* from "users" limit $1'
       );
 
       assert.deepEqual(
         query.values
-      , [10]
+        , [10]
       );
     });
 
-    it ('limit all', function(){
+    it ('limit all', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , limit:    'all'
+        type: 'select',
+        table: 'users',
+        limit: 'all'
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" limit all'
+        , 'select "users".* from "users" limit all'
       );
     });
 
 
-    it ('invalid limit throws error', function(){
+    it ('invalid limit throws error', function() {
       assert.throws(function() {
         builder.sql({
-          type:     'select'
-        , table:    'users'
-        , limit:    'qwerty'
+          type: 'select',
+          table: 'users',
+          limit: 'qwerty'
         });
       }, Error );
     });
 
-    it ('offset', function(){
+    it ('offset', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , offset:    10
+        type: 'select',
+        table: 'users',
+        offset: 10
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" offset $1'
+        , 'select "users".* from "users" offset $1'
       );
 
       assert.deepEqual(
         query.values
-      , [10]
+        , [10]
       );
     });
 
-    it ('should support with', function(){
+    it ('should support with', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , with: {
+        type: 'select',
+        table: 'users',
+        with: {
           otherUsers: {
-            type: 'select'
-          , table: 'users'
-          , where: {
+            type: 'select',
+            table: 'users',
+            where: {
               columnA: 'other'
             }
           }
-        }
-      , where: {
+        },
+        where: {
           id: {
             $nin: {
-              type: 'select'
-            , table: 'otherUsers'
-            , columns: ['id']
+              type: 'select',
+              table: 'otherUsers',
+              columns: ['id']
             }
           }
         }
@@ -374,50 +374,50 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [
-          'with "otherUsers" as ('
-          , 'select "users".* from "users" '
-            , 'where "users"."columnA" = $1'
-          , ') '
-        , 'select "users".* from "users" '
-        , 'where "users"."id" not in ('
-          , 'select "otherUsers"."id" from "otherUsers"'
-        , ')'
+        , [
+          'with "otherUsers" as (',
+          'select "users".* from "users" ',
+          'where "users"."columnA" = $1',
+          ') ',
+          'select "users".* from "users" ',
+          'where "users"."id" not in (',
+          'select "otherUsers"."id" from "otherUsers"',
+          ')'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , ['other']
+        , ['other']
       );
     });
 
-    it ('should support multiple withs', function(){
+    it ('should support multiple withs', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , with: {
+        type: 'select',
+        table: 'users',
+        with: {
           otherUsers: {
-            type: 'select'
-          , table: 'users'
-          , where: {
+            type: 'select',
+            table: 'users',
+            where: {
               columnA: 'other'
             }
-          }
-        , otherUsers2: {
-            type: 'select'
-          , table: 'users'
-          , where: {
+          },
+          otherUsers2: {
+            type: 'select',
+            table: 'users',
+            where: {
               columnA: 'other2'
             }
           }
-        }
-      , where: {
+        },
+        where: {
           id: {
             $nin: {
-              type: 'select'
-            , table: 'otherUsers'
-            , columns: ['id']
+              type: 'select',
+              table: 'otherUsers',
+              columns: ['id']
             }
           }
         }
@@ -425,64 +425,64 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [
-          'with "otherUsers" as ('
-          , 'select "users".* from "users" '
-            , 'where "users"."columnA" = $1'
-          , '), '
-        , '"otherUsers2" as ('
-          , 'select "users".* from "users" '
-            , 'where "users"."columnA" = $2'
-          , ') '
-        , 'select "users".* from "users" '
-        , 'where "users"."id" not in ('
-          , 'select "otherUsers"."id" from "otherUsers"'
-        , ')'
+        , [
+          'with "otherUsers" as (',
+          'select "users".* from "users" ',
+          'where "users"."columnA" = $1',
+          '), ',
+          '"otherUsers2" as (',
+          'select "users".* from "users" ',
+          'where "users"."columnA" = $2',
+          ') ',
+          'select "users".* from "users" ',
+          'where "users"."id" not in (',
+          'select "otherUsers"."id" from "otherUsers"',
+          ')'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , ['other', 'other2']
+        , ['other', 'other2']
       );
     });
 
-    it ('should support multiple withs in array syntax', function(){
+    it ('should support multiple withs in array syntax', function() {
       var query = builder.sql({
-        type:     'select'
-      , table:    'users'
-      , with: [
+        type: 'select',
+        table: 'users',
+        with: [
           {
-            type: 'select'
-          , table: 'users'
-          , name: 'otherUsers'
-          , where: {
+            type: 'select',
+            table: 'users',
+            name: 'otherUsers',
+            where: {
               columnA: 'other'
             }
-          }
-        , {
-            type: 'select'
-          , table: 'users'
-          , name: 'otherUsers2'
-          , where: {
+          },
+          {
+            type: 'select',
+            table: 'users',
+            name: 'otherUsers2',
+            where: {
               columnA: 'other2'
             }
-          }
-        , {
-            type: 'select'
-          , table: 'users'
-          , name: 'otherUsers3'
-          , where: {
+          },
+          {
+            type: 'select',
+            table: 'users',
+            name: 'otherUsers3',
+            where: {
               columnA: 'other3'
             }
           }
-        ]
-      , where: {
+        ],
+        where: {
           id: {
             $nin: {
-              type: 'select'
-            , table: 'otherUsers'
-            , columns: ['id']
+              type: 'select',
+              table: 'otherUsers',
+              columns: ['id']
             }
           }
         }
@@ -490,198 +490,198 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [
-          'with "otherUsers" as ('
-          , 'select "users".* from "users" '
-            , 'where "users"."columnA" = $1'
-          , '), '
-        , '"otherUsers2" as ('
-          , 'select "users".* from "users" '
-            , 'where "users"."columnA" = $2'
-          , '), '
-        , '"otherUsers3" as ('
-          , 'select "users".* from "users" '
-            , 'where "users"."columnA" = $3'
-          , ') '
-        , 'select "users".* from "users" '
-        , 'where "users"."id" not in ('
-          , 'select "otherUsers"."id" from "otherUsers"'
-        , ')'
+        , [
+          'with "otherUsers" as (',
+          'select "users".* from "users" ',
+          'where "users"."columnA" = $1',
+          '), ',
+          '"otherUsers2" as (',
+          'select "users".* from "users" ',
+          'where "users"."columnA" = $2',
+          '), ',
+          '"otherUsers3" as (',
+          'select "users".* from "users" ',
+          'where "users"."columnA" = $3',
+          ') ',
+          'select "users".* from "users" ',
+          'where "users"."id" not in (',
+          'select "otherUsers"."id" from "otherUsers"',
+          ')'
         ].join('')
       );
 
       assert.deepEqual(
         query.values
-      , ['other', 'other2', 'other3']
+        , ['other', 'other2', 'other3']
       );
     });
 
-    it ('should select distinct', function(){
+    it ('should select distinct', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , distinct: true
+        type: 'select',
+        table: 'users',
+        distinct: true
       });
 
       assert.equal(
         query.toString()
-      , 'select distinct "users".* from "users"'
+        , 'select distinct "users".* from "users"'
       );
     });
 
-    it ('should not select distinct', function(){
+    it ('should not select distinct', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , distinct: false
+        type: 'select',
+        table: 'users',
+        distinct: false
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users"'
+        , 'select "users".* from "users"'
       );
     });
 
-    it ('should select distinct on single', function(){
+    it ('should select distinct on single', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , distinct: ['id']
-      , order: ['id asc']
+        type: 'select',
+        table: 'users',
+        distinct: ['id'],
+        order: ['id asc']
       });
 
       assert.equal(
         query.toString()
-      , 'select distinct on ("id") "users".* from "users" order by id asc'
+        , 'select distinct on ("id") "users".* from "users" order by id asc'
       );
     });
 
-    it ('should select distinct on multilpe', function(){
+    it ('should select distinct on multilpe', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , distinct: ['id', 'name']
-      , order: ['id asc', 'name asc']
+        type: 'select',
+        table: 'users',
+        distinct: ['id', 'name'],
+        order: ['id asc', 'name asc']
       });
 
       assert.equal(
         query.toString()
-      , 'select distinct on ("id", "name") "users".* from "users" order by id asc, name asc'
+        , 'select distinct on ("id", "name") "users".* from "users" order by id asc, name asc'
       );
     });
 
-    it ('should not select distinct on', function(){
+    it ('should not select distinct on', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'users'
-      , distinct: []
-      , order: ['id asc']
+        type: 'select',
+        table: 'users',
+        distinct: [],
+        order: ['id asc']
       });
 
       assert.equal(
         query.toString()
-      , 'select "users".* from "users" order by id asc'
+        , 'select "users".* from "users" order by id asc'
       );
     });
 
-    it ('allow sub-queries on table', function(){
+    it ('allow sub-queries on table', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: {
-          type: 'select'
-        , table: 'users'
-        }
-        , alias: 'u'
-      });
-
-      assert.equal(
-        query.toString()
-      , 'select "u".* from (select "users".* from "users") "u"'
-      );
-    });
-
-      it ('sub query and alias works correct', function(){
-        var query = builder.sql({
-          type: 'select'
-          , table: {
-              type: 'select'
-              , table: 'users'
-              }
-              , alias: 'u'
-          });
-
-          assert.equal(
-            query.toString()
-              , 'select "u".* from (select "users".* from "users") "u"'
-          );
-      });
-
-
-
-
-    it ('allow arbitrary sub-queries on table', function(){
-      var query = builder.sql({
-        type: 'select'
-      , table: {
-          type: 'select'
-        , table: {
-            type: 'select'
-          , table: {
-              type: 'select'
-            , table: 'users'
-            , alias: 'uuuu'
-            }
-          , alias: 'uuu'
-          }
-        , alias: 'uu'
+        type: 'select',
+        table: {
+          type: 'select',
+          table: 'users'
         },
-          alias: 'u'
+        alias: 'u'
       });
 
       assert.equal(
         query.toString()
-      , [
-          'select "u".* from '
-        , '(select "uu".* from '
-        , '(select "uuu".* from '
-        , '(select "uuuu".* from "users" "uuuu") "uuu") "uu") "u"'
+        , 'select "u".* from (select "users".* from "users") "u"'
+      );
+    });
+
+    it ('sub query and alias works correct', function() {
+      var query = builder.sql({
+        type: 'select',
+        table: {
+          type: 'select',
+          table: 'users'
+        },
+        alias: 'u'
+      });
+
+      assert.equal(
+        query.toString()
+        , 'select "u".* from (select "users".* from "users") "u"'
+      );
+    });
+
+
+
+
+    it ('allow arbitrary sub-queries on table', function() {
+      var query = builder.sql({
+        type: 'select',
+        table: {
+          type: 'select',
+          table: {
+            type: 'select',
+            table: {
+              type: 'select',
+              table: 'users',
+              alias: 'uuuu'
+            },
+            alias: 'uuu'
+          },
+          alias: 'uu'
+        },
+        alias: 'u'
+      });
+
+      assert.equal(
+        query.toString()
+        , [
+          'select "u".* from ',
+          '(select "uu".* from ',
+          '(select "uuu".* from ',
+          '(select "uuuu".* from "users" "uuuu") "uuu") "uu") "u"'
         ].join('')
       );
     });
 
-    it ('select expression', function(){
+    it ('select expression', function() {
       var query = builder.sql({
-        type: 'select'
-      , expression: {
-          type: 'unnest'
-        , expression: 'users.jobs'
+        type: 'select',
+        expression: {
+          type: 'unnest',
+          expression: 'users.jobs'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select unnest( users.jobs )'
+        , 'select unnest( users.jobs )'
       );
     });
 
-    it ('select expression with parameters', function(){
+    it ('select expression with parameters', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'tbl'
-      , columns: [
-          { expression: { expression: '$1, $2', values: [ 3, 4 ] } }
-        ]
-      , where: { col: 'bob' }
+        type: 'select',
+        table: 'tbl',
+        columns: [
+          { expression: { expression: '$1, $2', values: [3, 4] } }
+        ],
+        where: { col: 'bob' }
       });
 
       assert.equal(
         query.toString()
-      , 'select $1, $2 from "tbl" where "tbl"."col" = $3'
+        , 'select $1, $2 from "tbl" where "tbl"."col" = $3'
       );
 
       assert.deepEqual(
         query.values
-      , [ 3, 4, 'bob' ]
+        , [3, 4, 'bob']
       );
     });
 
@@ -702,100 +702,100 @@ describe('Built-In Query Types', function(){
 
     it ('should allow an over clause with arbitrary string', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
-      , over: 'completely arbitrary'
+        type: 'select',
+        table: 'foo',
+        columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}],
+        over: 'completely arbitrary'
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (completely arbitrary) from "foo"'
+        , 'select "foo"."bar", avg( baz ) over (completely arbitrary) from "foo"'
       );
     });
 
     it ('should allow an empty over clause with object', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
-      , over: {}
+        type: 'select',
+        table: 'foo',
+        columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}],
+        over: {}
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over () from "foo"'
+        , 'select "foo"."bar", avg( baz ) over () from "foo"'
       );
     });
 
     it ('should allow over clause with partition', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
-      , over: {partition: 'bar'}
+        type: 'select',
+        table: 'foo',
+        columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}],
+        over: {partition: 'bar'}
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar") from "foo"'
+        , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar") from "foo"'
       );
     });
 
     it ('should allow over clause with order', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
-      , over: {order: 'bar'}
+        type: 'select',
+        table: 'foo',
+        columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}],
+        over: {order: 'bar'}
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (order by bar) from "foo"'
+        , 'select "foo"."bar", avg( baz ) over (order by bar) from "foo"'
       );
     });
 
     it ('should allow over clause with partition and order', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
-      , over: {
-          partition: 'bar'
-        , order: 'bar asc'
+        type: 'select',
+        table: 'foo',
+        columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}],
+        over: {
+          partition: 'bar',
+          order: 'bar asc'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar" order by bar asc) from "foo"'
+        , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar" order by bar asc) from "foo"'
       );
     });
 
     it ('should allow over clause with array partition', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}]
-      , over: {
+        type: 'select',
+        table: 'foo',
+        columns: ['bar', {type: 'function', function: 'avg', expression: 'baz'}],
+        over: {
           partition: ['bar', 'another']
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar", "foo"."another") from "foo"'
+        , 'select "foo"."bar", avg( baz ) over (partition by "foo"."bar", "foo"."another") from "foo"'
       );
     });
 
     it ('should declare a window as an existing window', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , window: {
-          name: 'f'
-        , as: {
+        type: 'select',
+        table: 'foo',
+        window: {
+          name: 'f',
+          as: {
             existing: 'b'
           }
         }
@@ -803,17 +803,17 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" window "f" as ( "b" )'
+        , 'select "foo".* from "foo" window "f" as ( "b" )'
       );
     });
 
     it ('should declare a window as a partition by expression', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , window: {
-          name: 'f'
-        , as: {
+        type: 'select',
+        table: 'foo',
+        window: {
+          name: 'f',
+          as: {
             partition: 'b'
           }
         }
@@ -821,48 +821,48 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" )'
+        , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" )'
       );
     });
 
     it ('should declare a window as a partition by expression and order', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , window: {
-          name: 'f'
-        , as: {
-            partition: 'b'
-          , order: { id: 'desc' }
+        type: 'select',
+        table: 'foo',
+        window: {
+          name: 'f',
+          as: {
+            partition: 'b',
+            order: { id: 'desc' }
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" order by "foo"."id" desc )'
+        , 'select "foo".* from "foo" window "f" as ( partition by "foo"."b" order by "foo"."id" desc )'
       );
     });
 
     it ('should let parenthesis in expressions be explicit', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , columns: [
-          { expression: 'bar' }
-        , {
+        type: 'select',
+        table: 'foo',
+        columns: [
+          { expression: 'bar' },
+          {
             expression: {
-              expression: 'bar - baz'
-            , parenthesis: true
-            }
-          , alias: 'blah'
+              expression: 'bar - baz',
+              parenthesis: true
+            },
+            alias: 'blah'
           }
         ]
       });
 
       assert.equal(
         query.toString()
-      , 'select bar, ( bar - baz ) as "blah" from "foo"'
+        , 'select bar, ( bar - baz ) as "blah" from "foo"'
       );
     });
   });
@@ -870,102 +870,102 @@ describe('Built-In Query Types', function(){
   describe('Type: select for', function() {
     it ('should select for update', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'update' }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'update' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for update'
+        , 'select "foo".* from "foo" for update'
       );
     });
 
     it ('should select for update on table', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'update', table: 'bar' }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'update', table: 'bar' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for update of "bar"'
+        , 'select "foo".* from "foo" for update of "bar"'
       );
     });
 
     it ('should select for share on table', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'share', table: 'bar' }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'share', table: 'bar' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for share of "bar"'
+        , 'select "foo".* from "foo" for share of "bar"'
       );
     });
 
     it ('should select for no key update on table', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'no key update', table: 'bar' }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'no key update', table: 'bar' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for no key update of "bar"'
+        , 'select "foo".* from "foo" for no key update of "bar"'
       );
     });
 
     it ('should select for key share on table', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'key share', table: 'bar' }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'key share', table: 'bar' }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for key share of "bar"'
+        , 'select "foo".* from "foo" for key share of "bar"'
       );
     });
 
 
     it ('should select for update on multiple tables', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'update', table: ['bar', '"wiz"', 'wog'] }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'update', table: ['bar', '"wiz"', 'wog'] }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for update of "bar", "wiz", "wog"'
+        , 'select "foo".* from "foo" for update of "bar", "wiz", "wog"'
       );
     });
 
     it ('should select for update nowait', function() {
       var query = builder.sql({
-        type: 'select'
-      , table: 'foo'
-      , for: { type: 'update', noWait: true }
+        type: 'select',
+        table: 'foo',
+        for: { type: 'update', noWait: true }
       });
 
       assert.equal(
         query.toString()
-      , 'select "foo".* from "foo" for update nowait'
+        , 'select "foo".* from "foo" for update nowait'
       );
     });
 
     it ('should throw "for" helper requires type', function() {
       assert.throws(function() {
-        var query = builder.sql({
-          type: 'select'
-        , table: 'foo'
-        , for: { noWait: true }
+        builder.sql({
+          type: 'select',
+          table: 'foo',
+          for: { noWait: true }
         });
       });
     });

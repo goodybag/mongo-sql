@@ -1,25 +1,25 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Built-In Query Types', function(){
+describe('Built-In Query Types', function() {
 
-  describe('Type: create table', function(){
+  describe('Type: create table', function() {
 
-    it('it should create a table', function(){
+    it('it should create a table', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'jobs'
-      , definition: {
+        type: 'create-table',
+        table: 'jobs',
+        definition: {
           id: {
-            type: 'serial'
-          , primaryKey: true
-          }
+            type: 'serial',
+            primaryKey: true
+          },
 
-        , name: {
+          name: {
             type: 'text'
-          }
+          },
 
-        , createdAt: {
+          createdAt: {
             type: 'timestamp'
           }
         }
@@ -27,31 +27,31 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create table "jobs" ('
-        , '"id" serial primary key, '
-        , '"name" text, '
-        , '"createdAt" timestamp'
-        , ')'
+        , ['create table "jobs" (',
+          '"id" serial primary key, ',
+          '"name" text, ',
+          '"createdAt" timestamp',
+          ')'
         ].join('')
       );
     });
 
-    it('it should create a table with schema', function(){
+    it('it should create a table with schema', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: '"private"."jobs"'
-      , schema: 'private'
-      , definition: {
+        type: 'create-table',
+        table: '"private"."jobs"',
+        schema: 'private',
+        definition: {
           id: {
-            type: 'serial'
-          , primaryKey: true
-          }
+            type: 'serial',
+            primaryKey: true
+          },
 
-        , name: {
+          name: {
             type: 'text'
-          }
+          },
 
-        , createdAt: {
+          createdAt: {
             type: 'timestamp'
           }
         }
@@ -59,31 +59,31 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create table "private"."jobs" ('
-        , '"id" serial primary key, '
-        , '"name" text, '
-        , '"createdAt" timestamp'
-        , ')'
+        , ['create table "private"."jobs" (',
+          '"id" serial primary key, ',
+          '"name" text, ',
+          '"createdAt" timestamp',
+          ')'
         ].join('')
       );
     });
 
-    it('it should create a table if it does not exist', function(){
+    it('it should create a table if it does not exist', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'jobs'
-      , ifNotExists: true
-      , definition: {
+        type: 'create-table',
+        table: 'jobs',
+        ifNotExists: true,
+        definition: {
           id: {
-            type: 'serial'
-          , primaryKey: true
-          }
+            type: 'serial',
+            primaryKey: true
+          },
 
-        , name: {
+          name: {
             type: 'text'
-          }
+          },
 
-        , createdAt: {
+          createdAt: {
             type: 'timestamp'
           }
         }
@@ -91,44 +91,44 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create table if not exists "jobs" ('
-        , '"id" serial primary key, '
-        , '"name" text, '
-        , '"createdAt" timestamp'
-        , ')'
+        , ['create table if not exists "jobs" (',
+          '"id" serial primary key, ',
+          '"name" text, ',
+          '"createdAt" timestamp',
+          ')'
         ].join('')
       );
     });
 
-    it('it should create a table that references another', function(){
+    it('it should create a table that references another', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'usersGroups'
-      , ifNotExists: true
-      , definition: {
+        type: 'create-table',
+        table: 'usersGroups',
+        ifNotExists: true,
+        definition: {
           id: {
-            type: 'serial'
-          , primaryKey: true
-          }
+            type: 'serial',
+            primaryKey: true
+          },
 
-        , uid: {
-            type: 'int'
-          , references: {
-              table: 'users'
-            , column: 'id'
+          uid: {
+            type: 'int',
+            references: {
+              table: 'users',
+              column: 'id'
             }
-          }
+          },
 
-        , gid: {
-            type: 'int'
-          , references: {
-              table: 'groups'
-            , column: 'id'
-            , onDelete: 'cascade'
+          gid: {
+            type: 'int',
+            references: {
+              table: 'groups',
+              column: 'id',
+              onDelete: 'cascade'
             }
-          }
+          },
 
-        , createdAt: {
+          createdAt: {
             type: 'timestamp'
           }
         }
@@ -136,31 +136,31 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create table if not exists "usersGroups" ('
-        , '"id" serial primary key, '
-        , '"uid" int references "users"("id"), '
-        , '"gid" int references "groups"("id") on delete cascade, '
-        , '"createdAt" timestamp'
-        , ')'
+        , ['create table if not exists "usersGroups" (',
+          '"id" serial primary key, ',
+          '"uid" int references "users"("id"), ',
+          '"gid" int references "groups"("id") on delete cascade, ',
+          '"createdAt" timestamp',
+          ')'
         ].join('')
       );
     });
 
-    it('Should not allow nulls', function(){
+    it('Should not allow nulls', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'jobs'
-      , definition: {
+        type: 'create-table',
+        table: 'jobs',
+        definition: {
           id: {
             type: 'serial'
-          }
+          },
 
-        , name: {
-            type: 'text'
-          , notNull: true
-          }
+          name: {
+            type: 'text',
+            notNull: true
+          },
 
-        , createdAt: {
+          createdAt: {
             type: 'timestamp'
           }
         }
@@ -168,30 +168,30 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create table "jobs" ('
-        , '"id" serial, '
-        , '"name" text not null, '
-        , '"createdAt" timestamp'
-        , ')'
+        , ['create table "jobs" (',
+          '"id" serial, ',
+          '"name" text not null, ',
+          '"createdAt" timestamp',
+          ')'
         ].join('')
       );
     });
 
-    it('Should not allow nulls', function(){
+    it('Should not allow nulls', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'jobs'
-      , definition: {
+        type: 'create-table',
+        table: 'jobs',
+        definition: {
           id: {
             type: 'serial'
-          }
+          },
 
-        , name: {
-            type: 'text'
-          , unique: true
-          }
+          name: {
+            type: 'text',
+            unique: true
+          },
 
-        , createdAt: {
+          createdAt: {
             type: 'timestamp'
           }
         }
@@ -199,73 +199,73 @@ describe('Built-In Query Types', function(){
 
       assert.equal(
         query.toString()
-      , [ 'create table "jobs" ('
-        , '"id" serial, '
-        , '"name" text unique, '
-        , '"createdAt" timestamp'
-        , ')'
+        , ['create table "jobs" (',
+          '"id" serial, ',
+          '"name" text unique, ',
+          '"createdAt" timestamp',
+          ')'
         ].join('')
       );
     });
 
-    it('Should default to now()', function(){
+    it('Should default to now()', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'jobs'
-      , definition: {
+        type: 'create-table',
+        table: 'jobs',
+        definition: {
           id: {
             type: 'serial'
-          }
+          },
 
-        , name: {
+          name: {
             type: 'text'
-          }
+          },
 
-        , createdAt: {
-            type: 'timestamp'
-          , default: 'now()'
+          createdAt: {
+            type: 'timestamp',
+            default: 'now()'
           }
         }
       });
       
       assert.equal(
         query.toString()
-      , [ 'create table "jobs" ('
-        , '"id" serial, '
-        , '"name" text, '
-        , '"createdAt" timestamp default now()'
-        , ')'
+        , ['create table "jobs" (',
+          '"id" serial, ',
+          '"name" text, ',
+          '"createdAt" timestamp default now()',
+          ')'
         ].join('')
       );
     });
 
-    it('Should default to false', function(){
+    it('Should default to false', function() {
       var query = builder.sql({
-        type: 'create-table'
-      , table: 'posts'
-      , definition: {
+        type: 'create-table',
+        table: 'posts',
+        definition: {
           id: {
             type: 'serial'
-          }
+          },
 
-        , content: {
+          content: {
             type: 'text'
-          }
+          },
 
-        , deleted: {
-            type: 'boolean'
-          , default: false
+          deleted: {
+            type: 'boolean',
+            default: false
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , [ 'create table "posts" ('
-        , '"id" serial, '
-        , '"content" text, '
-        , '"deleted" boolean default false'
-        , ')'
+        , ['create table "posts" (',
+          '"id" serial, ',
+          '"content" text, ',
+          '"deleted" boolean default false',
+          ')'
         ].join('')
       );
     });
