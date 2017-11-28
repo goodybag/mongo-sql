@@ -403,12 +403,13 @@ describe('Conditions', function(){
     assert.equal(
       query.toString()
     , 'select "users".* from "users" where ' +
-      '"users"."id" in ($1, $2, $3, $4, $5)'
+      '"users"."id" in ($1, $2, $3) ' +
+      'or "users"."id" is null'
     );
 
     assert.deepEqual(
       query.values
-    , [1, 2, null, null, 3]
+    , [1, 2, 3]
     );
   });
 
@@ -457,6 +458,30 @@ describe('Conditions', function(){
       query.toString()
     , 'select "users".* from "users" where ' +
       '"users"."id" not in ($1, $2, $3)'
+    );
+
+    assert.deepEqual(
+      query.values
+    , [1, 2, 3]
+    );
+  });
+
+  it ('$nin array with undefined and null', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $nin: [1, 2, undefined, null, null, 3]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      '"users"."id" not in ($1, $2, $3) ' +
+      'or "users"."id" is not null'
     );
 
     assert.deepEqual(

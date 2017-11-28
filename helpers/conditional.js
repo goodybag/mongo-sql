@@ -123,11 +123,13 @@ conditionals.add('$ilike', function(column, value, values, collection, original)
  */
 conditionals.add('$in', { cascade: false }, function(column, set, values, collection, original){
   if (Array.isArray(set)) {
+    var hasNulls = set.indexOf(null) > -1;
+
     return column + ' in (' + set.filter(function(val) {
-      return val !== undefined;
+      return val !== undefined && val !== null;
     }).map( function(val){
       return '$' + values.push( val );
-    }).join(', ') + ')';
+    }).join(', ') + ')' + (hasNulls ? ' or ' + column + ' is null' : '');
   }
 
   return column + ' in (' + queryBuilder(set, values).toString() + ')';
@@ -146,13 +148,9 @@ conditionals.add('$in', { cascade: false }, function(column, set, values, collec
  * @param value  {Mixed}   - String|Array|Function
  */
 conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original){
-  if (Array.isArray(set)) {
-    return column + ' not in (' + set.map( function(val){
-      return '$' + values.push( val );
-    }).join(', ') + ')';
-  }
-
-  return column + ' not in (' + queryBuilder(set, values).toString() + ')';
+  return conditionals.get('$in').fn(column, set, values, collection, original)
+    .replace(/in/g, 'not in')
+    .replace(/is/g, 'is not');
 });
 
 /**
