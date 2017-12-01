@@ -125,7 +125,7 @@ conditionals.add('$in', { cascade: false }, function(column, set, values) {
 
     return column + ' in (' + set.filter(function(val) {
       return val !== undefined && val !== null;
-    }).map( function(val){
+    }).map(function(val) {
       return '$' + values.push( val );
     }).join(', ') + ')' + (hasNulls ? ' or ' + column + ' is null' : '');
   }
@@ -145,7 +145,7 @@ conditionals.add('$in', { cascade: false }, function(column, set, values) {
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - String|Array|Function
  */
-conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original){
+conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original) {
   return conditionals.get('$in').fn(column, set, values, collection, original)
     .replace(/in/g, 'not in')
     .replace(/is/g, 'is not');
