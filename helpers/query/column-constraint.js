@@ -10,11 +10,10 @@
 // [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
 var helpers     = require('../../lib/query-helpers');
-var conditional = require('../../lib/condition-builder');
 var columnDefs  = require('../../lib/column-def-helpers');
 var utils       = require('../../lib/utils');
 
-helpers.register('columnConstraint', function(constraint, values, query){
+helpers.register('columnConstraint', function(constraint, values, query) {
   var output = [];
 
   // Null/Not Null
@@ -48,7 +47,7 @@ helpers.register('columnConstraint', function(constraint, values, query){
     output.push( columnDefs.get('references').fn(constraint.references, values, query) );
 
   // Foreign Key
-  if (constraint.foreignKey){
+  if (constraint.foreignKey) {
     output.push(
       'foreign key (' + utils.quoteObject( constraint.foreignKey.column ) + ')'
     );
@@ -62,11 +61,11 @@ helpers.register('columnConstraint', function(constraint, values, query){
 
   // Single word booleans
   [
-    { name: 'deferrable',         text: 'deferrable' }
-  , { name: 'notDeferrable',      text: 'not deferrable' }
-  , { name: 'initiallyDeferred',  text: 'initially deferred' }
-  , { name: 'initiallyImmediate', text: 'initially immediate' }
-  ].forEach(function(item){
+    { name: 'deferrable',         text: 'deferrable' },
+    { name: 'notDeferrable',      text: 'not deferrable' },
+    { name: 'initiallyDeferred',  text: 'initially deferred' },
+    { name: 'initiallyImmediate', text: 'initially immediate' }
+  ].forEach(function(item) {
     if (constraint[item.name])
       output.push( item.text );
   });

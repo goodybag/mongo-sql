@@ -1,7 +1,6 @@
 
 var helpers = require('../../lib/query-helpers');
-var utils   = require('../../lib/utils');
 
-helpers.register('ifNotExists', function(ifNotExists, values, query){
+helpers.register('ifNotExists', function(ifNotExists) {
   return ifNotExists ? 'if not exists' : null;
 });

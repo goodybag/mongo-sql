@@ -1,3 +1,27 @@
+sudo: false
+dist: trusty
+
 language: node_js
-node_js:
-  - "0.10"
+
+script:
+  - "if [ $LINT ]; then npm i eslint eslint-plugin-mocha && npm run lint; fi"
+  - npm run test
+
+jobs:
+  include:
+    - stage: tests
+      node_js: 0.10
+    - stage: tests
+      node_js: 0.12
+    - stage: tests
+      node_js: 4
+      env: LINT=true
+    - stage: tests
+      node_js: 6
+      env: LINT=true
+    - stage: tests
+      node_js: 8
+      env: LINT=true
+    - stage: tests
+      node_js: 9
+      env: LINT=true

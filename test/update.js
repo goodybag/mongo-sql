@@ -1,467 +1,467 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Built-In Query Types', function(){
+describe('Built-In Query Types', function() {
 
-  describe('Type: update', function(){
+  describe('Type: update', function() {
 
-    it('should update', function(){
+    it('should update', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
+        },
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3'
+        , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 'bob@bob.com', 7]
+        , ['Bob', 'bob@bob.com', 7]
       );
     });
 
-    it('should not do funkiness with empty updates obj', function(){
+    it('should not do funkiness with empty updates obj', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {}
+        },
+        updates: {}
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" where "users"."id" = $1'
+        , 'update "users" where "users"."id" = $1'
       );
 
       assert.deepEqual(
         query.values
-      , [7]
+        , [7]
       );
     });
 
-    it('should update and return', function(){
+    it('should update and return', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , returning: ['id']
+        },
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        returning: ['id']
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id"'
+        , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id"'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 'bob@bob.com', 7]
+        , ['Bob', 'bob@bob.com', 7]
       );
     });
 
-    it('should allow sub-expressions in returning', function(){
+    it('should allow sub-expressions in returning', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , returning: [
-          'id'
-        , { expression: '("orders"."datetime"::text) as datetime' }
+        },
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        returning: [
+          'id',
+          { expression: '("orders"."datetime"::text) as datetime' }
         ]
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id", ("orders"."datetime"::text) as datetime'
+        , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id", ("orders"."datetime"::text) as datetime'
       );
     });
 
-    it('should allow sub-expressions with alias in returning', function(){
+    it('should allow sub-expressions with alias in returning', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , returning: [
-          'id'
-        , { expression: '("orders"."datetime"::text)'
-          , alias: 'datetime'
+        },
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        returning: [
+          'id',
+          { expression: '("orders"."datetime"::text)',
+            alias: 'datetime'
           }
         ]
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id", ("orders"."datetime"::text) as "datetime"'
+        , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id", ("orders"."datetime"::text) as "datetime"'
       );
     });
 
-    it('should throw error with invalid returning input', function(){
+    it('should throw error with invalid returning input', function() {
       assert.throws(
-        function(){
+        function() {
           builder.sql({
-            type: 'update'
-          , table: 'users'
-          , where: {
+            type: 'update',
+            table: 'users',
+            where: {
               id: 7
-            }
-          , updates: {
-              name: 'Bob'
-            , email: 'bob@bob.com'
-            }
-          , returning: 'id'
+            },
+            updates: {
+              name: 'Bob',
+              email: 'bob@bob.com'
+            },
+            returning: 'id'
           });
         }
-      , Error
+        , Error
       );
     });
 
-    it('$inc', function(){
+    it('$inc', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
+        },
+        updates: {
           $inc: { count: 5 }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "count" = "users"."count" + $1 where "users"."id" = $2'
+        , 'update "users" set "count" = "users"."count" + $1 where "users"."id" = $2'
       );
 
       assert.deepEqual(
         query.values
-      , [5, 7]
+        , [5, 7]
       );
     });
 
-    it('$dec', function(){
+    it('$dec', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
+        },
+        updates: {
           $dec: { count: 5 }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "count" = "users"."count" - $1 where "users"."id" = $2'
+        , 'update "users" set "count" = "users"."count" - $1 where "users"."id" = $2'
       );
 
       assert.deepEqual(
         query.values
-      , [5, 7]
+        , [5, 7]
       );
     });
 
     it('from string', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , from: 'other'
+        type: 'update',
+        table: 'users',
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        from: 'other'
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 from "other"');
+        , 'update "users" set "name" = $1, "email" = $2 from "other"');
     });
 
     it('from array', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , from: ['other1', 'other2']
+        type: 'update',
+        table: 'users',
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        from: ['other1', 'other2']
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 from "other1", "other2"');
+        , 'update "users" set "name" = $1, "email" = $2 from "other1", "other2"');
     });
 
     it('from sub-query', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , from: {
-          type: 'select'
-        , table: 'bar'
-        }
-        , alias: 'foo'
+        type: 'update',
+        table: 'users',
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        from: {
+          type: 'select',
+          table: 'bar'
+        },
+        alias: 'foo'
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 from (select "bar".* from "bar") "foo"');
+        , 'update "users" set "name" = $1, "email" = $2 from (select "bar".* from "bar") "foo"');
     });
 
     it('should update with null value', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , updates: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        , description: null
+        },
+        updates: {
+          name: 'Bob',
+          email: 'bob@bob.com',
+          description: null
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2, "description" = null where "users"."id" = $3'
+        , 'update "users" set "name" = $1, "email" = $2, "description" = null where "users"."id" = $3'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 'bob@bob.com', 7]
+        , ['Bob', 'bob@bob.com', 7]
       );
     });
 
   });
 
-  describe('Type: update with values', function(){
+  describe('Type: update with values', function() {
 
-    it('should update', function(){
+    it('should update', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
+        },
+        values: {
+          name: 'Bob',
+          email: 'bob@bob.com'
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3'
+        , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 'bob@bob.com', 7]
+        , ['Bob', 'bob@bob.com', 7]
       );
     });
 
-    it('should not do funkiness with empty values obj', function(){
+    it('should not do funkiness with empty values obj', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {}
+        },
+        values: {}
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" where "users"."id" = $1'
+        , 'update "users" where "users"."id" = $1'
       );
 
       assert.deepEqual(
         query.values
-      , [7]
+        , [7]
       );
     });
 
-    it('should update and return', function(){
+    it('should update and return', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        }
-      , returning: ['id']
+        },
+        values: {
+          name: 'Bob',
+          email: 'bob@bob.com'
+        },
+        returning: ['id']
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id"'
+        , 'update "users" set "name" = $1, "email" = $2 where "users"."id" = $3 returning "users"."id"'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 'bob@bob.com', 7]
+        , ['Bob', 'bob@bob.com', 7]
       );
     });
 
-    it('$inc', function(){
+    it('$inc', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
+        },
+        values: {
           $inc: { count: 5 }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "count" = "users"."count" + $1 where "users"."id" = $2'
+        , 'update "users" set "count" = "users"."count" + $1 where "users"."id" = $2'
       );
 
       assert.deepEqual(
         query.values
-      , [5, 7]
+        , [5, 7]
       );
     });
 
-    it('$dec', function(){
+    it('$dec', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
+        },
+        values: {
           $dec: { count: 5 }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "count" = "users"."count" - $1 where "users"."id" = $2'
+        , 'update "users" set "count" = "users"."count" - $1 where "users"."id" = $2'
       );
 
       assert.deepEqual(
         query.values
-      , [5, 7]
+        , [5, 7]
       );
     });
 
     it('should update with null value', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
-          name: 'Bob'
-        , email: 'bob@bob.com'
-        , description: null
+        },
+        values: {
+          name: 'Bob',
+          email: 'bob@bob.com',
+          description: null
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = $1, "email" = $2, "description" = null where "users"."id" = $3'
+        , 'update "users" set "name" = $1, "email" = $2, "description" = null where "users"."id" = $3'
       );
 
       assert.deepEqual(
         query.values
-      , ['Bob', 'bob@bob.com', 7]
+        , ['Bob', 'bob@bob.com', 7]
       );
     });
 
     it('should update with expression', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
+        },
+        values: {
           name: {
-            type: 'select'
-          , columns: ['name']
-          , table: 'users'
-          , limit: 1
+            type: 'select',
+            columns: ['name'],
+            table: 'users',
+            limit: 1
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = ( select "users"."name" from "users" limit $1 ) where "users"."id" = $2'
+        , 'update "users" set "name" = ( select "users"."name" from "users" limit $1 ) where "users"."id" = $2'
       );
 
       assert.deepEqual(
         query.values
-      , [1, 7]
+        , [1, 7]
       );
     });
 
     it('should update with function expression', function() {
       var query = builder.sql({
-        type: 'update'
-      , table: 'users'
-      , where: {
+        type: 'update',
+        table: 'users',
+        where: {
           id: 7
-        }
-      , values: {
+        },
+        values: {
           name: {
-            type: 'lower'
-          , expression: 'users.name'
+            type: 'lower',
+            expression: 'users.name'
           }
         }
       });
 
       assert.equal(
         query.toString()
-      , 'update "users" set "name" = ( lower( users.name ) ) where "users"."id" = $1'
+        , 'update "users" set "name" = ( lower( users.name ) ) where "users"."id" = $1'
       );
 
       assert.deepEqual(
         query.values
-      , [7]
+        , [7]
       );
     });
 

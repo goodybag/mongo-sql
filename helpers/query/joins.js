@@ -7,24 +7,24 @@ var conditionBuilder = require('../../lib/condition-builder');
 var queryBuilder = require('../../lib/query-builder');
 var utils = require('../../lib/utils');
 
-var buildJoin = function(join, values, query){
+var buildJoin = function(join, values) {
   // Require a target
   if ( !join.target )
     throw new Error('Invalid join.target type `' + typeof join.target + '` for query helper `joins`');
 
   // Allow for strings or objects for join.on
-  if ( !join.on || ( typeof join.on !== 'string' && typeof join.on !== 'object' ) )
+  if ( !join.on ||  typeof join.on !== 'string' && typeof join.on !== 'object'  )
     throw new Error('Invalid join.on type `' + typeof join.on + '` for query helper `joins`');
 
-  var output = ( join.type ? ( join.type + ' ' ) : '' ) + "join ";
+  var output = ( join.type ?  join.type + ' '  : '' ) + 'join ';
 
   if ( typeof join.target === 'object' ) output += '(' + queryBuilder( join.target, values ) + ') ';
   else {
     output += utils.quoteObject.apply( null, [
-      join.target
-    , join.schema
-    , join.database
-    ].filter( function( a ){ return !!a; }) ) + ' ';
+      join.target,
+      join.schema,
+      join.database
+    ].filter( function( a ) { return !!a; }) ) + ' ';
   }
 
   if ( join.alias ) output += '"' + join.alias + '" ';
@@ -35,17 +35,17 @@ var buildJoin = function(join, values, query){
   return output;
 };
 
-helpers.register('joins', function(joins, values, query){
-  if ( Array.isArray( joins ) ){
-    return joins.map( function( join ){
+helpers.register('joins', function(joins, values, query) {
+  if ( Array.isArray( joins ) ) {
+    return joins.map( function( join ) {
       return buildJoin( join, values, query );
     }).join(' ');
   }
 
   if ( typeof joins === 'object' ) {
-    return Object.keys( joins ).map(function( val ){
+    return Object.keys( joins ).map(function( val ) {
       // For objects, the key is the default alias and target
-      if ( !joins[ val ].alias )  joins[ val ].alias = val;
+      if ( !joins[ val ].alias ) joins[ val ].alias = val;
       if ( !joins[ val ].target ) joins[ val ].target = val;
 
       return buildJoin( joins[ val ], values, query );

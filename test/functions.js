@@ -1,21 +1,21 @@
 var assert  = require('assert');
 var builder = require('../');
 
-describe('Functions', function(){
-  it('should be able to use a function as a column', function(){
+describe('Functions', function() {
+  it('should be able to use a function as a column', function() {
     var query = {
-      type: 'select'
-    , table: 'users'
-    , columns: {
+      type: 'select',
+      table: 'users',
+      columns: {
         books: {
-          type: 'array_agg'
-        , expression: {
-            type: 'select'
-          , table: 'books'
-          , columns: ['id']
+          type: 'array_agg',
+          expression: {
+            type: 'select',
+            table: 'books',
+            columns: ['id']
           }
-        }
-      , name: 'userName'
+        },
+        name: 'userName'
       }
     };
 
@@ -23,33 +23,33 @@ describe('Functions', function(){
 
     assert.equal(
       result.toString()
-    , [ 'select '
-      , 'array_agg( select "books"."id" from "books" ) as "books", '
-      , '"users"."name" as "userName" '
-      , 'from "users"'
+      , ['select ',
+        'array_agg( select "books"."id" from "books" ) as "books", ',
+        '"users"."name" as "userName" ',
+        'from "users"'
       ].join('')
     );
 
     assert.deepEqual(
       result.values
-    , []
+      , []
     );
   });
 
-  it('should be able to use a function as a column using the array syntax', function(){
+  it('should be able to use a function as a column using the array syntax', function() {
     var query = {
-      type: 'select'
-    , table: 'users'
-    , columns: [
+      type: 'select',
+      table: 'users',
+      columns: [
         {
-          type: 'array_agg'
-        , expression: {
-            type: 'select'
-          , table: 'books'
-          , columns: ['id']
+          type: 'array_agg',
+          expression: {
+            type: 'select',
+            table: 'books',
+            columns: ['id']
           }
-        }
-      , 'name'
+        },
+        'name'
       ]
     };
 
@@ -57,43 +57,43 @@ describe('Functions', function(){
 
     assert.equal(
       result.toString()
-    , [ 'select '
-      , 'array_agg( select "books"."id" from "books" ), '
-      , '"users"."name" '
-      , 'from "users"'
+      , ['select ',
+        'array_agg( select "books"."id" from "books" ), ',
+        '"users"."name" ',
+        'from "users"'
       ].join('')
     );
 
     assert.deepEqual(
       result.values
-    , []
+      , []
     );
   });
 
-  it('should be able to embed functions', function(){
+  it('should be able to embed functions', function() {
     var query = {
-      type: 'select'
-    , table: 'users'
-    , columns: {
+      type: 'select',
+      table: 'users',
+      columns: {
         books: {
-          type: 'array_to_json'
-        , expression: {
-            type: 'array_agg'
-          , expression: 'bks.book'
+          type: 'array_to_json',
+          expression: {
+            type: 'array_agg',
+            expression: 'bks.book'
           }
-        }
-      , name: 'userName'
-      }
+        },
+        name: 'userName'
+      },
 
-    , with: {
+      with: {
         bks: {
-          type: 'select'
-        , table: 'books'
-        , alias: 'b'
-        , columns: {
+          type: 'select',
+          table: 'books',
+          alias: 'b',
+          columns: {
             book: {
-              type: 'row_to_json'
-            , expression: 'b'
+              type: 'row_to_json',
+              expression: 'b'
             }
           }
         }
@@ -104,19 +104,19 @@ describe('Functions', function(){
 
     assert.equal(
       result.toString()
-    , [ 'with '
-      , '"bks" as ('
-      , 'select row_to_json( b ) as "book" from "books" "b"'
-      , ') select '
-      , 'array_to_json( array_agg( bks.book ) ) as "books", '
-      , '"users"."name" as "userName" '
-      , 'from "users"'
+      , ['with ',
+        '"bks" as (',
+        'select row_to_json( b ) as "book" from "books" "b"',
+        ') select ',
+        'array_to_json( array_agg( bks.book ) ) as "books", ',
+        '"users"."name" as "userName" ',
+        'from "users"'
       ].join('')
     );
 
     assert.deepEqual(
       result.values
-    , []
+      , []
     );
   });
 });

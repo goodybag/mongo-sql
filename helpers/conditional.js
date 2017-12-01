@@ -9,14 +9,14 @@ var queryBuilder = require('../lib/query-builder');
 
 var valuesThatUseIsOrIsNot = [
   'true', 'false', true, false, null
-]
+];
 
 function getValueEqualityOperator(value) {
-  return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is' : '='
+  return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is' : '=';
 }
 
 function getValueInequalityOperator(value) {
-  return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is not' : '!='
+  return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is not' : '!=';
 }
 
 /**
@@ -24,9 +24,7 @@ function getValueInequalityOperator(value) {
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be equal to
  */
-conditionals.add('$equals', function(column, value, values, collection, original){
-  var equator = '=';
-
+conditionals.add('$equals', function(column, value) {
   return column + ' ' + getValueEqualityOperator(value) + ' ' + value;
 });
 
@@ -35,7 +33,7 @@ conditionals.add('$equals', function(column, value, values, collection, original
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be equal to
  */
-conditionals.add('$ne', function(column, value, values, collection, original){
+conditionals.add('$ne', function(column, value) {
   return column + ' ' + getValueInequalityOperator(value) + ' ' + value;
 });
 
@@ -44,7 +42,7 @@ conditionals.add('$ne', function(column, value, values, collection, original){
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be greater than
  */
-conditionals.add('$gt', function(column, value, values, collection, original){
+conditionals.add('$gt', function(column, value) {
   return column + ' > ' + value;
 });
 
@@ -53,7 +51,7 @@ conditionals.add('$gt', function(column, value, values, collection, original){
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be greater than
  */
-conditionals.add('$gte', function(column, value, values, collection, original){
+conditionals.add('$gte', function(column, value) {
   return column + ' >= ' + value;
 });
 
@@ -62,7 +60,7 @@ conditionals.add('$gte', function(column, value, values, collection, original){
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be less than
  */
-conditionals.add('$lt', function(column, value, values, collection, original){
+conditionals.add('$lt', function(column, value) {
   return column + ' < ' + value;
 });
 
@@ -71,7 +69,7 @@ conditionals.add('$lt', function(column, value, values, collection, original){
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be lte to
  */
-conditionals.add('$lte', function(column, value, values, collection, original){
+conditionals.add('$lte', function(column, value) {
   return column + ' <= ' + value;
 });
 
@@ -79,7 +77,7 @@ conditionals.add('$lte', function(column, value, values, collection, original){
  * Querying where value is null
  * @param column {String}  - Column name either table.column or column
  */
-conditionals.add('$null', function(column, value, values, collection, original){
+conditionals.add('$null', function(column, value, values, collection, original) {
   return column + ' is' + (original === false ? ' not' : '') + ' null';
 });
 
@@ -87,7 +85,7 @@ conditionals.add('$null', function(column, value, values, collection, original){
  * Querying where value is null
  * @param column {String}  - Column name either table.column or column
  */
-conditionals.add('$notNull', function(column, value, values, collection, original){
+conditionals.add('$notNull', function(column, value, values, collection, original) {
   return column + ' is' + (original === false ? '' : ' not') + ' null';
 });
 
@@ -96,7 +94,7 @@ conditionals.add('$notNull', function(column, value, values, collection, origina
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be like
  */
-conditionals.add('$like', function(column, value, values, collection, original){
+conditionals.add('$like', function(column, value) {
   return column + ' like ' + value;
 });
 
@@ -105,7 +103,7 @@ conditionals.add('$like', function(column, value, values, collection, original){
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - What the column should be like
  */
-conditionals.add('$ilike', function(column, value, values, collection, original){
+conditionals.add('$ilike', function(column, value) {
   return column + ' ilike ' + value;
 });
 
@@ -121,13 +119,13 @@ conditionals.add('$ilike', function(column, value, values, collection, original)
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - String|Array|Function
  */
-conditionals.add('$in', { cascade: false }, function(column, set, values, collection, original){
+conditionals.add('$in', { cascade: false }, function(column, set, values) {
   if (Array.isArray(set)) {
     var hasNulls = set.indexOf(null) > -1;
 
     return column + ' in (' + set.filter(function(val) {
       return val !== undefined && val !== null;
-    }).map( function(val){
+    }).map(function(val) {
       return '$' + values.push( val );
     }).join(', ') + ')' + (hasNulls ? ' or ' + column + ' is null' : '');
   }
@@ -147,7 +145,7 @@ conditionals.add('$in', { cascade: false }, function(column, set, values, collec
  * @param column {String}  - Column name either table.column or column
  * @param value  {Mixed}   - String|Array|Function
  */
-conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original){
+conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original) {
   return conditionals.get('$in').fn(column, set, values, collection, original)
     .replace(/in/g, 'not in')
     .replace(/is/g, 'is not');
@@ -158,30 +156,30 @@ conditionals.add('$nin', { cascade: false }, function(column, set, values, colle
  * @param column {String}  - Column name either table.column or column
  */
 conditionals.add('$not', { cascade: false }, function(column, value, values, collection, original, buildConditions) {
-  var result = 'not '
+  var result = 'not ';
   if (typeof value === 'string') {
-     result += column + ' ' + getValueEqualityOperator(value) + ' ' + value
+    result += column + ' ' + getValueEqualityOperator(value) + ' ' + value;
   } else {
-    const condResult = buildConditions(value, collection, column)
-    result +=  condResult
+    var condResult = buildConditions(value, collection, column);
+    result += condResult;
   }
-  return result
+  return result;
 });
 
 
-conditionals.add('$custom', { cascade: false }, function(column, value, values, collection, original){
+conditionals.add('$custom', { cascade: false }, function(column, value, values, collection) {
   if (Array.isArray(value))
     return conditionals.get('$custom_array').fn( column, value, values, collection );
 
-  if (typeof value == 'object')
+  if (typeof value === 'object')
     return conditionals.get('$custom_object').fn( column, value, values, collection );
 
   throw new Error('Invalid Custom Value Input');
 });
 
-conditionals.add('$custom_array', { cascade: false }, function(column, value, values, collection, original){
+conditionals.add('$custom_array', { cascade: false }, function(column, value, values) {
   var output = value[0];
-  var localToGlobalValuesIndices = {}
+  var localToGlobalValuesIndices = {};
 
   return output.replace(/\$\d+/g, function(match) {
     var i = match.slice(1);
@@ -196,30 +194,30 @@ conditionals.add('$custom_array', { cascade: false }, function(column, value, va
   });
 });
 
-conditionals.add('$custom_object', { cascade: false }, function(column, value, values, collection, original){
+conditionals.add('$custom_object', { cascade: false }, function(column, value, values, collection) {
   return conditionals.get('$custom_array').fn(column, [value.value].concat(value.values), values, collection);
 });
 
-conditionals.add('$years_ago', function(column, value, values, collection, original){
-  return column + " >= now() - interval " + value + " year";
+conditionals.add('$years_ago', function(column, value) {
+  return column + ' >= now() - interval ' + value + ' year';
 });
 
-conditionals.add('$months_ago', function(column, value, values, collection, original){
-  return column + " >= now() - interval " + value + " month";
+conditionals.add('$months_ago', function(column, value) {
+  return column + ' >= now() - interval ' + value + ' month';
 });
 
-conditionals.add('$days_ago', function(column, value, values, collection, original){
-  return column + " >= now() - interval " + value + " day";
+conditionals.add('$days_ago', function(column, value) {
+  return column + ' >= now() - interval ' + value + ' day';
 });
 
-conditionals.add('$hours_ago', function(column, value, values, collection, original){
-  return column + " >= now() - interval " + value + " hour";
+conditionals.add('$hours_ago', function(column, value) {
+  return column + ' >= now() - interval ' + value + ' hour';
 });
 
-conditionals.add('$minutes_ago', function(column, value, values, collection, original){
-  return column + " >= now() - interval " + value + " minute";
+conditionals.add('$minutes_ago', function(column, value) {
+  return column + ' >= now() - interval ' + value + ' minute';
 });
 
-conditionals.add('$seconds_ago', function(column, value, values, collection, original){
-  return column + " >= now() - interval " + value + " second";
+conditionals.add('$seconds_ago', function(column, value) {
+  return column + ' >= now() - interval ' + value + ' second';
 });

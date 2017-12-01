@@ -5,11 +5,11 @@
 var assert = require('assert');
 var builder = require('../');
 
-describe('Regression Tests', function(){
+describe('Regression Tests', function() {
 
-  describe('Conditional builder', function(){
+  describe('Conditional builder', function() {
 
-    it ('should treat dates as a value', function(){
+    it ('should treat dates as a value', function() {
       var query = builder.sql({
         type: 'update',
         table: 'blah',
@@ -22,15 +22,15 @@ describe('Regression Tests', function(){
 
       assert.equal(
         query.toString()
-      , 'update "blah" set "name" = $1 where "blah"."id" = $2 and "blah"."birthday" = $3'
+        , 'update "blah" set "name" = $1 where "blah"."id" = $2 and "blah"."birthday" = $3'
       );
 
       assert.deepEqual(
         query.values
-      , [
-          query.original.values.name
-        , query.original.where.id
-        , query.original.where.birthday
+        , [
+          query.original.values.name,
+          query.original.where.id,
+          query.original.where.birthday
         ]
       );
     });
@@ -47,19 +47,19 @@ describe('Regression Tests', function(){
 
       assert.equal(
         query.toString()
-      , 'update "blah" set "name" = $1 where "blah"."id" = $2'
+        , 'update "blah" set "name" = $1 where "blah"."id" = $2'
       );
 
       assert.deepEqual(
         query.values
-      , [
-          query.original.values.name
-        , query.original.where.id
+        , [
+          query.original.values.name,
+          query.original.where.id
         ]
       );
     });
 
-    it ('should not improperly quote cast', function(){
+    it ('should not improperly quote cast', function() {
       var query = builder.sql({
         type: 'select',
         table: 'blah',
@@ -70,18 +70,18 @@ describe('Regression Tests', function(){
 
       assert.equal(
         query.toString()
-      , 'select "blah".* from "blah" where "blah"."data"->\'id\'::integer = $1'
+        , 'select "blah".* from "blah" where "blah"."data"->\'id\'::integer = $1'
       );
 
       assert.deepEqual(
         query.values
-      , [7]
+        , [7]
       );
     });
 
   });
 
-  it('expressions should allow for nested values', function(){
+  it('expressions should allow for nested values', function() {
     var query = builder.sql({
       type: 'select',
       table: 'blah',
@@ -112,7 +112,7 @@ describe('Regression Tests', function(){
 
     assert.equal(
       query.toString()
-    , 'with "something" as (select $1, $2, $2, $1), ' +
+      , 'with "something" as (select $1, $2, $2, $1), ' +
       '"something_else" as (select $3, $4, $5, $6) ' +
       'select "blah".* from "blah" ' +
       'where "blah"."foo" = $7 and "blah"."bar" = $8 and $9 = $10 or $10 = $9 ' +
@@ -121,7 +121,7 @@ describe('Regression Tests', function(){
 
     assert.deepEqual(
       query.values
-    , [11, 12, 16, 15, 14, 13, 'bar', 'baz', 21, 22, 123, 234]
+      , [11, 12, 16, 15, 14, 13, 'bar', 'baz', 21, 22, 123, 234]
     );
   });
 });
