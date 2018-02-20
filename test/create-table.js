@@ -258,13 +258,37 @@ describe('Built-In Query Types', function(){
           }
         }
       });
-
       assert.equal(
         query.toString()
       , [ 'create table "posts" ('
         , '"id" serial, '
         , '"content" text, '
         , '"deleted" boolean default false'
+        , ')'
+        ].join('')
+      );
+    });
+
+    it('Should support table constraints', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'foo'
+      , definition: {
+          name: { type: 'text' }
+        , email: { type: 'text' }
+        }
+
+      , constraints: {
+          primaryKey: ['name', 'email']
+        , unique: ['email', 'name']
+        }
+      });
+      assert.equal(
+        query.toString()
+      , [ 'create table "foo" ('
+        , '"name" text, "email" text, '
+        , 'primary key ("name", "email"), '
+        , 'unique ("email", "name")'
         , ')'
         ].join('')
       );

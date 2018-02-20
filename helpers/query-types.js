@@ -30,7 +30,7 @@ queryTypes.add(
 
 queryTypes.add(
   'create-table'
-, '{with} create table {ifNotExists} {table} ({definition})'
+, '{with} create table {ifNotExists} {table} ({definition}{constraints})'
 );
 
 queryTypes.add(
