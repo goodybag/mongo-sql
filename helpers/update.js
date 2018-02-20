@@ -12,14 +12,14 @@ var utils = require('../lib/utils');
  *  { $inc: { clicks: 1 } }
  * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
  */
-helpers.add('$inc', function(value, values, collection){
-  var output = "";
-
-  for (var key in value){
-    output += utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' + $' + values.push(value[key]);
-  }
-
-  return output;
+helpers.add('$inc', function(value, values, collection) {
+  return Object.keys(value).map(key =>
+    utils.quoteObject(key) +
+    ' = ' +
+    utils.quoteObject(key, collection) +
+    ' + $' +
+    values.push(value[key])
+  ).join(', ');
 });
 
 /**

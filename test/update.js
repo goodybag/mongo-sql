@@ -166,6 +166,29 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('$inc many columns', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , updates: {
+          $inc: { count: 5, age: 36 }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "count" = "users"."count" + $1, "age" = "users"."age" + $2 where "users"."id" = $3'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [5, 36, 7]
+      );
+    });
+
     it('$dec', function(){
       var query = builder.sql({
         type: 'update'
@@ -360,6 +383,29 @@ describe('Built-In Query Types', function(){
       assert.deepEqual(
         query.values
       , [5, 7]
+      );
+    });
+
+    it('$inc many columns', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , where: {
+          id: 7
+        }
+      , values: {
+          $inc: { count: 5, age: 36 }
+        }
+      });
+
+      assert.equal(
+        query.toString()
+      , 'update "users" set "count" = "users"."count" + $1, "age" = "users"."age" + $2 where "users"."id" = $3'
+      );
+
+      assert.deepEqual(
+        query.values
+      , [5, 36, 7]
       );
     });
 
