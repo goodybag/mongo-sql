@@ -13,13 +13,9 @@ var utils = require('../lib/utils');
  * @param  {Object} Hash whose keys are the columns to inc and values are how much it will inc
  */
 helpers.add('$inc', function(value, values, collection) {
-  return Object.keys(value).map(key =>
-    utils.quoteObject(key) +
-    ' = ' +
-    utils.quoteObject(key, collection) +
-    ' + $' +
-    values.push(value[key])
-  ).join(', ');
+  return Object.keys(value).map(function (key) {
+    return utils.quoteObject(key) + ' = ' + utils.quoteObject(key, collection) + ' + $' + values.push(value[key]);
+  }).join(', ');
 });
 
 /**
