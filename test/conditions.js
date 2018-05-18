@@ -735,6 +735,44 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$exists', function(){
+    var query = builder.sql({
+      type: 'select'
+      , table: 'users'
+      , where: {
+        $exists: {
+          type: 'select',
+          table: 'other_table',
+          where: { column: 'value' }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+      , 'select "users".* from "users" where exists (select "other_table".* from "other_table" where "other_table"."column" = $1)'
+    );
+  });
+
+  it ('$notExists', function(){
+    var query = builder.sql({
+      type: 'select'
+      , table: 'users'
+      , where: {
+        $notExists: {
+          type: 'select',
+          table: 'other_table',
+          where: { column: 'value' }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+      , 'select "users".* from "users" where not exists (select "other_table".* from "other_table" where "other_table"."column" = $1)'
+    );
+  });
+
   it ('$minutes_ago inverse', function(){
     var query = builder.sql({
       type: 'select'

@@ -223,3 +223,11 @@ conditionals.add('$minutes_ago', function(column, value, values, collection, ori
 conditionals.add('$seconds_ago', function(column, value, values, collection, original){
   return column + " >= now() - interval " + value + " second";
 });
+
+conditionals.add('$exists', { cascade: false}, function(column, query, values, collection, original){
+  return "exists (" + queryBuilder(query, values) + ")";
+});
+
+conditionals.add('$notExists', { cascade: false}, function(column, query, values, collection, original){
+  return "not " + conditionals.get('$exists').fn(column, query, values, collection, original);
+});
