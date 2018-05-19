@@ -422,6 +422,69 @@ select "users".* from "users" where "users"."id" not in (
 )
 ```
 
+### Helper: '$exists'
+
+___Cascades:___ _false_
+
+__Format:__ ```exists expression```
+
+Expression exists.
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    $exists: {
+      type: 'select'
+    , table: 'other_table'
+    , where: { column: 'value' }
+    }
+  }
+}
+```
+
+```sql
+select "users".* from "users" where exists (
+  select "other_table".* from "other_table"
+  where "other_table"."column"=$1
+)
+```
+
+### Helper: '$notExists'
+
+___Cascades:___ _false_
+
+__Format:__ ```not exists expression```
+
+Expression not exists.
+
+__Example:__
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: {
+    $notExists: {
+      type: 'select'
+    , table: 'other_table'
+    , where: { column: 'value' }
+    }
+  }
+}
+```
+
+```sql
+select "users".* from "users" where not exists (
+  select "other_table".* from "other_table"
+  where "other_table"."column"=$1
+)
+```
+
+
 ### Helper: '$custom'
 
 ___Cascades:___ _false_
