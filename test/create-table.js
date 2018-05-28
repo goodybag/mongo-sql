@@ -100,6 +100,19 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('it should create a table with inheritance', function(){
+      var query = builder.sql({
+        type: 'create-table'
+      , table: 'child'
+      , inherits: ['parent']
+      });
+
+      assert.equal(
+        query.toString()
+      , 'create table "child" () inherits ("parent")'
+      );
+    });
+
     it('it should create a table that references another', function(){
       var query = builder.sql({
         type: 'create-table'
