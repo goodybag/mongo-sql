@@ -98,10 +98,10 @@ Create table statement.
 __Definition:__
 
 ```
-{with} create table {ifNotExists} {table} ({definition})
+{with} create table {ifNotExists} {table} ({definition}) {inherits}
 ```
 
-__Helpers Used:__ [with](./query-helpers.md#helper-with), [ifNotExists](./query-helpers.md#helper-ifnotexists), [table](./query-helpers.md#helper-table), [definition](./query-helpers.md#helper-definition)
+__Helpers Used:__ [with](./query-helpers.md#helper-with), [ifNotExists](./query-helpers.md#helper-ifnotexists), [table](./query-helpers.md#helper-table), [definition](./query-helpers.md#helper-definition), [inherit](./query-helpers.md#helper-inherits)
 
 ___Note:___ _The [definition helper](./column-definitions.md) was sufficiently complex to warrant its own helper system._
 

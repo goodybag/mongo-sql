@@ -33,6 +33,7 @@ require('./helpers/query/group-by');
 require('./helpers/query/having');
 require('./helpers/query/if-exists');
 require('./helpers/query/if-not-exists');
+require('./helpers/query/inherits');
 require('./helpers/query/joins');
 require('./helpers/query/joins-dep');
 require('./helpers/query/limit');
