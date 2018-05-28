@@ -503,6 +503,20 @@ Add IF NOT EXISTS condition to [create-table](./query-types.md#type-create-table
 
 [Playground](http://mosql.j0.hn/#/snippets/14)
 
+### Helper: 'inherits'
+
+Add inheritance to [create-table](./query-types.md#type-create-table) query type.
+
+```javascript
+{
+  type: 'create-table'
+, table: 'child'
+, inherits: ['parent']
+}
+```
+
+[Playground](https://mosql.j0.hn/#/snippets/ca)
+
 ### Helper: 'join'
 
 __[Deprecated]__ Perform join
