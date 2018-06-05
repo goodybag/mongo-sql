@@ -413,6 +413,26 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$in array with only null', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $in: [null]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      '"users"."id" is null'
+    );
+
+    assert.deepEqual(query.values, []);
+  });
+
   it ('$nin', function(){
     var query = builder.sql({
       type: 'select'
@@ -488,6 +508,26 @@ describe('Conditions', function(){
       query.values
     , [1, 2, 3]
     );
+  });
+
+  it ('$nin array with only null', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $nin: [null]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      '"users"."id" is not null'
+    );
+
+    assert.deepEqual(query.values , []);
   });
 
   it ('should allow an arbitrary amount of conditions', function(){

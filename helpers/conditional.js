@@ -125,11 +125,17 @@ conditionals.add('$in', { cascade: false }, function(column, set, values, collec
   if (Array.isArray(set)) {
     var hasNulls = set.indexOf(null) > -1;
 
-    return column + ' in (' + set.filter(function(val) {
+    var setNoNulls = set.filter(function(val) {
       return val !== undefined && val !== null;
-    }).map( function(val){
-      return '$' + values.push( val );
-    }).join(', ') + ')' + (hasNulls ? ' or ' + column + ' is null' : '');
+    })
+
+    if(setNoNulls.length > 0) {
+      return column + ' in (' + setNoNulls.map( function(val){
+        return '$' + values.push( val );
+      }).join(', ') + ')' + (hasNulls ? ' or ' + column + ' is null' : '')
+    }
+
+    return (hasNulls ? column + ' is null' : '');
   }
 
   return column + ' in (' + queryBuilder(set, values).toString() + ')';
