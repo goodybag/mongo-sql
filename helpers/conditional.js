@@ -130,9 +130,10 @@ conditionals.add('$in', { cascade: false }, function(column, set, values, collec
     })
 
     if(setNoNulls.length > 0) {
-      return column + ' in (' + setNoNulls.map( function(val){
+      var inExpression = column + ' in (' + setNoNulls.map( function(val){
         return '$' + values.push( val );
-      }).join(', ') + ')' + (hasNulls ? ' or ' + column + ' is null' : '')
+      }).join(', ') + ')'
+      return hasNulls ? '(' + inExpression + ' or ' + column + ' is null)' : inExpression
     }
 
     return (hasNulls ? column + ' is null' : '');

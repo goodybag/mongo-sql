@@ -413,6 +413,33 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$in array with undefined and null combined with other statement', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+	'true': 'true',
+        id: {
+          $in: [1, 2, undefined, null, null, 3]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      '"users"."true" = $1 and ' +
+      '("users"."id" in ($2, $3, $4) ' +
+      'or "users"."id" is null)'
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['true', 1, 2, 3]
+    );
+  });
+
+
   it ('$in array with only null', function(){
     var query = builder.sql({
       type: 'select'
@@ -507,6 +534,32 @@ describe('Conditions', function(){
     assert.deepEqual(
       query.values
     , [1, 2, 3]
+    );
+  });
+
+  it ('$nin array with undefined and null combined with other statements', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+	  'true': 'true',
+          $nin: [1, 2, undefined, null, null, 3]
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      '"users"."true" = $1 and ' +
+      '("users"."id" not in ($2, $3, $4) ' +
+      'or "users"."id" is not null)'
+    );
+
+    assert.deepEqual(
+      query.values
+    , ['true', 1, 2, 3]
     );
   });
 
