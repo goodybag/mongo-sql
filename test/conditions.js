@@ -583,6 +583,32 @@ describe('Conditions', function(){
     assert.deepEqual(query.values , []);
   });
 
+  it ('$nin with subquery', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $nin: {
+            type: 'select'
+          , table: 'sub'
+          , columns: ['user_id']
+          , where: {
+              value: {
+                $null: false
+              }
+            }
+          }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where "users"."id" not in (select "sub"."user_id" from "sub" where "sub"."value" is not null)'
+    );
+  });
+
   it ('should allow an arbitrary amount of conditions', function(){
     var query = builder.sql({
       type: 'select'
