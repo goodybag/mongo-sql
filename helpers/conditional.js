@@ -156,8 +156,8 @@ conditionals.add('$in', { cascade: false }, function(column, set, values, collec
  */
 conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original){
   return conditionals.get('$in').fn(column, set, values, collection, original)
-    .replace(/in/g, 'not in')
-    .replace(/is/g, 'is not');
+    .replace(new RegExp(column + ' in', 'g'), column + ' not in')
+    .replace(new RegExp(column + ' is', 'g'), column + ' is not');
 });
 
 /**
