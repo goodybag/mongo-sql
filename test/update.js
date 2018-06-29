@@ -511,6 +511,25 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it('should skip undefined in update', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , values: {
+          name: 'Bob'
+        , email: undefined
+        }
+      });
 
+      assert.equal(
+        query.toString()
+      , 'update "users" set "name" = $1'
+      );
+
+      assert.deepEqual(
+        query.values
+      , ['Bob']
+      );
+    });
   });
 });
