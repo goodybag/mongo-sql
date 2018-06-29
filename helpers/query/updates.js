@@ -11,6 +11,10 @@ queryTypes.register('updates', function($updates, values, query){
       return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);
     }
 
+    if ($updates[key] === undefined){
+      return null;
+    }
+
     if ($updates[key] === null){
       return utils.quoteObject(key) + ' = null';
     }
@@ -21,5 +25,5 @@ queryTypes.register('updates', function($updates, values, query){
     return utils.quoteObject(key) + ' = ' + utils.parameterize($updates[key], values);
   });
 
-  return result.length > 0 ? ('set ' + result.join(', ')) : '';
+  return result.length > 0 ? ('set ' + result.filter(function( x ){ return !!x; }).join(', ')) : '';
 });
