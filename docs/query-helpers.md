@@ -279,7 +279,7 @@ Used for the [create-table](./query-types#type-create-table) query type to defin
 
 ### Helper: 'distinct'
 
-Specifies whether or not to select distinct on a query. This query helper _has two possible value types:_ Boolean, Array. If it's a booleant, then it will simply return the 'distinct' keyword in the correct spot as shown in the example below:
+Specifies whether or not to select distinct on a query. This query helper _has two possible value types:_ Boolean, Array. If it's a boolean, then it will simply return the 'distinct' keyword in the correct spot as shown in the example below:
 
 ```javascript
 // select distinct "users".* from "users"
