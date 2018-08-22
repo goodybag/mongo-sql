@@ -389,6 +389,29 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$in empty array', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $in: []
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      'false'
+    );
+
+    assert.deepEqual(
+      query.values
+    , []
+    );
+  });
+
   it ('$in array with undefined and null', function(){
     var query = builder.sql({
       type: 'select'
@@ -418,8 +441,8 @@ describe('Conditions', function(){
       type: 'select'
     , table: 'users'
     , where: {
-	'true': 'true',
-        id: {
+        'true': 'true'
+      , id: {
           $in: [1, 2, undefined, null, null, 3]
         }
       }

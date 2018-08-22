@@ -123,6 +123,10 @@ conditionals.add('$ilike', function(column, value, values, collection, original)
  */
 conditionals.add('$in', { cascade: false }, function(column, set, values, collection, original){
   if (Array.isArray(set)) {
+    if (set.length === 0) {
+      return 'false'
+    }
+
     var hasNulls = set.indexOf(null) > -1;
 
     var setNoNulls = set.filter(function(val) {
