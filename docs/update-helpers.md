@@ -60,6 +60,35 @@ update "users"
 where "users"."id" = $2
 ```
 
+### Helper: '$custom'
+
+___Format:___ ```col = expression```
+
+Creates a custom helper on the fly, much like in the [conditional helper system](./conditional-helpers.md).
+
+__Example:__
+
+```javascript
+{
+  type: 'update'
+, table: 'users'
+, where: {
+    id: 7
+  }
+, updates: {
+    $custom: {
+      images: ['$1::jsonb || images', JSON.stringify(['an_image.jpg'])],
+    }
+  }
+}
+```
+
+```sql
+update "users"
+  set "images" = $1::jsonb || images
+where "users"."id" = $2
+```
+
 ## Registering your own Update Helpers
 
 Update helpers use the standard MoSQL helper interface, so it's just like adding other helpers.

@@ -532,4 +532,44 @@ describe('Built-In Query Types', function(){
       );
     });
   });
+  describe('Type: update with $custom', function(){
+    it('should insert a string unchanged if $custom is used', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , values: {
+          $custom: {
+            number_of_images: 'jsonb_array_length(images) + 1',
+          }
+        }
+      });
+      assert.equal(
+        query.toString()
+      , 'update "users" set "number_of_images" = jsonb_array_length(images) + 1'
+      );
+      assert.deepEqual(
+        query.values
+      , []
+      );
+    });
+    it('should use the first value as a template and the rest as values if $custom is used with an array', function(){
+      var query = builder.sql({
+        type: 'update'
+      , table: 'users'
+      , values: {
+          $custom: {
+            images: ['$1::jsonb || images', JSON.stringify(['an_image.jpg'])],
+          }
+        }
+      });
+      assert.equal(
+        query.toString()
+      , 'update "users" set "images" = $1::jsonb || images'
+      );
+      assert.deepEqual(
+        query.values
+      , ['["an_image.jpg"]']
+      );
+    });
+  });
 });
