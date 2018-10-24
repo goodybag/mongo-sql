@@ -177,7 +177,7 @@ describe('Built-In Query Types', function(){
           , values: []
           });
         }
-      , 'MoSQL.queryHelper.values - Invalid values array length `0`'
+      , /MoSQL\.queryHelper\.values - Invalid values array length `0`$/
       );
     });
 
