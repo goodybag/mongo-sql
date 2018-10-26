@@ -340,9 +340,9 @@ ___Cascades:___ _false_
 
 __Format:__ ```col in set|expression```
 
-Value in a set or recordset.
+Value in a set or recordset. Evaluates to false if the set or recordset is empty.
 
-__Example:__
+__Examples:__
 
 ```javascript
 {
@@ -376,6 +376,18 @@ select "users".* from "users" where "users"."id" in (
   select "consumers"."id" from "consumers"
   where "consumers"."name" = 'Bob'
 )
+```
+
+```javascript
+{
+  type: 'select'
+, table: 'users'
+, where: { id: { $in: [] } }
+}
+```
+
+```sql
+select "users".* from "users" where false
 ```
 
 ### Helper: '$nin'
