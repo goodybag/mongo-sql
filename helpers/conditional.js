@@ -159,6 +159,9 @@ conditionals.add('$in', { cascade: false }, function(column, set, values, collec
  * @param value  {Mixed}   - String|Array|Function
  */
 conditionals.add('$nin', { cascade: false }, function(column, set, values, collection, original){
+  if (Array.isArray(set) && set.length === 0) {
+    return 'true'
+  }
   return conditionals.get('$in').fn(column, set, values, collection, original)
     .replace(new RegExp(column + ' in', 'g'), column + ' not in')
     .replace(new RegExp(column + ' is', 'g'), column + ' is not');

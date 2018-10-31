@@ -606,6 +606,24 @@ describe('Conditions', function(){
     assert.deepEqual(query.values , []);
   });
 
+  it ('$nin empty array should evaluate to true', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          $nin: []
+        }
+      }
+    });
+    assert.equal(
+      query.toString()
+    , 'select "users".* from "users" where ' +
+      'true'
+    );
+    assert.deepEqual(query.values , []);
+  });  
+
   it ('$nin with subquery', function(){
     var query = builder.sql({
       type: 'select'
