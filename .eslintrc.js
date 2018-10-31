@@ -10,8 +10,5 @@ module.exports = {
   extends: 'eslint:recommended',
   rules: {
     "no-unused-vars": ["error", {args: "none"}],
-
-
-    "no-useless-escape": ["off"],
   }  
 };
