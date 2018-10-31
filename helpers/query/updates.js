@@ -4,8 +4,6 @@ var utils = require('../../lib/utils');
 var queryBuilder = require('../../lib/query-builder');
 
 queryTypes.register('updates', function($updates, values, query){
-  var output = "set ";
-
   var result = Object.keys( $updates ).map( function( key ){
     if (updateHelpers.has(key)){
       return updateHelpers.get(key).fn($updates[key], values, query.__defaultTable);

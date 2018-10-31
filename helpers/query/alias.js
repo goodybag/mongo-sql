@@ -8,8 +8,6 @@
  */
 
 var helpers = require('../../lib/query-helpers');
-var actions = require('../../lib/action-helpers');
-var utils = require('../../lib/utils');
 
 helpers.register('alias', function(alias, values, query){
   query.__defaultTable = query.alias;

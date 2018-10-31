@@ -1,6 +1,5 @@
 
 var helpers = require('../../lib/query-helpers');
-var utils = require('../../lib/utils');
 
 helpers.register('returning', function(returning, values, query){
   if ( !Array.isArray(returning) ) throw new Error('Invalid returning input in query properties');

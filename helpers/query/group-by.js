@@ -1,6 +1,5 @@
 
 var helpers = require('../../lib/query-helpers');
-var utils   = require('../../lib/utils');
 
 helpers.register('groupBy', function(groupBy, values, query){
   if (!Array.isArray(groupBy) && typeof groupBy != 'string')
