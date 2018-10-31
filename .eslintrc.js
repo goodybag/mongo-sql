@@ -9,6 +9,10 @@ module.exports = {
   },  
   extends: 'eslint:recommended',
   rules: {
-    "no-unused-vars": ["off"]
+    "no-unused-vars": ["off"],
+    "no-console": ["off"],
+    "no-inner-declarations": ["off"],
+    "no-undef": ["off"],
+    "no-useless-escape": ["off"],
   }  
 };
