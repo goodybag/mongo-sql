@@ -25,8 +25,6 @@ function getValueInequalityOperator(value) {
  * @param value  {Mixed}   - What the column should be equal to
  */
 conditionals.add('$equals', function(column, value, values, collection, original){
-  var equator = '=';
-
   return column + ' ' + getValueEqualityOperator(value) + ' ' + value;
 });
 

@@ -32,6 +32,7 @@ helpers.register( 'conflict', function( conflict, values, query ){
     // Or get more specific
     } else {
       if ( conflict.target.column ){
+        // eslint-disable-next-line no-console
         console.log('conflict.target.column is deprecated. Use an array of columns on conflict.target.columns instead');
         conflict.target.columns = [ conflict.target.column ];
       }
