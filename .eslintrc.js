@@ -9,7 +9,7 @@ module.exports = {
   },  
   extends: 'eslint:recommended',
   rules: {
-    "no-unused-vars": ["off"],
+    "no-unused-vars": ["error", {args: "none"}],
     "no-console": ["off"],
     "no-inner-declarations": ["off"],
     "no-undef": ["off"],
