@@ -11,7 +11,7 @@ module.exports = {
   rules: {
     "no-unused-vars": ["error", {args: "none"}],
 
-    "no-undef": ["off"],
+
     "no-useless-escape": ["off"],
   }  
 };
