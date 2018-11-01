@@ -3,3 +3,6 @@ node_modules/
 jam/
 build/
 *~
+yarn.lock
+yarn-error.log
+.vscode/
