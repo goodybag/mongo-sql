@@ -18,8 +18,7 @@ helpers.register('values', function(values, valuesArray, query){
   };
 
   for ( var i = 0, l = values.length; i < l; ++i ) {
-    function hasValue (key) { return values[i][key] !== undefined; }
-    Object.keys( values[i] ).filter( hasValue ).forEach( checkKeys );
+    Object.keys( values[i] ).filter( key => values[i][key] !== undefined ).forEach( checkKeys );
   }
 
   var allValues = values.map( function( value ) {

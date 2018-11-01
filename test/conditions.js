@@ -566,7 +566,7 @@ describe('Conditions', function(){
     , table: 'users'
     , where: {
         id: {
-	  'true': 'true',
+    'true': 'true',
           $nin: [1, 2, undefined, null, null, 3]
         }
       }

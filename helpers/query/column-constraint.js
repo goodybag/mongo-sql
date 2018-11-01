@@ -10,7 +10,6 @@
 // [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
 var helpers     = require('../../lib/query-helpers');
-var conditional = require('../../lib/condition-builder');
 var columnDefs  = require('../../lib/column-def-helpers');
 var utils       = require('../../lib/utils');
 

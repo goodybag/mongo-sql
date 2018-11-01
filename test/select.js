@@ -962,7 +962,7 @@ describe('Built-In Query Types', function(){
 
     it ('should throw "for" helper requires type', function() {
       assert.throws(function() {
-        var query = builder.sql({
+        builder.sql({
           type: 'select'
         , table: 'foo'
         , for: { noWait: true }

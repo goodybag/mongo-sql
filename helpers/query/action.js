@@ -1,7 +1,6 @@
 
 var helpers = require('../../lib/query-helpers');
 var actionsHelpers = require('../../lib/action-helpers');
-var utils = require('../../lib/utils');
 
 helpers.register('action', function(actions, values, query){
 
