@@ -249,6 +249,19 @@ describe('Built-In Query Types', function(){
       );
     });
 
+    it ('order by array of objects', function(){
+      var query = builder.sql({
+        type:     'select'
+      , table:    'users'
+      , order:    [{ id: 'desc'}, { name: 'asc'}]
+      });
+
+      assert.equal(
+        query.toString()
+      , 'select "users".* from "users" order by "users"."id" desc, "users"."name" asc'
+      );
+    });
+
     it ('order by object', function(){
       var query = builder.sql({
         type:     'select'
