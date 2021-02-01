@@ -19,6 +19,10 @@ function getValueInequalityOperator(value) {
   return valuesThatUseIsOrIsNot.indexOf(value) > -1 ? 'is not' : '!='
 }
 
+function escapeRegex(value) {
+  return value.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 /**
  * Querying where column is equal to a value
  * @param column {String}  - Column name either table.column or column
@@ -161,8 +165,8 @@ conditionals.add('$nin', { cascade: false }, function(column, set, values, colle
     return 'true'
   }
   return conditionals.get('$in').fn(column, set, values, collection, original)
-    .replace(new RegExp(column + ' in', 'g'), column + ' not in')
-    .replace(new RegExp(column + ' is', 'g'), column + ' is not');
+    .replace(new RegExp(escapeRegex(column) + ' in', 'g'), column + ' not in')
+    .replace(new RegExp(escapeRegex(column) + ' is', 'g'), column + ' is not');
 });
 
 /**

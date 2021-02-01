@@ -650,6 +650,25 @@ describe('Conditions', function(){
     );
   });
 
+  it ('$nin with expression', function(){
+    var query = builder.sql({
+      type: 'select'
+    , table: 'users'
+    , where: {
+        id: {
+          '/* \\".* key */ (substring("id",1,1))': {
+            $nin: ['a']
+          }
+        }
+      }
+    });
+
+    assert.equal(
+      query.toString()
+    , `select "users".* from "users" where /* \\".* key */ (substring("id",1,1)) not in ($1)`
+    );
+  });
+
   it ('should allow an arbitrary amount of conditions', function(){
     var query = builder.sql({
       type: 'select'
